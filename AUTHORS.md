@@ -1,3 +1,4 @@
+# Authors
 
 ## Audrey Gorter
 - RESTful API Framework & Library Research
@@ -14,3 +15,9 @@
 - Repository Administration
 - Build Environment Setup
 - Home Screen
+
+# External Resources
+# Dr. ABM Islam
+- Professor of Software Engineering Course
+- Approver of Project Proposal and Timeline
+- General Guidance
