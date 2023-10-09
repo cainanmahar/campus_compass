@@ -317,3 +317,9 @@ fabric.properties
 !/gradle/wrapper/gradle-wrapper.jar
 
 # End of https://www.toptal.com/developers/gitignore/api/dart,flutter,androidstudio,visualstudiocode,macos,windows,linux
+
+# Ignore the target dirs for Windows, MacOS, Linux, and Web
+linux/
+macos/
+web/
+windows/
