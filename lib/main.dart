@@ -112,6 +112,34 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
               ),
+              const SizedBox(height: 20),
+              MaterialButton(
+                minWidth: double.infinity,
+                height: 60,
+                onPressed: () {
+                  // Handle login button press
+                  // Navigate to the LoginPage when the login button is pressed
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        // Navigate to LoginPage
+                        builder: (context) => const AddClassSchedule()),
+                  );
+                },
+                color: Colors.orange,
+                shape: RoundedRectangleBorder(
+                    side: const BorderSide(
+                      color: Colors.black,
+                    ),
+                    borderRadius: BorderRadius.circular(40)),
+                child: const Text(
+                  'Add Classes',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                      color: Colors.black),
+                ),
+              ),
             ],
           ),
         ),
