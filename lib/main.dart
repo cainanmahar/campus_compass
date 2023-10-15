@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       title: 'Campus Compass',
       // Define routes here?
-      home: const AddClassSchedule(),
+      home: const HomePage(),
     );
   }
 }
