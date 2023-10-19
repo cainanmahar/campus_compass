@@ -24,6 +24,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const LoginPage(),
         '/signup': (context) => const SignUpPage(),
         '/map': (context) => const MapPage(),
+        // TODO: Add routes for add classes and faq screens
         //'/addclass: (context) => const AddClass(),
         //'/faq: (context) => const Faq(),
       },

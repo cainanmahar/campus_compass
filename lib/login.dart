@@ -1,4 +1,3 @@
-import 'package:campus_compass/signup.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatelessWidget {
@@ -12,10 +11,9 @@ class LoginPage extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
-        //TODO: Back Button ** Change it to go straight back to home
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.popUntil(context, ModalRoute.withName('/'));
           },
           icon: const Icon(
             Icons.arrow_back_ios,
@@ -103,11 +101,7 @@ class LoginPage extends StatelessWidget {
                       GestureDetector(
                         onTap: () {
                           //Navigate to the sign up page
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const SignUpPage()),
-                          );
+                          Navigator.pushNamed(context, '/signup');
                         },
                         child: const Text(
                           "Sign Up",

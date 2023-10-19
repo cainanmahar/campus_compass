@@ -12,11 +12,9 @@ class SignUpPage extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
-        leading:
-            // back button ** Change it to go straight back to home
-            IconButton(
+        leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.popUntil(context, ModalRoute.withName('/'));
           },
           icon: const Icon(
             Icons.arrow_back_ios,
