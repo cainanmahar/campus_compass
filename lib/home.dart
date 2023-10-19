@@ -39,12 +39,13 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
               ),*/
+
+              // Login Button
               const SizedBox(height: 20),
               MaterialButton(
                 minWidth: double.infinity,
                 height: 60,
                 onPressed: () {
-                  // Handle login button press
                   // Navigate to the LoginPage when the login button is pressed
                   Navigator.pushNamed(context, '/login');
                 },
@@ -62,6 +63,8 @@ class HomePage extends StatelessWidget {
                       color: Colors.black),
                 ),
               ),
+
+              // Sign Up Button
               const SizedBox(height: 20),
               MaterialButton(
                 minWidth: double.infinity,
@@ -86,6 +89,8 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
               ),
+
+              // Map Button
               const SizedBox(height: 20),
               MaterialButton(
                 minWidth: double.infinity,
@@ -110,6 +115,34 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
               ),
+
+              // Add Classes Button
+              const SizedBox(height: 20),
+              MaterialButton(
+                minWidth: double.infinity,
+                height: 60,
+                onPressed: () {
+                  // handle sign up button
+                  // Navigate to sign up page when the button is pressed
+                  Navigator.pushNamed(context, '/addclass');
+                },
+                color: Colors.lightBlue[800],
+                shape: RoundedRectangleBorder(
+                    side: const BorderSide(
+                      color: Colors.black,
+                    ),
+                    borderRadius: BorderRadius.circular(40)),
+                child: const Text(
+                  'Add Classes',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+
+              // FAQ Button
               const SizedBox(height: 20),
               MaterialButton(
                 minWidth: double.infinity,
@@ -119,7 +152,7 @@ class HomePage extends StatelessWidget {
                   // Navigate to sign up page when the button is pressed
                   Navigator.pushNamed(context, '/faq');
                 },
-                color: Colors.lightBlue[800],
+                color: Colors.orange,
                 shape: RoundedRectangleBorder(
                     side: const BorderSide(
                       color: Colors.black,
@@ -130,7 +163,7 @@ class HomePage extends StatelessWidget {
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 16,
-                    color: Colors.white,
+                    color: Colors.black,
                   ),
                 ),
               ),

@@ -23,7 +23,6 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const LoginPage(),
         '/signup': (context) => const SignUpPage(),
         '/map': (context) => const MapPage(),
-        // TODO: Add routes for add classes
         '/addclass': (context) => const AddClassSchedule(),
         '/faq': (context) => FaqPage(),
       },
