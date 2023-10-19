@@ -19,6 +19,17 @@ class LoginPage extends StatelessWidget {
             Icons.arrow_back,
           ),
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              // Navigate to the FAQ page when the question mark icon is pressed
+              Navigator.pushNamed(context, '/faq');
+            },
+            icon: const Icon(
+              Icons.question_mark,
+            ),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         // Wrap with SingleChildScrollView
