@@ -75,7 +75,7 @@ class LoginPage extends StatelessWidget {
                         minWidth: double.infinity,
                         height: 60,
                         onPressed: () {
-                          //TODO: navigate to home screen with map
+                          Navigator.pushNamed(context, '/map');
                         },
                         color: Colors.orange,
                         shape: RoundedRectangleBorder(

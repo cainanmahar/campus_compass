@@ -49,12 +49,7 @@ class HomePage extends StatelessWidget {
                 onPressed: () {
                   // Handle login button press
                   // Navigate to the LoginPage when the login button is pressed
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        // Navigate to LoginPage
-                        builder: (context) => const LoginPage()),
-                  );
+                  Navigator.pushNamed(context, '/login');
                 },
                 color: Colors.orange,
                 shape: RoundedRectangleBorder(
@@ -77,12 +72,7 @@ class HomePage extends StatelessWidget {
                 onPressed: () {
                   // handle sign up button
                   // Navigate to sign up page when the button is pressed
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        // Navigate to SignUpPage
-                        builder: (context) => const SignUpPage()),
-                  );
+                  Navigator.pushNamed(context, '/signup');
                 },
                 color: Colors.lightBlue[800],
                 shape: RoundedRectangleBorder(
@@ -106,14 +96,9 @@ class HomePage extends StatelessWidget {
                 onPressed: () {
                   // handle sign up button
                   // Navigate to sign up page when the button is pressed
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        // Navigate to SignUpPage
-                        builder: (context) => const MapPage()),
-                  );
+                  Navigator.pushNamed(context, '/signup');
                 },
-                color: Colors.lightBlue[800],
+                color: Colors.orange,
                 shape: RoundedRectangleBorder(
                     side: const BorderSide(
                       color: Colors.black,

@@ -80,7 +80,7 @@ class SignUpPage extends StatelessWidget {
                           minWidth: double.infinity,
                           height: 60,
                           onPressed: () {
-                            // TODO: Navigate back to login or home with map?
+                            Navigator.pushNamed(context, '/map');
                           },
                           color: Colors.lightBlue[800],
                           shape: RoundedRectangleBorder(
