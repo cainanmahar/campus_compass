@@ -90,6 +90,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     height: 60,
                     onPressed: () {
                       // TODO create dialog box to change password
+                      _showChangePasswordDialog();
                     },
                     color: Colors.lightBlue[800],
                     shape: RoundedRectangleBorder(
@@ -164,6 +165,7 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
+  // Function to show the "Change Email" dialog box
   void _showChangeEmailDialog() {
     showDialog(
       context: context,
@@ -199,6 +201,62 @@ class _SettingsPageState extends State<SettingsPage> {
               onPressed: () {
                 // Handle confirm button press and update the email
                 // TODO: Update the email in database
+                // Close the dialog
+                Navigator.of(context).pop();
+              },
+              child: const Text('Confirm'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // Function to show the "Change Password" dialog box
+  void _showChangePasswordDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Change Password'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              TextField(
+                obscureText: true,
+                controller: _nameController,
+                decoration: const InputDecoration(
+                  labelText: 'Current Password',
+                ),
+              ),
+              TextField(
+                obscureText: true,
+                controller: _nameController,
+                decoration: const InputDecoration(
+                  labelText: 'New Password',
+                ),
+              ),
+              TextField(
+                obscureText: true,
+                controller: _nameController,
+                decoration: const InputDecoration(
+                  labelText: 'Confirm New Password',
+                ),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                // Handle cancel button press
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                // Handle confirm button press and update the password
+                // TODO: Update the password in database
                 // Close the dialog
                 Navigator.of(context).pop();
               },
