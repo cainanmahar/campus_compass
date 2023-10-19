@@ -22,8 +22,24 @@ class _MapPageState extends State<MapPage> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            const DrawerHeader(
-              child: Text('Campus Compass'),
+            DrawerHeader(
+              decoration: const BoxDecoration(
+                  //color: Colors.orange,
+                  ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  const Text('Campus Compass'),
+                  const SizedBox(height: 10),
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      // Navigate to 'Add Classes Screen
+                    },
+                    icon: const Icon(Icons.add_box),
+                    label: const Text('Add Classes'),
+                  ),
+                ],
+              ),
             ),
             ListTile(
               leading: const Icon(Icons.logout),
