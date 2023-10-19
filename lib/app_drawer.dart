@@ -29,14 +29,29 @@ class AppDrawer extends StatelessWidget {
             ),
           ),
 
+          //Settings icon
           ListTile(
-            leading: Icon(Icons.question_mark),
-            title: Text('FAQs'),
+            leading: const Icon(Icons.settings),
+            title: const Text('Settings'),
+            onTap: () {
+              /*
+              Navigator.pop(context);
+              Navigator.pushNamed(context, '/settings');
+              */
+            },
+          ),
+
+          // FAQs icon
+          ListTile(
+            leading: const Icon(Icons.question_mark),
+            title: const Text('FAQs'),
             onTap: () {
               Navigator.pop(context);
               Navigator.pushNamed(context, '/faq');
             },
           ),
+
+          // Logout Button
           ListTile(
             leading: const Icon(Icons.logout),
             title: const Text('Logout'),
