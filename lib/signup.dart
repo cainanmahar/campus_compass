@@ -16,9 +16,7 @@ class SignUpPage extends StatelessWidget {
             Navigator.popUntil(context, ModalRoute.withName('/'));
           },
           icon: const Icon(
-            Icons.arrow_back_ios,
-            size: 20,
-            color: Colors.black,
+            Icons.arrow_back,
           ),
         ),
       ),
