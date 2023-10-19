@@ -40,6 +40,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     height: 60,
                     onPressed: () {
                       // TODO create dialog box to change name
+                      _showChangeNameDialog();
                     },
                     color: Colors.lightBlue[800],
                     shape: RoundedRectangleBorder(
@@ -113,6 +114,54 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
         ),
       ),
+    );
+  }
+
+  // Function to show the "Change Name" dialog
+  final TextEditingController _nameController = TextEditingController();
+  void _showChangeNameDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Change Name'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              TextField(
+                controller: _nameController,
+                decoration: const InputDecoration(
+                  labelText: 'First Name',
+                ),
+              ),
+              TextField(
+                controller: _nameController,
+                decoration: const InputDecoration(
+                  labelText: 'Last Name',
+                ),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                // Handle cancel button press
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                // Handle confirm button press and update the name
+                // TODO: Update the name in database
+                // Close the dialog
+                // Navigator.of(context).pop();
+              },
+              child: const Text('Confirm'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
