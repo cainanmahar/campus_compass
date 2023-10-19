@@ -21,11 +21,20 @@ class _MapPageState extends State<MapPage> {
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
-          children: const <Widget>[
-            DrawerHeader(
+          children: <Widget>[
+            const DrawerHeader(
               child: Text('Campus Compass'),
             ),
-            ListTile(leading: Icon(Icons.logout), title: Text('Logout')),
+            ListTile(
+              leading: const Icon(Icons.logout),
+              title: const Text('Logout'),
+              onTap: () {
+                // Close drawer first
+                Navigator.pop(context);
+                // Navigate back to home screen
+                Navigator.popUntil(context, ModalRoute.withName('/'));
+              },
+            ),
           ],
         ),
       ),
