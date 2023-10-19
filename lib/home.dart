@@ -1,6 +1,3 @@
-import 'package:campus_compass/login.dart';
-import 'package:campus_compass/map.dart';
-import 'package:campus_compass/signup.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
@@ -28,6 +25,10 @@ class HomePage extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.black, fontSize: 15),
               ),
+              /*
+              Removed home screen image to add more buttons for testing
+              Leaving code here in case we want to use home screen
+              in final application.
               const SizedBox(height: 30),
               Container(
                 height: MediaQuery.of(context).size.height / 3,
@@ -37,7 +38,7 @@ class HomePage extends StatelessWidget {
                     fit: BoxFit.contain,
                   ),
                 ),
-              ),
+              ),*/
               const SizedBox(height: 20),
               MaterialButton(
                 minWidth: double.infinity,
@@ -45,12 +46,7 @@ class HomePage extends StatelessWidget {
                 onPressed: () {
                   // Handle login button press
                   // Navigate to the LoginPage when the login button is pressed
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        // Navigate to LoginPage
-                        builder: (context) => const LoginPage()),
-                  );
+                  Navigator.pushNamed(context, '/login');
                 },
                 color: Colors.orange,
                 shape: RoundedRectangleBorder(
@@ -73,12 +69,7 @@ class HomePage extends StatelessWidget {
                 onPressed: () {
                   // handle sign up button
                   // Navigate to sign up page when the button is pressed
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        // Navigate to SignUpPage
-                        builder: (context) => const SignUpPage()),
-                  );
+                  Navigator.pushNamed(context, '/signup');
                 },
                 color: Colors.lightBlue[800],
                 shape: RoundedRectangleBorder(
@@ -102,14 +93,9 @@ class HomePage extends StatelessWidget {
                 onPressed: () {
                   // handle sign up button
                   // Navigate to sign up page when the button is pressed
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        // Navigate to SignUpPage
-                        builder: (context) => const MapPage()),
-                  );
+                  Navigator.pushNamed(context, '/map');
                 },
-                color: Colors.lightBlue[800],
+                color: Colors.orange,
                 shape: RoundedRectangleBorder(
                     side: const BorderSide(
                       color: Colors.black,
@@ -120,7 +106,7 @@ class HomePage extends StatelessWidget {
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 16,
-                    color: Colors.white,
+                    color: Colors.black,
                   ),
                 ),
               ),

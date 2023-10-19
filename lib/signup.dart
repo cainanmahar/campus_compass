@@ -1,4 +1,3 @@
-import 'package:campus_compass/login.dart';
 import 'package:flutter/material.dart';
 
 class SignUpPage extends StatelessWidget {
@@ -12,11 +11,9 @@ class SignUpPage extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
-        leading:
-            // back button ** Change it to go straight back to home
-            IconButton(
+        leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.popUntil(context, ModalRoute.withName('/'));
           },
           icon: const Icon(
             Icons.arrow_back_ios,
@@ -28,7 +25,6 @@ class SignUpPage extends StatelessWidget {
       body: SafeArea(
           child: SingleChildScrollView(
         child: SizedBox(
-            // TODO: Fix keyboard covering input fields
             height: MediaQuery.of(context).size.height,
             width: double.infinity,
             child: Column(
@@ -82,7 +78,7 @@ class SignUpPage extends StatelessWidget {
                           minWidth: double.infinity,
                           height: 60,
                           onPressed: () {
-                            // TODO: Navigate back to login or home with map?
+                            Navigator.pushNamed(context, '/login');
                           },
                           color: Colors.lightBlue[800],
                           shape: RoundedRectangleBorder(
@@ -107,11 +103,7 @@ class SignUpPage extends StatelessWidget {
                         GestureDetector(
                           onTap: () {
                             // Navigate to login page
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const LoginPage()),
-                            );
+                            Navigator.pushNamed(context, '/login');
                           },
                           child: const Text(
                             "Login",

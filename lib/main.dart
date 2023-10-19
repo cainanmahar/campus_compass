@@ -1,4 +1,10 @@
 import 'package:campus_compass/home.dart';
+import 'package:campus_compass/map.dart';
+import 'package:campus_compass/signup.dart';
+import 'package:campus_compass/login.dart';
+// import 'package:campus_compass/add_classes_screen.dart';
+// import 'package:campus_compass/faq_screen.dart';
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -10,10 +16,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: 'Campus Compass',
-      // Define routes here?
-      home: HomePage(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const HomePage(),
+        '/login': (context) => const LoginPage(),
+        '/signup': (context) => const SignUpPage(),
+        '/map': (context) => const MapPage(),
+        // TODO: Add routes for add classes and faq screens
+        //'/addclass: (context) => const AddClass(),
+        //'/faq: (context) => const Faq(),
+      },
     );
   }
 }
