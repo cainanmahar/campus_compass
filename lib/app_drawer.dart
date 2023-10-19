@@ -9,6 +9,7 @@ class AppDrawer extends StatelessWidget {
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
+          // Drawer header
           DrawerHeader(
             decoration: const BoxDecoration(),
             child: Column(
@@ -16,6 +17,7 @@ class AppDrawer extends StatelessWidget {
               children: <Widget>[
                 const Text('Campus Compass'),
                 const SizedBox(height: 10),
+                // Add Classes Button
                 ElevatedButton.icon(
                   onPressed: () {
                     Navigator.pushNamed(context, '/addclass');
@@ -25,6 +27,15 @@ class AppDrawer extends StatelessWidget {
                 ),
               ],
             ),
+          ),
+
+          ListTile(
+            leading: Icon(Icons.question_mark),
+            title: Text('FAQs'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.pushNamed(context, '/faq');
+            },
           ),
           ListTile(
             leading: const Icon(Icons.logout),
