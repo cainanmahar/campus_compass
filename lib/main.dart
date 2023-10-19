@@ -4,6 +4,7 @@ import 'package:campus_compass/map.dart';
 import 'package:campus_compass/signup.dart';
 import 'package:campus_compass/login.dart';
 import 'package:campus_compass/add_classes.dart';
+import 'package:campus_compass/settings.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
         '/map': (context) => const MapPage(),
         '/addclass': (context) => const AddClassSchedule(),
         '/faq': (context) => FaqPage(),
+        '/settings': (context) => const SettingsPage(),
       },
     );
   }

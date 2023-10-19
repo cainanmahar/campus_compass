@@ -167,6 +167,32 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
               ),
+
+              // Settings Button
+              const SizedBox(height: 20),
+              MaterialButton(
+                minWidth: double.infinity,
+                height: 60,
+                onPressed: () {
+                  // handle sign up button
+                  // Navigate to sign up page when the button is pressed
+                  Navigator.pushNamed(context, '/settings');
+                },
+                color: Colors.lightBlue[800],
+                shape: RoundedRectangleBorder(
+                    side: const BorderSide(
+                      color: Colors.black,
+                    ),
+                    borderRadius: BorderRadius.circular(40)),
+                child: const Text(
+                  'Settings',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
             ],
           ),
         ),
