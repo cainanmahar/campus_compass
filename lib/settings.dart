@@ -15,21 +15,36 @@ class _SettingsPageState extends State<SettingsPage> {
         title: const Text('Settings'),
         backgroundColor: Colors.lightBlue[800],
       ),
-      body: ListView(
-        children: const <Widget>[
-          ListTile(
-            title: Text('Change Email'),
-            subtitle: Text("Email"),
-            //onTap: _changeEmailDialog,
+      body: SafeArea(
+          child: Container(
+              width: double.infinity,
+              height: MediaQuery.of(context).size.height,
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+              child: const Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'Account Settings',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                  ),
+                  SizedBox(height: 20),
+                ],
+              ))),
+
+      /* ListView(
+        children: <Widget>[
+          ElevatedButton(
+            onPressed: () {}, //_changeEmailDialog,
+            child: const Text('Change Email'),
           ),
-          ListTile(
-            title: Text('Change Password'),
-            subtitle: Text('********'),
-            //onTap: _changePasswordDialog,
+          ElevatedButton(
+            onPressed: () {}, //_changePasswordDialog,
+            child: const Text('Change Password'),
           ),
           // Other settings options can be added here
         ],
-      ),
+      ),*/
     );
   }
 }
