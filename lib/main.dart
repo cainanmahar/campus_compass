@@ -1,9 +1,9 @@
+import 'package:campus_compass/faq.dart';
 import 'package:campus_compass/home.dart';
 import 'package:campus_compass/map.dart';
 import 'package:campus_compass/signup.dart';
 import 'package:campus_compass/login.dart';
 // import 'package:campus_compass/add_classes_screen.dart';
-// import 'package:campus_compass/faq_screen.dart';
 
 import 'package:flutter/material.dart';
 
@@ -24,9 +24,9 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const LoginPage(),
         '/signup': (context) => const SignUpPage(),
         '/map': (context) => const MapPage(),
-        // TODO: Add routes for add classes and faq screens
+        // TODO: Add routes for add classes
         //'/addclass: (context) => const AddClass(),
-        //'/faq: (context) => const Faq(),
+        '/faq': (context) => FaqPage(),
       },
     );
   }
