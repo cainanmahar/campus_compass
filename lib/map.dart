@@ -23,7 +23,7 @@ class _MapPageState extends State<MapPage> {
           padding: EdgeInsets.zero,
           children: const <Widget>[
             DrawerHeader(
-              child: Text('Drawer Header'),
+              child: Text('Campus Compass'),
             ),
             ListTile(leading: Icon(Icons.logout), title: Text('Logout')),
           ],
