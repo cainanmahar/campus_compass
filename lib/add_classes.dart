@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:campus_compass/login.dart';
 class Course {
   // used to work with our test data
   final String courseNumber;
@@ -89,26 +89,10 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
                         content: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            TextFormField(
-                              // Our course field
-                              decoration: const InputDecoration(
-                                  labelText: 'Course Name'),
-                            ),
-                            TextFormField(
-                              // Our course field
-                              decoration: const InputDecoration(
-                                  labelText: 'Course Number'),
-                            ),
-                            TextFormField(
-                              // Our course field
-                              decoration: const InputDecoration(
-                                  labelText: 'Course Building'),
-                            ),
-                            TextFormField(
-                              // Our course field
-                              decoration: const InputDecoration(
-                                  labelText: 'Course Room Number'),
-                            ),
+                            makeInput(label: 'Course Name'),
+                            makeInput(label: 'Course Number'),
+                            makeInput(label: 'Building Number'),
+                            makeInput(label: 'Room Number'),
                           ],
                         ),
                         actions: [

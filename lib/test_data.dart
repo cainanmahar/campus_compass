@@ -1,5 +1,6 @@
 // test data for form fields
 import 'package:campus_compass/add_classes.dart';
+
 List<Course> dummyCourses = [
   Course(courseNumber: '1436', className: 'Programming Fundamentals I', professorName: 'Audrey Gorter', building: 'AB1' , roomNumber: '204'),
   Course(courseNumber: '1437', className: 'Programming Fundamentals II', professorName: 'Audrey Gorter', building: 'AB1' , roomNumber: '206'),
