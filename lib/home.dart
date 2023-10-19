@@ -1,6 +1,3 @@
-import 'package:campus_compass/login.dart';
-import 'package:campus_compass/map.dart';
-import 'package:campus_compass/signup.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
@@ -109,7 +106,7 @@ class HomePage extends StatelessWidget {
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 16,
-                    color: Colors.white,
+                    color: Colors.black,
                   ),
                 ),
               ),

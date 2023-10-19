@@ -1,4 +1,3 @@
-import 'package:campus_compass/login.dart';
 import 'package:flutter/material.dart';
 
 class SignUpPage extends StatelessWidget {
@@ -105,11 +104,7 @@ class SignUpPage extends StatelessWidget {
                         GestureDetector(
                           onTap: () {
                             // Navigate to login page
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const LoginPage()),
-                            );
+                            Navigator.pushNamed(context, '/login');
                           },
                           child: const Text(
                             "Login",
