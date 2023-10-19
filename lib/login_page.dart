@@ -33,7 +33,7 @@ class LoginPage extends StatelessWidget {
                 ),
                 // const SizedBox(height: 50),
                 const Text(
-                  "Campus \n Compass",
+                  "Campus \nCompass",
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 47,
@@ -42,7 +42,7 @@ class LoginPage extends StatelessWidget {
 
                 const SizedBox(height: 20),
                 const Text(
-                  'Welcome back to Campus Compass !',
+                  'Welcome back to Campus Compass!',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
@@ -78,7 +78,7 @@ class LoginPage extends StatelessWidget {
 
                 //sign in button
                 ElevatedButton(
-                    style: null, onPressed: () {}, child: const Text("LogIn")),
+                    style: null, onPressed: () {}, child: const Text("Login")),
 
                 //not a member? register now
 
