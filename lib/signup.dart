@@ -10,7 +10,7 @@ class SignUpPage extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.lightBlue[800],
         leading: IconButton(
           onPressed: () {
             Navigator.popUntil(context, ModalRoute.withName('/'));
@@ -31,9 +31,11 @@ class SignUpPage extends StatelessWidget {
               children: [
                 Column(
                   children: [
-                    const Column(
+                    const SizedBox(height: 30),
+                    // ignore: prefer_const_constructors
+                    Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
+                      children: const [
                         Text(
                           "Sign Up",
                           style: TextStyle(

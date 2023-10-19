@@ -10,7 +10,7 @@ class LoginPage extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.orange,
         leading: IconButton(
           onPressed: () {
             Navigator.popUntil(context, ModalRoute.withName('/'));
