@@ -28,6 +28,10 @@ class HomePage extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.black, fontSize: 15),
               ),
+              /*
+              Removed home screen image to add more buttons for testing
+              Leaving code here in case we want to use home screen
+              in final application.
               const SizedBox(height: 30),
               Container(
                 height: MediaQuery.of(context).size.height / 3,
@@ -37,7 +41,7 @@ class HomePage extends StatelessWidget {
                     fit: BoxFit.contain,
                   ),
                 ),
-              ),
+              ),*/
               const SizedBox(height: 20),
               MaterialButton(
                 minWidth: double.infinity,
