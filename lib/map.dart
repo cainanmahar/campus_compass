@@ -33,7 +33,7 @@ class _MapPageState extends State<MapPage> {
                   const SizedBox(height: 10),
                   ElevatedButton.icon(
                     onPressed: () {
-                      // Navigate to 'Add Classes Screen
+                      Navigator.pushNamed(context, '/addclass');
                     },
                     icon: const Icon(Icons.add_box),
                     label: const Text('Add Classes'),
