@@ -18,12 +18,12 @@ class FaqPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: Colors.white,
       appBar: AppBar(
           title: const Text(
             'FAQ',
           ),
-          backgroundColor: const Color.fromARGB(255, 240, 108, 7)),
+          backgroundColor: Colors.orange),
       body: Padding(
         padding: const EdgeInsets.only(top: 30, left: 30),
         child: ListView.builder(

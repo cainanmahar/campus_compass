@@ -10,17 +10,26 @@ class SignUpPage extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.lightBlue[800],
         leading: IconButton(
           onPressed: () {
             Navigator.popUntil(context, ModalRoute.withName('/'));
           },
           icon: const Icon(
-            Icons.arrow_back_ios,
-            size: 20,
-            color: Colors.black,
+            Icons.arrow_back,
           ),
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              // Navigate to the FAQ page when the question mark icon is pressed
+              Navigator.pushNamed(context, '/faq');
+            },
+            icon: const Icon(
+              Icons.question_mark,
+            ),
+          ),
+        ],
       ),
       body: SafeArea(
           child: SingleChildScrollView(
@@ -31,9 +40,11 @@ class SignUpPage extends StatelessWidget {
               children: [
                 Column(
                   children: [
-                    const Column(
+                    const SizedBox(height: 30),
+                    // ignore: prefer_const_constructors
+                    Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
+                      children: const [
                         Text(
                           "Sign Up",
                           style: TextStyle(

@@ -10,17 +10,26 @@ class LoginPage extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.orange,
         leading: IconButton(
           onPressed: () {
             Navigator.popUntil(context, ModalRoute.withName('/'));
           },
           icon: const Icon(
-            Icons.arrow_back_ios,
-            size: 20,
-            color: Colors.black,
+            Icons.arrow_back,
           ),
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              // Navigate to the FAQ page when the question mark icon is pressed
+              Navigator.pushNamed(context, '/faq');
+            },
+            icon: const Icon(
+              Icons.question_mark,
+            ),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         // Wrap with SingleChildScrollView
