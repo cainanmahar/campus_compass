@@ -39,7 +39,6 @@ class _SettingsPageState extends State<SettingsPage> {
                     minWidth: double.infinity,
                     height: 60,
                     onPressed: () {
-                      // TODO create dialog box to change name
                       _showChangeNameDialog();
                     },
                     color: Colors.lightBlue[800],
@@ -65,7 +64,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     minWidth: double.infinity,
                     height: 60,
                     onPressed: () {
-                      // TODO create dialog box to change email
+                      _showChangeEmailDialog();
                     },
                     color: Colors.lightBlue[800],
                     shape: RoundedRectangleBorder(
@@ -155,7 +154,53 @@ class _SettingsPageState extends State<SettingsPage> {
                 // Handle confirm button press and update the name
                 // TODO: Update the name in database
                 // Close the dialog
-                // Navigator.of(context).pop();
+                Navigator.of(context).pop();
+              },
+              child: const Text('Confirm'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showChangeEmailDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Change Email'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              TextField(
+                controller: _nameController,
+                decoration: const InputDecoration(
+                  labelText: 'Email',
+                ),
+              ),
+              TextField(
+                controller: _nameController,
+                decoration: const InputDecoration(
+                  labelText: 'Confirm Email',
+                ),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                // Handle cancel button press
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                // Handle confirm button press and update the email
+                // TODO: Update the email in database
+                // Close the dialog
+                Navigator.of(context).pop();
               },
               child: const Text('Confirm'),
             ),
