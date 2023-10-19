@@ -25,7 +25,6 @@ class SignUpPage extends StatelessWidget {
       body: SafeArea(
           child: SingleChildScrollView(
         child: SizedBox(
-            // TODO: Fix keyboard covering input fields
             height: MediaQuery.of(context).size.height,
             width: double.infinity,
             child: Column(
@@ -79,7 +78,7 @@ class SignUpPage extends StatelessWidget {
                           minWidth: double.infinity,
                           height: 60,
                           onPressed: () {
-                            Navigator.pushNamed(context, '/map');
+                            Navigator.pushNamed(context, '/login');
                           },
                           color: Colors.lightBlue[800],
                           shape: RoundedRectangleBorder(
