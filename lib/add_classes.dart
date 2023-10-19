@@ -1,5 +1,21 @@
 import 'package:flutter/material.dart';
 
+class Course { // used to work with our test data
+  final String courseNumber;
+  final String className;
+  final String professorName;
+  final String building;
+  final String roomNumber;
+
+  Course({
+    required this.courseNumber,
+    required this.className,
+    required this.professorName,
+    required this.building,
+    required this.roomNumber,
+  });
+}
+
 class AddClassSchedule extends StatefulWidget {
   const AddClassSchedule({super.key});
 
