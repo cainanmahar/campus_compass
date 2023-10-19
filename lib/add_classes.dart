@@ -1,21 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:campus_compass/login.dart';
-class Course {
-  // used to work with our test data
-  final String courseNumber;
-  final String className;
-  final String professorName;
-  final String building;
-  final String roomNumber;
-
-  Course({
-    required this.courseNumber,
-    required this.className,
-    required this.professorName,
-    required this.building,
-    required this.roomNumber,
-  });
-}
 
 class AddClassSchedule extends StatefulWidget {
   const AddClassSchedule({super.key});
@@ -89,10 +73,10 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
                         content: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            makeInput(label: 'Course Name'),
-                            makeInput(label: 'Course Number'),
-                            makeInput(label: 'Building Number'),
-                            makeInput(label: 'Room Number'),
+                            //makeAutoCompleteInput(label: 'Course Name', options:  courseName),
+                            //makeAutoCompleteInput(label: 'Course Number', options: courseNumber),
+                            //makeAutoCompleteInput(label: 'Building Number', options:) buildingNumber,
+                            //makeAutoCompleteInput(label: 'Room Number', options: ),
                           ],
                         ),
                         actions: [
@@ -128,7 +112,25 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
   }
 }
 
-// makeInput function from the login adapted to autocomplete fields for course input
+class Course {
+  // used to work with our test data
+  final String courseNumber;
+  final String className;
+  final String professorName;
+  final String building;
+  final String roomNumber;
+
+  Course({
+    required this.courseNumber,
+    required this.className,
+    required this.professorName,
+    required this.building,
+    required this.roomNumber,
+  });
+}
+
+
+// makeAutoCompleteInput function from the login adapted to autocomplete fields for course input
 Widget makeAutoCompleteInput({
   required String label, // label of the input field 
   required List<String> options, // list of string options for the autocomplete funcitonality 
