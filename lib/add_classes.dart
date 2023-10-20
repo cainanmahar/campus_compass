@@ -11,6 +11,7 @@ class AddClassSchedule extends StatefulWidget {
 }
 
 class _AddClassScheduleState extends State<AddClassSchedule> {
+  Course? _selectedCourse;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -163,10 +164,12 @@ List<String> extractUniqueRoomNumbers(List<Course> courses){
 class AutoCompleteFormField extends StatelessWidget {
   final String label;
   final List<String> options;
+  final Function(String)? onOptionSelected;
 
   const AutoCompleteFormField({
     required this.label,
     required this.options,
+    this.onOptionSelected,
     Key? key,
   }) : super(key: key);
 
@@ -182,6 +185,9 @@ class AutoCompleteFormField extends StatelessWidget {
         ).toList();
       },
       onSelected: (String selection) {
+        if(onOptionSelected != null){
+          onOptionSelected!(selection);
+        }
         print('You just selected $selection');
       },
       fieldViewBuilder: (BuildContext context,
