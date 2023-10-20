@@ -1,5 +1,5 @@
+import 'package:campus_compass/test_data.dart';
 import 'package:flutter/material.dart';
-import 'package:campus_compass/login.dart';
 
 class AddClassSchedule extends StatefulWidget {
   const AddClassSchedule({super.key});
@@ -73,10 +73,10 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
                         content: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            //makeAutoCompleteInput(label: 'Course Name', options:  courseName),
-                            //makeAutoCompleteInput(label: 'Course Number', options: courseNumber),
-                            //makeAutoCompleteInput(label: 'Building Number', options:) buildingNumber,
-                            //makeAutoCompleteInput(label: 'Room Number', options: ),
+                            makeAutoCompleteInput(label: 'Course Name', options:  extractUniqueCourseNames(dummyCourses)),
+                            makeAutoCompleteInput(label: 'Course Number', options: extractUniqueCourseNumbers(dummyCourses)),
+                            makeAutoCompleteInput(label: 'Building Number', options: extractUniqueBuildings(dummyCourses)),
+                            makeAutoCompleteInput(label: 'Room Number', options: extractUniqueRoomNumbers(dummyCourses)),
                           ],
                         ),
                         actions: [
@@ -112,8 +112,8 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
   }
 }
 
-class Course {
   // used to work with our test data
+class Course {
   final String courseNumber;
   final String className;
   final String professorName;
@@ -128,6 +128,20 @@ class Course {
     required this.roomNumber,
   });
 }
+
+List<String> extractUniqueCourseNames(List<Course> courses){
+  return courses.map((course) => course.className).toSet().toList();
+}
+List<String> extractUniqueCourseNumbers(List<Course> courses){
+  return courses.map((course) => course.courseNumber).toSet().toList();
+}
+List<String> extractUniqueBuildings(List<Course> courses){
+  return courses.map((course) => course.building).toSet().toList();
+}
+List<String> extractUniqueRoomNumbers(List<Course> courses){
+  return courses.map((course) => course.roomNumber).toSet().toList();
+}
+
 
 
 // makeAutoCompleteInput function from the login adapted to autocomplete fields for course input
