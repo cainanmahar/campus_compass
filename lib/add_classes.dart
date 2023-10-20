@@ -73,8 +73,10 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
                         content: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            makeAutoCompleteInput(label: 'Course Name', options:  extractUniqueCourseNames(dummyCourses)),
+
                             makeAutoCompleteInput(label: 'Course Number', options: extractUniqueCourseNumbers(dummyCourses)),
+                            makeAutoCompleteInput(label: 'Course Name', options:  extractUniqueCourseNames(dummyCourses)),
+                            makeAutoCompleteInput(label: 'Professor Name', options:  extractUniqueCourseNames(dummyCourses)),
                             makeAutoCompleteInput(label: 'Building Number', options: extractUniqueBuildings(dummyCourses)),
                             makeAutoCompleteInput(label: 'Room Number', options: extractUniqueRoomNumbers(dummyCourses)),
                           ],
@@ -129,11 +131,14 @@ class Course {
   });
 }
 
+List<String> extractUniqueCourseNumbers(List<Course> courses){
+  return courses.map((course) => course.courseNumber).toSet().toList();
+}
 List<String> extractUniqueCourseNames(List<Course> courses){
   return courses.map((course) => course.className).toSet().toList();
 }
-List<String> extractUniqueCourseNumbers(List<Course> courses){
-  return courses.map((course) => course.courseNumber).toSet().toList();
+List<String> extractUniqueProfessorNames(List<Course> courses){
+  return courses.map((course) => course.professorName).toSet().toList();
 }
 List<String> extractUniqueBuildings(List<Course> courses){
   return courses.map((course) => course.building).toSet().toList();
