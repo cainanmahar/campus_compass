@@ -47,14 +47,13 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
       ),
       body: Stack(
         children: <Widget>[
-          const Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'This is a test field',
-                ),
-              ],
+           const Center(
+            child: Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [],
+              ),
             ), // Existing centered content
           ),
           Align(
@@ -64,39 +63,51 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
               padding: const EdgeInsets.all(16.0),
               child: InkWell(
                 onTap: () {
-                  showDialog(
-                    // function that shows our pop up dialog box
-                    context: context, // context of our current screen
-                    builder: (context) {
-                      return AlertDialog(
-                        title: const Text('Add a Class'),
-                        content: SingleChildScrollView(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
+                  print("dummyCourses data: $dummyCourses");
+                  print('Unique Course Numbers: ${extractUniqueCourseNumbers(dummyCourses)}');
+                  print('Unique Course Names: ${extractUniqueCourseNames(dummyCourses)}');
+                  print('Unique Professor Names: ${extractUniqueProfessorNames(dummyCourses)}');
+                  print('Unique Buildings: ${extractUniqueBuildings(dummyCourses)}');
+                  print('Unique Room Numbers: ${extractUniqueRoomNumbers(dummyCourses)}');
 
-                              makeAutoCompleteInput(label: 'Course Number', options: extractUniqueCourseNumbers(dummyCourses)),
-                              makeAutoCompleteInput(label: 'Course Name', options:  extractUniqueCourseNames(dummyCourses)),
-                              makeAutoCompleteInput(label: 'Professor Name', options:  extractUniqueCourseNames(dummyCourses)),
-                              makeAutoCompleteInput(label: 'Building Number', options: extractUniqueBuildings(dummyCourses)),
-                              makeAutoCompleteInput(label: 'Room Number', options: extractUniqueRoomNumbers(dummyCourses)),
-                            ],
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return Dialog(
+                        child: Container(
+                          padding: EdgeInsets.all(20.0),
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Text('Add a Class', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                                AutoCompleteFormField(label: 'Course Number', options: extractUniqueCourseNumbers(dummyCourses)),
+                                AutoCompleteFormField(label: 'Course Name', options: extractUniqueCourseNames(dummyCourses)),
+                                AutoCompleteFormField(label: 'Professor Name', options: extractUniqueProfessorNames(dummyCourses)),
+                                AutoCompleteFormField(label: 'Building Number', options: extractUniqueBuildings(dummyCourses)),
+                                AutoCompleteFormField(label: 'Room Number', options: extractUniqueRoomNumbers(dummyCourses)),
+                                SizedBox(height: 20),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop(); // close the dialog
+                                      },
+                                      child: const Text('Cancel'),
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop(); // close the dialog
+                                      },
+                                      child: const Text('Add Class'),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop(); // close the dialog
-                            },
-                            child: const Text('Cancel'),
-                          ),
-                          ElevatedButton(
-                            onPressed: () {
-                              Navigator.of(context).pop(); // close the dialog
-                            },
-                            child: const Text('Add Class'),
-                          ),
-                        ],
                       );
                     },
                   );
@@ -149,10 +160,56 @@ List<String> extractUniqueRoomNumbers(List<Course> courses){
   return courses.map((course) => course.roomNumber).toSet().toList();
 }
 
+class AutoCompleteFormField extends StatelessWidget {
+  final String label;
+  final List<String> options;
+
+  const AutoCompleteFormField({
+    required this.label,
+    required this.options,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Autocomplete<String>(
+      optionsBuilder: (TextEditingValue textEditingValue) {
+        if (textEditingValue.text == '') {
+          return const <String>[];
+        }
+        return options.where((option) =>
+            option.toLowerCase().contains(textEditingValue.text.toLowerCase())
+        ).toList();
+      },
+      onSelected: (String selection) {
+        print('You just selected $selection');
+      },
+      fieldViewBuilder: (BuildContext context,
+          TextEditingController textEditingController,
+          FocusNode focusNode,
+          VoidCallback onFieldSubmitted) {
+        return TextFormField(
+          controller: textEditingController,
+          focusNode: focusNode,
+          decoration: InputDecoration(
+            labelText: label,
+            filled: true,
+            fillColor: Colors.white,
+            border: OutlineInputBorder(),
+          ),
+          onFieldSubmitted: (String value) {
+            onFieldSubmitted();
+          },
+        );
+      },
+    );
+  }
+}
 
 
-// makeAutoCompleteInput function from the login adapted to autocomplete fields for course input
-Widget makeAutoCompleteInput({
+
+// AutoCompleteFormField function from the login adapted to autocomplete fields for course input
+/*Widget AutoCompleteFormField({
   required String label, // label of the input field 
   required List<String> options, // list of string options for the autocomplete funcitonality 
   TextEditingController? textEditingController, // allows the caller to provide a text controller to capture and control the input
@@ -170,15 +227,10 @@ Widget makeAutoCompleteInput({
       ),
       Autocomplete<String>(
         optionsBuilder: (TextEditingValue textEditingValue) { // filters the list of autocomplete options based on user input
-          
-          if (textEditingValue.text == ''){ // if the user hasn't typed anything, don't show any autocomplete suggestions
-            return const [];
-          }
-
-          return options.where((option) => // filter the provided options based on what the user has typed
-            option.toLowerCase().contains(textEditingValue.text.toLowerCase()));
+          print("User Input: ${textEditingValue.text}");
+          print("Available options: $options");
+          return options;
         },
-
         onSelected: (String selection) { // called when a user selects an autocomplete suggestion
           if (textEditingController != null){ 
             textEditingController.text = selection;
@@ -214,4 +266,4 @@ Widget makeAutoCompleteInput({
       ),
     ],
   );
-}
+}*/
