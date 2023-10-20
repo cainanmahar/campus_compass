@@ -70,16 +70,18 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
                     builder: (context) {
                       return AlertDialog(
                         title: const Text('Add a Class'),
-                        content: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
+                        content: SingleChildScrollView(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
 
-                            makeAutoCompleteInput(label: 'Course Number', options: extractUniqueCourseNumbers(dummyCourses)),
-                            makeAutoCompleteInput(label: 'Course Name', options:  extractUniqueCourseNames(dummyCourses)),
-                            makeAutoCompleteInput(label: 'Professor Name', options:  extractUniqueCourseNames(dummyCourses)),
-                            makeAutoCompleteInput(label: 'Building Number', options: extractUniqueBuildings(dummyCourses)),
-                            makeAutoCompleteInput(label: 'Room Number', options: extractUniqueRoomNumbers(dummyCourses)),
-                          ],
+                              makeAutoCompleteInput(label: 'Course Number', options: extractUniqueCourseNumbers(dummyCourses)),
+                              makeAutoCompleteInput(label: 'Course Name', options:  extractUniqueCourseNames(dummyCourses)),
+                              makeAutoCompleteInput(label: 'Professor Name', options:  extractUniqueCourseNames(dummyCourses)),
+                              makeAutoCompleteInput(label: 'Building Number', options: extractUniqueBuildings(dummyCourses)),
+                              makeAutoCompleteInput(label: 'Room Number', options: extractUniqueRoomNumbers(dummyCourses)),
+                            ],
+                          ),
                         ),
                         actions: [
                           TextButton(
