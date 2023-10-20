@@ -1,17 +1,18 @@
 import 'package:campus_compass/test_data.dart';
 import 'package:flutter/material.dart';
 
-class AddClassSchedule extends StatefulWidget {
-  const AddClassSchedule({super.key});
+class AddClassSchedule extends StatefulWidget { // stateful widget for adding class schedules
+  const AddClassSchedule({super.key}); // calls parent class constructor
 
-  final String title = "Class Schedule";
+  final String title = "Class Schedule"; // title property
 
   @override
   State<AddClassSchedule> createState() => _AddClassScheduleState();
 }
 
 class _AddClassScheduleState extends State<AddClassSchedule> {
-  Course? _selectedCourse;
+  Course? _selectedCourse; // nullable property to keep track of the selected course. will be expanded on as it currently only serves course numbers
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,14 +23,13 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
             const Color.fromARGB(255, 0, 73, 144), // color of body of scaffold
         title: Text(widget.title),
         actions: <Widget>[
-          Row(
+          Row( // inside the appBar to contain multiple children horizontally
             children: [
               InkWell(
-                // our + button
-                onTap: () {},
+                onTap: () {}, // our edit button
                 child: const Padding(
                   padding: EdgeInsets.only(right: 16.0),
-                  child: Icon(Icons.edit),
+                  child: Icon(Icons.edit), 
                 ),
               ),
               Padding(
@@ -37,7 +37,7 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
                 child: SizedBox(
                   height: kToolbarHeight,
                   child: Image.asset(
-                    'assets/images/SHSU_Primary_Logo.png',
+                    'assets/images/SHSU_Primary_Logo.png', // uni logo
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -48,11 +48,11 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
       ),
       body: Column(
         children: [
-          if (_selectedCourse != null)
+          if (_selectedCourse != null) // conditionally displaying the selected course details
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
-                'Selected Course Info: ${_selectedCourse!.courseNumber} - ${_selectedCourse!.className} by ${_selectedCourse!.professorName} at ${_selectedCourse!.building} - ${_selectedCourse!.roomNumber}',
+                'Selected Course Info: ${_selectedCourse!.courseNumber} - ${_selectedCourse!.className} by ${_selectedCourse!.professorName} at ${_selectedCourse!.building} - ${_selectedCourse!.roomNumber}', // debugging artifact
                 style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),
@@ -68,12 +68,12 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
             ),
           ),
           Align(
-            // New aligned icon
+            // New aligned icon (+)
             alignment: Alignment.bottomRight,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: InkWell(
-                onTap: () {
+                onTap: () { // debugging statements and logs
                   print("dummyCourses data: $dummyCourses");
                   print('Unique Course Numbers: ${extractUniqueCourseNumbers(dummyCourses)}');
                   print('Unique Course Names: ${extractUniqueCourseNames(dummyCourses)}');
@@ -81,7 +81,7 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
                   print('Unique Buildings: ${extractUniqueBuildings(dummyCourses)}');
                   print('Unique Room Numbers: ${extractUniqueRoomNumbers(dummyCourses)}');
 
-                  showDialog(
+                  showDialog( // display of the dialog box after pressing our + button
                     context: context,
                     builder: (context) {
                       return Dialog(
@@ -92,6 +92,8 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 const Text('Add a Class', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+
+                                // auto complete form fields that allow users to search for classes listed in the database, select, then display
                                 AutoCompleteFormField(label: 'Course Number', options: extractUniqueCourseNumbers(dummyCourses),
                                   onOptionSelected: (selection){
                                     setState(() {
@@ -99,12 +101,14 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
                                     });
                                   },
                                 ),
+
+                                // form fields for the user to input depending on what information they have available to search with *probably will cut down?*
                                 AutoCompleteFormField(label: 'Course Name', options: extractUniqueCourseNames(dummyCourses)),
                                 AutoCompleteFormField(label: 'Professor Name', options: extractUniqueProfessorNames(dummyCourses)),
                                 AutoCompleteFormField(label: 'Building Number', options: extractUniqueBuildings(dummyCourses)),
                                 AutoCompleteFormField(label: 'Room Number', options: extractUniqueRoomNumbers(dummyCourses)),
-                                SizedBox(height: 20),
-                                Row(
+                                const SizedBox(height: 20),
+                                Row( // row with cancel and add class buttons - will likely remove add class due to redundancy
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [
                                     TextButton(
@@ -129,7 +133,7 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
                     },
                   );
                 },
-                child: Image.asset(
+                child: Image.asset( // icon for the paw
                   'assets/images/paw_thick.png',
                   width: 100.0,
                   height: 100.0,
@@ -144,7 +148,7 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
   }
 }
 
-  // used to work with our test data
+  // model class for course details used to work with our test data
 class Course {
   final String courseNumber;
   final String className;
@@ -161,6 +165,7 @@ class Course {
   });
 }
 
+// functions to extract unique values from a list of courses (currently provided by test_data)
 List<String> extractUniqueCourseNumbers(List<Course> courses){
   return courses.map((course) => course.courseNumber).toSet().toList();
 }
@@ -177,7 +182,7 @@ List<String> extractUniqueRoomNumbers(List<Course> courses){
   return courses.map((course) => course.roomNumber).toSet().toList();
 }
 
-class AutoCompleteFormField extends StatelessWidget {
+class AutoCompleteFormField extends StatelessWidget { // autocomplete widget
   final String label;
   final List<String> options;
   final Function(String)? onOptionSelected;
@@ -217,7 +222,7 @@ class AutoCompleteFormField extends StatelessWidget {
             labelText: label,
             filled: true,
             fillColor: Colors.white,
-            border: OutlineInputBorder(),
+            border: const OutlineInputBorder(),
           ),
           onFieldSubmitted: (String value) {
             onFieldSubmitted();
