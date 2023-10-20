@@ -174,7 +174,7 @@ Widget makeAutoCompleteInput({
           }
 
           return options.where((option) => // filter the provided options based on what the user has typed
-            option.contains(textEditingValue.text));
+            option.toLowerCase().contains(textEditingValue.text.toLowerCase()));
         },
 
         onSelected: (String selection) { // called when a user selects an autocomplete suggestion
