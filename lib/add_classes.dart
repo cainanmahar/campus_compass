@@ -86,7 +86,7 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
                     builder: (context) {
                       return Dialog(
                         child: Container(
-                          padding: EdgeInsets.all(20.0),
+                          padding: const EdgeInsets.all(20.0),
                           child: SingleChildScrollView(
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
@@ -101,11 +101,18 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
                                     });
                                   },
                                 ),
+                                const SizedBox(height: 16),
 
                                 // form fields for the user to input depending on what information they have available to search with *probably will cut down?*
                                 AutoCompleteFormField(label: 'Course Name', options: extractUniqueCourseNames(dummyCourses)),
+                                const SizedBox(height: 16),
+
                                 AutoCompleteFormField(label: 'Professor Name', options: extractUniqueProfessorNames(dummyCourses)),
+                                const SizedBox(height: 16),
+
                                 AutoCompleteFormField(label: 'Building Number', options: extractUniqueBuildings(dummyCourses)),
+                                const SizedBox(height: 16),
+                                
                                 AutoCompleteFormField(label: 'Room Number', options: extractUniqueRoomNumbers(dummyCourses)),
                                 const SizedBox(height: 20),
                                 Row( // row with cancel and add class buttons - will likely remove add class due to redundancy
