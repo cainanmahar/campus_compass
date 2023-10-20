@@ -46,16 +46,26 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
           ),
         ],
       ),
-      body: Stack(
-        children: <Widget>[
-           const Center(
-            child: Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [],
+      body: Column(
+        children: [
+          if (_selectedCourse != null)
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                'Selected Course Info: ${_selectedCourse!.courseNumber} - ${_selectedCourse!.className} by ${_selectedCourse!.professorName} at ${_selectedCourse!.building} - ${_selectedCourse!.roomNumber}',
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-            ), // Existing centered content
+            ),
+          const Expanded(
+            child: Center(
+              child: Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [],
+                ),
+              ),
+            ),
           ),
           Align(
             // New aligned icon
@@ -82,7 +92,13 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 const Text('Add a Class', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                                AutoCompleteFormField(label: 'Course Number', options: extractUniqueCourseNumbers(dummyCourses)),
+                                AutoCompleteFormField(label: 'Course Number', options: extractUniqueCourseNumbers(dummyCourses),
+                                  onOptionSelected: (selection){
+                                    setState(() {
+                                      _selectedCourse = dummyCourses.firstWhere((course) => course.courseNumber == selection);
+                                    });
+                                  },
+                                ),
                                 AutoCompleteFormField(label: 'Course Name', options: extractUniqueCourseNames(dummyCourses)),
                                 AutoCompleteFormField(label: 'Professor Name', options: extractUniqueProfessorNames(dummyCourses)),
                                 AutoCompleteFormField(label: 'Building Number', options: extractUniqueBuildings(dummyCourses)),
