@@ -210,7 +210,7 @@ class AutoCompleteFormField extends StatelessWidget { // autocomplete widget
         if(onOptionSelected != null){
           onOptionSelected!(selection);
         }
-        print('You just selected $selection');
+        Navigator.of(context).pop(); // close the dialog when the option is selected
       },
       fieldViewBuilder: (BuildContext context,
           TextEditingController textEditingController,
