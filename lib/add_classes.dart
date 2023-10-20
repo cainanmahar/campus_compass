@@ -124,12 +124,6 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
                                       },
                                       child: const Text('Cancel'),
                                     ),
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop(); // close the dialog
-                                      },
-                                      child: const Text('Add Class'),
-                                    ),
                                   ],
                                 ),
                               ],
