@@ -56,9 +56,18 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
                 Course course = _selectedCourses[index];
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Text(
-                    'Selected Course Info: ${course.courseNumber} - ${course.className} by ${course.professorName} at ${course.building} - ${course.roomNumber}',
-                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start, // To align content to the start
+                    children: [
+                      Text(
+                        'Course: ${course.courseNumber} - ${course.className}\nBy ${course.professorName}\nin ${course.building} - ${course.roomNumber}',
+                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      const Divider(
+                        color: Colors.black,
+                        thickness: 2,
+                      ),
+                    ],
                   ),
                 );
               },
