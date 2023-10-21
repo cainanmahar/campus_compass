@@ -11,7 +11,7 @@ class AddClassSchedule extends StatefulWidget { // stateful widget for adding cl
 }
 
 class _AddClassScheduleState extends State<AddClassSchedule> {
-  Course? _selectedCourse; // nullable property to keep track of the selected course. will be expanded on as it currently only serves course numbers
+  final List<Course> _selectedCourses = []; // list to keep track of selected courses
 
   @override
   Widget build(BuildContext context) {
@@ -48,23 +48,20 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
       ),
       body: Column(
         children: [
-          if (_selectedCourse != null) // conditionally displaying the selected course details
-            Padding(
+          Expanded(
+            child: ListView.builder(
               padding: const EdgeInsets.all(16.0),
-              child: Text(
-                'Selected Course Info: ${_selectedCourse!.courseNumber} - ${_selectedCourse!.className} by ${_selectedCourse!.professorName} at ${_selectedCourse!.building} - ${_selectedCourse!.roomNumber}', // debugging artifact
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ),
-          const Expanded(
-            child: Center(
-              child: Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [],
-                ),
-              ),
+              itemCount: _selectedCourses.length,
+              itemBuilder: (BuildContext context, int index) {
+                Course course = _selectedCourses[index];
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Text(
+                    'Selected Course Info: ${course.courseNumber} - ${course.className} by ${course.professorName} at ${course.building} - ${course.roomNumber}',
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                );
+              },
             ),
           ),
           Align(
@@ -89,18 +86,20 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
                                 // auto complete form fields that allow users to search for classes listed in the database, select, then display
                                 AutoCompleteFormField(label: 'Course Number', options: extractUniqueCourseNumbers(dummyCourses),
                                   onOptionSelected: (selection){
+                                    Course selectedCourse = dummyCourses.firstWhere((course) => course.courseNumber == selection);
                                     setState(() {
-                                      _selectedCourse = dummyCourses.firstWhere((course) => course.courseNumber == selection);
+                                      _selectedCourses.add(selectedCourse);
                                     });
                                   },
                                 ),
                                 const SizedBox(height: 16),
 
                                 // form fields for the user to input depending on what information they have available to search with *probably will cut down?*
-                                AutoCompleteFormField(label: 'Course Name', options: extractUniqueCourseNames(dummyCourses),
+                                AutoCompleteFormField(label: 'Class Name', options: extractUniqueCourseNames(dummyCourses),
                                   onOptionSelected: (selection){
+                                    Course selectedCourse = dummyCourses.firstWhere((course) => course.className == selection);
                                     setState(() {
-                                      _selectedCourse = dummyCourses.firstWhere((course) => course.className == selection);
+                                      _selectedCourses.add(selectedCourse);
                                     });
                                   },
                                 ),
@@ -108,10 +107,11 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
 
                                 AutoCompleteFormField(label: 'Professor Name', options: extractUniqueProfessorNames(dummyCourses),
                                   onOptionSelected: (selection){
-                                      setState(() {
-                                        _selectedCourse = dummyCourses.firstWhere((course) => course.professorName == selection);
-                                      });
-                                    },
+                                    Course selectedCourse = dummyCourses.firstWhere((course) => course.professorName == selection);
+                                    setState(() {
+                                      _selectedCourses.add(selectedCourse);
+                                    });
+                                  },
                                 ),
                                 const SizedBox(height: 20),
                                 Row( // row with cancel and add class buttons - will likely remove add class due to redundancy
