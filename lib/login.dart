@@ -114,7 +114,7 @@ class _LoginPageState extends State<LoginPage> {
                       const Text("Forgot your password? "),
                       GestureDetector(
                         onTap: () {
-                          // open dialog box
+                          _showResetPasswordDialog();
                         },
                         child: const Text("Reset Password",
                             style: TextStyle(
@@ -153,6 +153,54 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
       ),
+    );
+  }
+
+  final TextEditingController _nameController = TextEditingController();
+  void _showResetPasswordDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Reset Password'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              TextField(
+                obscureText: true,
+                controller: _nameController,
+                decoration: const InputDecoration(
+                  labelText: 'New Password',
+                ),
+              ),
+              TextField(
+                controller: _nameController,
+                decoration: const InputDecoration(
+                  labelText: 'Confirm New Password',
+                ),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                // Handle cancel button press
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                // Handle confirm button press and reset password
+                // TODO: Update the password in database
+                // Close the dialog
+                Navigator.of(context).pop();
+              },
+              child: const Text('Confirm'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
