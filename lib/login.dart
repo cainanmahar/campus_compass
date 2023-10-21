@@ -71,6 +71,21 @@ class LoginPage extends StatelessWidget {
                       ],
                     ),
                   ),
+
+                  // Forgot password feature from the login page.
+                  const SizedBox(height: 10),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/settings');
+                    },
+                    child: const Text(
+                      "Forgot password?",
+                      style: TextStyle(
+                          color: Colors.grey,
+                          decoration: TextDecoration.underline),
+                    ),
+                  ),
+
                   Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 40,

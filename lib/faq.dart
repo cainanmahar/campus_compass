@@ -23,7 +23,7 @@ class FaqPage extends StatelessWidget {
           title: const Text(
             'FAQ',
           ),
-          backgroundColor: Colors.orange),
+          backgroundColor: Colors.lightBlue[800]),
       body: Padding(
         padding: const EdgeInsets.only(top: 30, left: 30),
         child: ListView.builder(
