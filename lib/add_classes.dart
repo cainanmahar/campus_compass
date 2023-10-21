@@ -82,64 +82,13 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
                 onTap: () { 
                   showDialog( // display of the dialog box after pressing our + button
                     context: context,
-                    builder: (context) {
-                      return Dialog(
-                        child: Container(
-                          padding: const EdgeInsets.all(20.0),
-                          child: SingleChildScrollView(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const Text('Add a Class', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-
-                                // auto complete form fields that allow users to search for classes listed in the database, select, then display
-                                AutoCompleteFormField(label: 'Course Number', options: extractUniqueCourseNumbers(dummyCourses),
-                                  onOptionSelected: (selection){
-                                    Course selectedCourse = dummyCourses.firstWhere((course) => course.courseNumber == selection);
-                                    setState(() {
-                                      _selectedCourses.add(selectedCourse);
-                                    });
-                                  },
-                                ),
-                                const SizedBox(height: 16),
-
-                                // form fields for the user to input depending on what information they have available to search with *probably will cut down?*
-                                AutoCompleteFormField(label: 'Class Name', options: extractUniqueCourseNames(dummyCourses),
-                                  onOptionSelected: (selection){
-                                    Course selectedCourse = dummyCourses.firstWhere((course) => course.className == selection);
-                                    setState(() {
-                                      _selectedCourses.add(selectedCourse);
-                                    });
-                                  },
-                                ),
-                                const SizedBox(height: 16),
-
-                                AutoCompleteFormField(label: 'Professor Name', options: extractUniqueProfessorNames(dummyCourses),
-                                  onOptionSelected: (selection){
-                                    Course selectedCourse = dummyCourses.firstWhere((course) => course.professorName == selection);
-                                    setState(() {
-                                      _selectedCourses.add(selectedCourse);
-                                    });
-                                  },
-                                ),
-                                const SizedBox(height: 20),
-                                Row( // row with cancel and add class buttons - will likely remove add class due to redundancy
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop(); // close the dialog
-                                      },
-                                      child: const Text('Cancel'),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                    },
+                    builder: (context) => CourseDialog(
+                      onCourseSelected: (selectedCourse){
+                        setState(() {
+                          _selectedCourses.add(selectedCourse);
+                        });
+                      }
+                    )   
                   );
                 },
                 child: const Icon(Icons.add, color: Color.fromARGB(255, 0, 73, 144), size: 100.0) // stock '+' icon              
@@ -151,6 +100,75 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
     );
   }
 }
+class CourseDialog extends StatelessWidget {
+  final Function(Course) onCourseSelected;
+
+  const CourseDialog({Key? key, required this.onCourseSelected}) : super(key:key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      child: Container(
+        padding: const EdgeInsets.all(20.0),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text('Add a Class', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+
+              // auto complete form fields that allow users to search for classes listed in the database, select, then display
+              AutoCompleteFormField(
+                label: 'Course Number', 
+                options: extractUniqueCourseNumbers(dummyCourses),
+                onOptionSelected: (selection) {
+                  Course selectedCourse = dummyCourses.firstWhere((course) => course.courseNumber == selection);
+                  onCourseSelected(selectedCourse);
+                },
+              ),
+              const SizedBox(height: 16),
+
+              // form fields for the user to input depending on what information they have available to search with *probably will cut down?*
+              AutoCompleteFormField(
+                label: 'Class Name', 
+                options: extractUniqueCourseNumbers(dummyCourses),
+                onOptionSelected: (selection) {
+                  Course selectedCourse = dummyCourses.firstWhere((course) => course.className == selection);
+                  onCourseSelected(selectedCourse);
+                },
+              ),
+              const SizedBox(height: 16),
+
+              AutoCompleteFormField(
+                label: 'Professor Name', 
+                options: extractUniqueProfessorNames(dummyCourses),
+                onOptionSelected: (selection) {
+                  Course selectedCourse = dummyCourses.firstWhere((course) => course.professorName == selection);
+                  onCourseSelected(selectedCourse);
+                },
+              ),
+
+              const SizedBox(height: 20),
+              Row( // row with cancel and add class buttons - will likely remove add class due to redundancy
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(); // close the dialog
+                    },
+                    child: const Text('Cancel'),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+
 
   // model class for course details used to work with our test data
 class Course {
