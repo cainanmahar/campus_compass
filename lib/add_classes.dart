@@ -73,20 +73,13 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: InkWell(
-                onTap: () { // debugging statements and logs
-                  print("dummyCourses data: $dummyCourses");
-                  print('Unique Course Numbers: ${extractUniqueCourseNumbers(dummyCourses)}');
-                  print('Unique Course Names: ${extractUniqueCourseNames(dummyCourses)}');
-                  print('Unique Professor Names: ${extractUniqueProfessorNames(dummyCourses)}');
-                  print('Unique Buildings: ${extractUniqueBuildings(dummyCourses)}');
-                  print('Unique Room Numbers: ${extractUniqueRoomNumbers(dummyCourses)}');
-
+                onTap: () { 
                   showDialog( // display of the dialog box after pressing our + button
                     context: context,
                     builder: (context) {
                       return Dialog(
                         child: Container(
-                          padding: EdgeInsets.all(20.0),
+                          padding: const EdgeInsets.all(20.0),
                           child: SingleChildScrollView(
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
@@ -101,12 +94,43 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
                                     });
                                   },
                                 ),
+                                const SizedBox(height: 16),
 
                                 // form fields for the user to input depending on what information they have available to search with *probably will cut down?*
-                                AutoCompleteFormField(label: 'Course Name', options: extractUniqueCourseNames(dummyCourses)),
-                                AutoCompleteFormField(label: 'Professor Name', options: extractUniqueProfessorNames(dummyCourses)),
-                                AutoCompleteFormField(label: 'Building Number', options: extractUniqueBuildings(dummyCourses)),
-                                AutoCompleteFormField(label: 'Room Number', options: extractUniqueRoomNumbers(dummyCourses)),
+                                AutoCompleteFormField(label: 'Course Name', options: extractUniqueCourseNames(dummyCourses),
+                                  onOptionSelected: (selection){
+                                    setState(() {
+                                      _selectedCourse = dummyCourses.firstWhere((course) => course.className == selection);
+                                    });
+                                  },
+                                ),
+                                const SizedBox(height: 16),
+
+                                AutoCompleteFormField(label: 'Professor Name', options: extractUniqueProfessorNames(dummyCourses),
+                                  onOptionSelected: (selection){
+                                      setState(() {
+                                        _selectedCourse = dummyCourses.firstWhere((course) => course.professorName == selection);
+                                      });
+                                    },
+                                ),
+                                const SizedBox(height: 16),
+
+                                AutoCompleteFormField(label: 'Building Number', options: extractUniqueBuildings(dummyCourses),
+                                  onOptionSelected: (selection){
+                                      setState(() {
+                                        _selectedCourse = dummyCourses.firstWhere((course) => course.className == selection);
+                                      });
+                                    },
+                                ),
+                                const SizedBox(height: 16),
+                                
+                                AutoCompleteFormField(label: 'Room Number', options: extractUniqueRoomNumbers(dummyCourses),
+                                  onOptionSelected: (selection){
+                                    setState(() {
+                                      _selectedCourse = dummyCourses.firstWhere((course) => course.roomNumber == selection);
+                                    });
+                                  },
+                                ),
                                 const SizedBox(height: 20),
                                 Row( // row with cancel and add class buttons - will likely remove add class due to redundancy
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -116,12 +140,6 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
                                         Navigator.of(context).pop(); // close the dialog
                                       },
                                       child: const Text('Cancel'),
-                                    ),
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop(); // close the dialog
-                                      },
-                                      child: const Text('Add Class'),
                                     ),
                                   ],
                                 ),
@@ -209,7 +227,7 @@ class AutoCompleteFormField extends StatelessWidget { // autocomplete widget
         if(onOptionSelected != null){
           onOptionSelected!(selection);
         }
-        print('You just selected $selection');
+        Navigator.of(context).pop(); // close the dialog when the option is selected
       },
       fieldViewBuilder: (BuildContext context,
           TextEditingController textEditingController,
