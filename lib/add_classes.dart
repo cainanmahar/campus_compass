@@ -60,7 +60,7 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
                     crossAxisAlignment: CrossAxisAlignment.start, // To align content to the start
                     children: [
                       Text(
-                        'Course: ${course.courseNumber} - ${course.className}\nBy ${course.professorName}\nin ${course.building} - ${course.roomNumber}',
+                        'Course: ${course.courseNumber} - ${course.className}\nBy ${course.professorName}\nIn ${course.building} - ${course.roomNumber}',
                         style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                       const Divider(
