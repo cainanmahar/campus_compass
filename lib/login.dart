@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -102,7 +107,7 @@ class LoginPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
 
-                  // Link to reset password
+                  // reset password button
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -113,18 +118,15 @@ class LoginPage extends StatelessWidget {
                         },
                         child: const Text("Reset Password",
                             style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 18,
-                              decoration: TextDecoration.underline,
-                            )),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 18,
+                                decoration: TextDecoration.underline)),
                       ),
                     ],
                   ),
 
-                  // Link to sign up
-                  const SizedBox(
-                    height: 10,
-                  ),
+                  // sign up link
+                  const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
