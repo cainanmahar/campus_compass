@@ -142,12 +142,7 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
                     },
                   );
                 },
-                child: Image.asset( // icon for the paw
-                  'assets/images/paw_thick.png',
-                  width: 100.0,
-                  height: 100.0,
-                  fit: BoxFit.cover,
-                ),
+                child: const Icon(Icons.add, color: Color.fromARGB(255, 0, 73, 144), size: 100.0) // stock '+' icon              
               ),
             ),
           ),
