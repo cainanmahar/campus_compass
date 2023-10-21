@@ -1,14 +1,15 @@
+import 'package:campus_compass/map.dart';
 import "package:flutter/material.dart";
 import 'package:campus_compass/Components/text_field.dart';
 import 'package:campus_compass/faq.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+class LoginsPage extends StatelessWidget {
+  const LoginsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: orangeBackground(
+      body: 
         SafeArea(
           child: Center(
             child: Column(
@@ -26,7 +27,7 @@ class LoginPage extends StatelessWidget {
                       },
                       icon: const Icon(
                         Icons.question_mark,
-                        color: Colors.white,
+                        
                       ),
                     ),
                   ],
@@ -35,7 +36,7 @@ class LoginPage extends StatelessWidget {
                 const Text(
                   "Campus \nCompass",
                   style: TextStyle(
-                      color: Colors.white,
+                      color: Colors.orange,
                       fontSize: 47,
                       fontWeight: FontWeight.bold),
                 ),
@@ -44,7 +45,6 @@ class LoginPage extends StatelessWidget {
                 const Text(
                   'Welcome back to Campus Compass!',
                   style: TextStyle(
-                    color: Colors.white,
                     fontSize: 16,
                   ),
                 ),
@@ -78,7 +78,10 @@ class LoginPage extends StatelessWidget {
 
                 //sign in button
                 ElevatedButton(
-                    style: null, onPressed: () {}, child: const Text("Login")),
+                    style: null, onPressed: () {    Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const MapPage(),
+                          ),);}, child: const Text("Login")),
 
                 //not a member? register now
 
@@ -106,7 +109,6 @@ class LoginPage extends StatelessWidget {
             ),
           ),
         ),
-      ),
     );
   }
 }
