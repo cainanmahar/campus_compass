@@ -100,6 +100,7 @@ class HomePage extends StatelessWidget {
                   // Navigate to sign up page when the button is pressed
                   Navigator.pushNamed(context, '/map');
                 },
+                color: Colors.orange[300],
                 shape: RoundedRectangleBorder(
                     side: const BorderSide(
                       color: Colors.black,
