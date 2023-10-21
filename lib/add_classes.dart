@@ -113,24 +113,6 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
                                       });
                                     },
                                 ),
-                                const SizedBox(height: 16),
-
-                                AutoCompleteFormField(label: 'Building Number', options: extractUniqueBuildings(dummyCourses),
-                                  onOptionSelected: (selection){
-                                      setState(() {
-                                        _selectedCourse = dummyCourses.firstWhere((course) => course.className == selection);
-                                      });
-                                    },
-                                ),
-                                const SizedBox(height: 16),
-                                
-                                AutoCompleteFormField(label: 'Room Number', options: extractUniqueRoomNumbers(dummyCourses),
-                                  onOptionSelected: (selection){
-                                    setState(() {
-                                      _selectedCourse = dummyCourses.firstWhere((course) => course.roomNumber == selection);
-                                    });
-                                  },
-                                ),
                                 const SizedBox(height: 20),
                                 Row( // row with cancel and add class buttons - will likely remove add class due to redundancy
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
