@@ -100,8 +100,30 @@ class LoginPage extends StatelessWidget {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 20),
+
+                  // Link to reset password
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text("Forgot your password? "),
+                      GestureDetector(
+                        onTap: () {
+                          // open dialog box
+                        },
+                        child: const Text("Reset Password",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 18,
+                              decoration: TextDecoration.underline,
+                            )),
+                      ),
+                    ],
+                  ),
+
+                  // Link to sign up
                   const SizedBox(
-                    height: 20,
+                    height: 10,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
