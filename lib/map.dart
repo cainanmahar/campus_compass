@@ -40,7 +40,7 @@ class _MapPageState extends State<MapPage> {
             children: [
               TileLayer(
                 wmsOptions: WMSTileLayerOptions(
-                  baseUrl: "http://164.92.112.125:8080/geoserver/wms/?",
+                  baseUrl: "http://164.92.112.125:8080/geoserver/ne/wms/?",
                   layers: const ["ne:world"],
                 ),
               ),
