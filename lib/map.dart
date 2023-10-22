@@ -27,15 +27,22 @@ class _MapPageState extends State<MapPage> {
       body: Stack(
         children: [
           FlutterMap(
-            options: const MapOptions(
-              // Initial location shows region around campus we plan to map
-              initialCenter: LatLng(30.714773594172208, -95.54687829867179),
-              initialZoom: 18,
+            options: MapOptions(
+              cameraConstraint: CameraConstraint.contain(
+                bounds: LatLngBounds(
+                  const LatLng(30.926847, -96.762604),
+                  const LatLng(29.066889, -93.930492),
+                ),
+              ),
+              initialCenter:
+                  const LatLng(30.309020846648558, -95.41179374141295),
             ),
             children: [
               TileLayer(
-                // We will not be using openstreetmap in the final application
-                urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                wmsOptions: WMSTileLayerOptions(
+                  baseUrl: "http://164.92.112.125:8080/geoserver/wms/?",
+                  layers: const ["ne:world"],
+                ),
               ),
             ],
           )
