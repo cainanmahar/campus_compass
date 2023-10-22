@@ -11,7 +11,7 @@ class AddClassSchedule extends StatefulWidget { // stateful widget for adding cl
 }
 
 class _AddClassScheduleState extends State<AddClassSchedule> {
-  Course? _selectedCourse; // nullable property to keep track of the selected course. will be expanded on as it currently only serves course numbers
+  final List<Course> _selectedCourses = []; // list to keep track of selected courses
 
   @override
   Widget build(BuildContext context) {
@@ -48,23 +48,29 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
       ),
       body: Column(
         children: [
-          if (_selectedCourse != null) // conditionally displaying the selected course details
-            Padding(
+          Expanded(
+            child: ListView.builder(
               padding: const EdgeInsets.all(16.0),
-              child: Text(
-                'Selected Course Info: ${_selectedCourse!.courseNumber} - ${_selectedCourse!.className} by ${_selectedCourse!.professorName} at ${_selectedCourse!.building} - ${_selectedCourse!.roomNumber}', // debugging artifact
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ),
-          const Expanded(
-            child: Center(
-              child: Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [],
-                ),
-              ),
+              itemCount: _selectedCourses.length,
+              itemBuilder: (BuildContext context, int index) {
+                Course course = _selectedCourses[index];
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start, // To align content to the start
+                    children: [
+                      Text(
+                        'Course: ${course.courseNumber} - ${course.className}\nBy ${course.professorName}\nin ${course.building} - ${course.roomNumber}',
+                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      const Divider(
+                        color: Colors.black,
+                        thickness: 2,
+                      ),
+                    ],
+                  ),
+                );
+              },
             ),
           ),
           Align(
@@ -73,20 +79,13 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: InkWell(
-                onTap: () { // debugging statements and logs
-                  print("dummyCourses data: $dummyCourses");
-                  print('Unique Course Numbers: ${extractUniqueCourseNumbers(dummyCourses)}');
-                  print('Unique Course Names: ${extractUniqueCourseNames(dummyCourses)}');
-                  print('Unique Professor Names: ${extractUniqueProfessorNames(dummyCourses)}');
-                  print('Unique Buildings: ${extractUniqueBuildings(dummyCourses)}');
-                  print('Unique Room Numbers: ${extractUniqueRoomNumbers(dummyCourses)}');
-
+                onTap: () { 
                   showDialog( // display of the dialog box after pressing our + button
                     context: context,
                     builder: (context) {
                       return Dialog(
                         child: Container(
-                          padding: EdgeInsets.all(20.0),
+                          padding: const EdgeInsets.all(20.0),
                           child: SingleChildScrollView(
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
@@ -96,17 +95,33 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
                                 // auto complete form fields that allow users to search for classes listed in the database, select, then display
                                 AutoCompleteFormField(label: 'Course Number', options: extractUniqueCourseNumbers(dummyCourses),
                                   onOptionSelected: (selection){
+                                    Course selectedCourse = dummyCourses.firstWhere((course) => course.courseNumber == selection);
                                     setState(() {
-                                      _selectedCourse = dummyCourses.firstWhere((course) => course.courseNumber == selection);
+                                      _selectedCourses.add(selectedCourse);
                                     });
                                   },
                                 ),
+                                const SizedBox(height: 16),
 
                                 // form fields for the user to input depending on what information they have available to search with *probably will cut down?*
-                                AutoCompleteFormField(label: 'Course Name', options: extractUniqueCourseNames(dummyCourses)),
-                                AutoCompleteFormField(label: 'Professor Name', options: extractUniqueProfessorNames(dummyCourses)),
-                                AutoCompleteFormField(label: 'Building Number', options: extractUniqueBuildings(dummyCourses)),
-                                AutoCompleteFormField(label: 'Room Number', options: extractUniqueRoomNumbers(dummyCourses)),
+                                AutoCompleteFormField(label: 'Class Name', options: extractUniqueCourseNames(dummyCourses),
+                                  onOptionSelected: (selection){
+                                    Course selectedCourse = dummyCourses.firstWhere((course) => course.className == selection);
+                                    setState(() {
+                                      _selectedCourses.add(selectedCourse);
+                                    });
+                                  },
+                                ),
+                                const SizedBox(height: 16),
+
+                                AutoCompleteFormField(label: 'Professor Name', options: extractUniqueProfessorNames(dummyCourses),
+                                  onOptionSelected: (selection){
+                                    Course selectedCourse = dummyCourses.firstWhere((course) => course.professorName == selection);
+                                    setState(() {
+                                      _selectedCourses.add(selectedCourse);
+                                    });
+                                  },
+                                ),
                                 const SizedBox(height: 20),
                                 Row( // row with cancel and add class buttons - will likely remove add class due to redundancy
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -116,12 +131,6 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
                                         Navigator.of(context).pop(); // close the dialog
                                       },
                                       child: const Text('Cancel'),
-                                    ),
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop(); // close the dialog
-                                      },
-                                      child: const Text('Add Class'),
                                     ),
                                   ],
                                 ),
@@ -133,12 +142,7 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
                     },
                   );
                 },
-                child: Image.asset( // icon for the paw
-                  'assets/images/paw_thick.png',
-                  width: 100.0,
-                  height: 100.0,
-                  fit: BoxFit.cover,
-                ),
+                child: const Icon(Icons.add, color: Color.fromARGB(255, 0, 73, 144), size: 100.0) // stock '+' icon              
               ),
             ),
           ),
@@ -209,7 +213,7 @@ class AutoCompleteFormField extends StatelessWidget { // autocomplete widget
         if(onOptionSelected != null){
           onOptionSelected!(selection);
         }
-        print('You just selected $selection');
+        Navigator.of(context).pop(); // close the dialog when the option is selected
       },
       fieldViewBuilder: (BuildContext context,
           TextEditingController textEditingController,

@@ -49,7 +49,7 @@ class HomePage extends StatelessWidget {
                   // Navigate to the LoginPage when the login button is pressed
                   Navigator.pushNamed(context, '/login');
                 },
-                color: Colors.orange,
+                color: Colors.orange[300],
                 shape: RoundedRectangleBorder(
                     side: const BorderSide(
                       color: Colors.black,
@@ -100,7 +100,7 @@ class HomePage extends StatelessWidget {
                   // Navigate to sign up page when the button is pressed
                   Navigator.pushNamed(context, '/map');
                 },
-                color: Colors.orange,
+                color: Colors.orange[300],
                 shape: RoundedRectangleBorder(
                     side: const BorderSide(
                       color: Colors.black,
@@ -152,7 +152,7 @@ class HomePage extends StatelessWidget {
                   // Navigate to sign up page when the button is pressed
                   Navigator.pushNamed(context, '/faq');
                 },
-                color: Colors.orange,
+                color: Colors.orange[300],
                 shape: RoundedRectangleBorder(
                     side: const BorderSide(
                       color: Colors.black,
