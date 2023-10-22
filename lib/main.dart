@@ -5,6 +5,7 @@ import 'package:campus_compass/signup.dart';
 import 'package:campus_compass/login.dart';
 import 'package:campus_compass/add_classes.dart';
 import 'package:campus_compass/settings.dart';
+import 'package:campus_compass/theme.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -18,6 +19,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Campus Compass',
+      theme: globalTheme,
       initialRoute: '/',
       routes: {
         '/': (context) => const HomePage(),
