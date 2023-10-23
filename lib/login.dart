@@ -77,19 +77,20 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
 
-                  // Forgot password feature from the login page....
-                  const SizedBox(height: 10),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/settings');
-                    },
-                    child: const Text(
-                      "Forgot password?",
-                      style: TextStyle(
-                          color: Colors.grey,
-                          decoration: TextDecoration.underline),
-                    ),
-                  ),
+                  // Forgot password feature from the login page....commented this out.. Will be using audrey's
+                  // const SizedBox(height: 10),
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     Navigator.pushNamed(context, '/settings');
+                  //   },
+                  //   child: const Text(
+                  //     "Forgot password?",
+                  //     style: TextStyle(
+                  //         color: Colors.grey,
+                  //         decoration: TextDecoration.underline),
+                  //   ),
+                  // ),
+                  //
 
                   Padding(
                     padding: const EdgeInsets.symmetric(
