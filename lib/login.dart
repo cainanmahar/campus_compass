@@ -8,6 +8,35 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final TextEditingController emailcontroller = TextEditingController();
+  final TextEditingController passwordcontroller = TextEditingController();
+
+//Createria that email mus follow
+  bool isEmailValid(String email) {
+    String emailPattern = r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)*(\.[a-z]{2,})$';
+    RegExp regExp = RegExp(emailPattern);
+
+    return regExp.hasMatch(email);
+  }
+
+  bool sPValid(String password) {
+    // Check password length (at least 8 characters)
+    if (password.length < 8) {
+      return false;
+    }
+    RegExp upperCaseRegExp = RegExp(r'[A-Z]');
+    RegExp lowerCaseRegExp = RegExp(r'[a-z]');
+    RegExp digitRegExp = RegExp(r'[0-9]');
+
+    if (!upperCaseRegExp.hasMatch(password) ||
+        !lowerCaseRegExp.hasMatch(password) ||
+        !digitRegExp.hasMatch(password)) {
+      return false;
+    }
+
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,8 +100,11 @@ class _LoginPageState extends State<LoginPage> {
                     padding: const EdgeInsets.symmetric(horizontal: 40),
                     child: Column(
                       children: [
-                        makeInput(label: 'Email'),
-                        makeInput(label: 'Password', obscureText: true),
+                        makeInput(label: 'Email', controller: emailcontroller),
+                        makeInput(
+                            label: 'Password',
+                            obscureText: true,
+                            controller: passwordcontroller),
                       ],
                     ),
                   ),
@@ -105,7 +137,23 @@ class _LoginPageState extends State<LoginPage> {
                         minWidth: double.infinity,
                         height: 60,
                         onPressed: () {
-                          Navigator.pushNamed(context, '/map');
+                          String email = emailcontroller.text;
+                          String password = passwordcontroller.text;
+
+                          //checkingif input is being taken or not,
+                          print("Email: $email");
+                          print('Password: $password');
+
+                          //if statment that will only go to map if both email
+                          //and password meet the criteria
+
+                          if (!isEmailValid(email)) {
+                            print('email is not correct');
+                          } else if (!sPValid(password)) {
+                            print("Password incorrect..");
+                          } else {
+                            Navigator.pushNamed(context, '/map');
+                          }
                         },
                         color: Colors.orange,
                         shape: RoundedRectangleBorder(
@@ -207,10 +255,15 @@ class _LoginPageState extends State<LoginPage> {
             ),
             TextButton(
               onPressed: () {
-                // Handle confirm button press and reset password
-                // TODO: Update the password in database
-                // Close the dialog
-                Navigator.of(context).pop();
+                String newPasssword = passwordcontroller.text;
+                if (sPValid(newPasssword)) {
+                  print('Please enter valid password');
+                } else {
+                  // Handle confirm button press and reset password
+                  // TODO: Update the password in database
+                  // Close the dialog
+                  Navigator.of(context).pop();
+                }
               },
               child: const Text('Confirm'),
             ),
@@ -222,7 +275,8 @@ class _LoginPageState extends State<LoginPage> {
 }
 
 // for input boxes
-Widget makeInput({label, obscureText = false}) {
+Widget makeInput(
+    {label, obscureText = false, required TextEditingController controller}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -235,6 +289,7 @@ Widget makeInput({label, obscureText = false}) {
         height: 5,
       ),
       TextField(
+        controller: controller,
         obscureText: obscureText,
         decoration: const InputDecoration(
           contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
@@ -253,3 +308,6 @@ Widget makeInput({label, obscureText = false}) {
     ],
   );
 }
+
+//P@ssw0rd
+//user@example.com
