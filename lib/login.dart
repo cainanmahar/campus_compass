@@ -33,7 +33,6 @@ class _LoginPageState extends State<LoginPage> {
         !digitRegExp.hasMatch(password)) {
       return false;
     }
-
     return true;
   }
 
@@ -256,7 +255,7 @@ class _LoginPageState extends State<LoginPage> {
             TextButton(
               onPressed: () {
                 String newPasssword = passwordcontroller.text;
-                if (sPValid(newPasssword)) {
+                if (!sPValid(newPasssword)) {
                   print('Please enter valid password');
                 } else {
                   // Handle confirm button press and reset password

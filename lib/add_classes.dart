@@ -230,8 +230,8 @@ class AutoCompleteFormField extends StatelessWidget {
     required this.label,
     required this.options,
     this.onOptionSelected,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

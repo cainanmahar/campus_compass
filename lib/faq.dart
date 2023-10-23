@@ -31,8 +31,8 @@ class FaqPage extends StatelessWidget {
           return GFAccordion(
             title: questions[index],
             content: answers[index],
-            collapsedIcon: Icon(Icons.add),
-            expandedIcon: Icon(Icons.arrow_drop_up),
+            collapsedIcon: const Icon(Icons.add),
+            expandedIcon: const Icon(Icons.arrow_drop_up),
           );
         },
       ),
