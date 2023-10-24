@@ -256,9 +256,15 @@ class _SettingsPageState extends State<SettingsPage> {
             TextButton(
               onPressed: () {
                 String email = _emailController.text;
+                String confirmEmail = _confirmEmailController.text;
+                if (email != confirmEmail) {
+                  showErrorDialog(context, 'Emails do not match.');
+                  return;
+                }
                 //String confirmEmail = _confirmEmailController.text;
-                if (!isEmailValid(email)) {
+                else if (!isEmailValid(email)) {
                   showErrorDialog(context, 'Please enter a valid email.');
+                  return;
                 } else {
                   // Handle confirm button press and update the email
                   // TODO: Update the email in database
@@ -324,9 +330,14 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             TextButton(
               onPressed: () {
-                String newPassword = passwordcontroller.text;
-                if (!sPValid(newPassword)) {
+                String newPassword = _newPWController.text;
+                String confirmNewPassword = _confirmPWController.text;
+                if (newPassword != confirmNewPassword) {
+                  showErrorDialog(context, 'Passwords do not match.');
+                  return;
+                } else if (!sPValid(newPassword)) {
                   showErrorDialog(context, 'Please enter a valid password.');
+                  return;
                 } else {
                   // Handle confirm button press and update the password
                   // TODO: Update the password in database
