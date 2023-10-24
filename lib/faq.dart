@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 //import 'package:my_app/login_page.dart';
+import 'package:getwidget/getwidget.dart';
 
 class FaqPage extends StatelessWidget {
   final List<String> questions = [
@@ -23,39 +24,17 @@ class FaqPage extends StatelessWidget {
           title: const Text(
             'FAQ',
           ),
-          backgroundColor: Colors.orange),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 30, left: 30),
-        child: ListView.builder(
-          itemCount: questions.length,
-          itemBuilder: (context, index) {
-            return ListTile(
-              title: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '${index + 1}. ${questions[index]}',
-                    style: const TextStyle(
-                        fontSize: 20,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    answers[index],
-                    style: const TextStyle(
-                      fontSize: 18,
-                      color: Colors.black,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                ],
-              ),
-            );
-          },
-        ),
+          backgroundColor: Colors.lightBlue[800]),
+      body: ListView.builder(
+        itemCount: questions.length,
+        itemBuilder: (context, index) {
+          return GFAccordion(
+            title: questions[index],
+            content: answers[index],
+            collapsedIcon: const Icon(Icons.add),
+            expandedIcon: const Icon(Icons.arrow_drop_up),
+          );
+        },
       ),
     );
   }
