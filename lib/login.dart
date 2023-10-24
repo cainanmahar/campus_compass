@@ -244,6 +244,9 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _newPWController = TextEditingController();
   final TextEditingController _confirmPWController = TextEditingController();
   void _showResetPasswordDialog() {
+    // clear any previous input
+    _newPWController.clear();
+    _confirmPWController.clear();
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -260,6 +263,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               TextField(
+                obscureText: true,
                 controller: _confirmPWController,
                 decoration: const InputDecoration(
                   labelText: 'Confirm New Password',
@@ -277,7 +281,8 @@ class _LoginPageState extends State<LoginPage> {
             ),
             TextButton(
               onPressed: () {
-                String newPasssword = passwordcontroller.text;
+                String newPasssword = _newPWController.text;
+                //String confirmPassword = _confirmPWController.text;
                 if (!sPValid(newPasssword)) {
                   showErrorDialog(context, 'Please enter a valid password');
                 } else {
