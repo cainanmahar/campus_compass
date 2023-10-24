@@ -282,9 +282,13 @@ class _LoginPageState extends State<LoginPage> {
             TextButton(
               onPressed: () {
                 String newPasssword = _newPWController.text;
-                //String confirmPassword = _confirmPWController.text;
+                String confirmPassword = _confirmPWController.text;
+                if (newPasssword != confirmPassword) {
+                  showErrorDialog(context, 'Passwords do not match');
+                }
                 if (!sPValid(newPasssword)) {
                   showErrorDialog(context, 'Please enter a valid password');
+                  return;
                 } else {
                   // Handle confirm button press and reset password
                   // TODO: Update the password in database

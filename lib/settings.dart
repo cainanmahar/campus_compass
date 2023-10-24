@@ -166,11 +166,11 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   // Function to show the "Change Name" dialog
-  final TextEditingController _firstNameController = TextEditingController();
-  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
   void _showChangeNameDialog() {
-    _firstNameController.clear();
-    _lastNameController.clear();
+    firstNameController.clear();
+    lastNameController.clear();
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -180,13 +180,13 @@ class _SettingsPageState extends State<SettingsPage> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               TextField(
-                controller: _firstNameController,
+                controller: firstNameController,
                 decoration: const InputDecoration(
                   labelText: 'First Name',
                 ),
               ),
               TextField(
-                controller: _lastNameController,
+                controller: lastNameController,
                 decoration: const InputDecoration(
                   labelText: 'Last Name',
                 ),
@@ -216,13 +216,13 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _confirmEmailController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController confirmEmailController = TextEditingController();
   // Function to show the "Change Email" dialog box
   void _showChangeEmailDialog() {
     // clear out any previous input
-    _emailController.clear();
-    _confirmEmailController.clear();
+    emailController.clear();
+    confirmEmailController.clear();
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -232,13 +232,13 @@ class _SettingsPageState extends State<SettingsPage> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               TextField(
-                controller: _emailController,
+                controller: emailController,
                 decoration: const InputDecoration(
                   labelText: 'Email',
                 ),
               ),
               TextField(
-                controller: _confirmEmailController,
+                controller: confirmEmailController,
                 decoration: const InputDecoration(
                   labelText: 'Confirm Email',
                 ),
@@ -255,8 +255,8 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             TextButton(
               onPressed: () {
-                String email = _emailController.text;
-                String confirmEmail = _confirmEmailController.text;
+                String email = emailController.text;
+                String confirmEmail = confirmEmailController.text;
                 if (email != confirmEmail) {
                   showErrorDialog(context, 'Emails do not match.');
                   return;
@@ -280,15 +280,15 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  final TextEditingController _currentPWController = TextEditingController();
-  final TextEditingController _newPWController = TextEditingController();
-  final TextEditingController _confirmPWController = TextEditingController();
+  final TextEditingController currentPWController = TextEditingController();
+  final TextEditingController newPWController = TextEditingController();
+  final TextEditingController confirmPWController = TextEditingController();
   // Function to show the "Change Password" dialog box
   void _showChangePasswordDialog() {
     // clear out any previous input
-    _currentPWController.clear();
-    _newPWController.clear();
-    _confirmPWController.clear();
+    currentPWController.clear();
+    newPWController.clear();
+    confirmPWController.clear();
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -299,21 +299,21 @@ class _SettingsPageState extends State<SettingsPage> {
             children: <Widget>[
               TextField(
                 obscureText: true,
-                controller: _currentPWController,
+                controller: currentPWController,
                 decoration: const InputDecoration(
                   labelText: 'Current Password',
                 ),
               ),
               TextField(
                 obscureText: true,
-                controller: _newPWController,
+                controller: newPWController,
                 decoration: const InputDecoration(
                   labelText: 'New Password',
                 ),
               ),
               TextField(
                 obscureText: true,
-                controller: _confirmPWController,
+                controller: confirmPWController,
                 decoration: const InputDecoration(
                   labelText: 'Confirm New Password',
                 ),
@@ -330,9 +330,9 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             TextButton(
               onPressed: () {
-                String newPassword = _newPWController.text;
-                String confirmNewPassword = _confirmPWController.text;
-                if (newPassword != confirmNewPassword) {
+                String newPassword = newPWController.text;
+                String confirmPassword = confirmPWController.text;
+                if (newPassword != confirmPassword) {
                   showErrorDialog(context, 'Passwords do not match.');
                   return;
                 } else if (!sPValid(newPassword)) {
