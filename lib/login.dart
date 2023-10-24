@@ -241,7 +241,8 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _newPWController = TextEditingController();
+  final TextEditingController _confirmPWController = TextEditingController();
   void _showResetPasswordDialog() {
     showDialog(
       context: context,
@@ -253,13 +254,13 @@ class _LoginPageState extends State<LoginPage> {
             children: <Widget>[
               TextField(
                 obscureText: true,
-                controller: _nameController,
+                controller: _newPWController,
                 decoration: const InputDecoration(
                   labelText: 'New Password',
                 ),
               ),
               TextField(
-                controller: _nameController,
+                controller: _confirmPWController,
                 decoration: const InputDecoration(
                   labelText: 'Confirm New Password',
                 ),
