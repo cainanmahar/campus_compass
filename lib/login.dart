@@ -36,6 +36,26 @@ class _LoginPageState extends State<LoginPage> {
     return true;
   }
 
+  void showErrorDialog(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Error'),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -140,16 +160,16 @@ class _LoginPageState extends State<LoginPage> {
                           String password = passwordcontroller.text;
 
                           //checkingif input is being taken or not,
-                          print("Email: $email");
-                          print('Password: $password');
+                          //print("Email: $email");
+                          //print('Password: $password');
 
                           //if statment that will only go to map if both email
                           //and password meet the criteria
 
                           if (!isEmailValid(email)) {
-                            print('email is not correct');
+                            showErrorDialog(context, 'Invalid email address');
                           } else if (!sPValid(password)) {
-                            print("Password incorrect..");
+                            showErrorDialog(context, 'Invalid password');
                           } else {
                             Navigator.pushNamed(context, '/map');
                           }
@@ -179,11 +199,13 @@ class _LoginPageState extends State<LoginPage> {
                         onTap: () {
                           _showResetPasswordDialog();
                         },
-                        child: const Text("Reset Password",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 18,
-                                decoration: TextDecoration.underline)),
+                        child: const Text(
+                          "Reset Password",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 18,
+                              decoration: TextDecoration.underline),
+                        ),
                       ),
                     ],
                   ),
@@ -256,7 +278,7 @@ class _LoginPageState extends State<LoginPage> {
               onPressed: () {
                 String newPasssword = passwordcontroller.text;
                 if (!sPValid(newPasssword)) {
-                  print('Please enter valid password');
+                  showErrorDialog(context, 'Please enter a valid password');
                 } else {
                   // Handle confirm button press and reset password
                   // TODO: Update the password in database
