@@ -8,6 +8,54 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  final TextEditingController emailcontroller = TextEditingController();
+  final TextEditingController passwordcontroller = TextEditingController();
+
+//Createria that email mus follow
+  bool isEmailValid(String email) {
+    String emailPattern = r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)*(\.[a-z]{2,})$';
+    RegExp regExp = RegExp(emailPattern);
+
+    return regExp.hasMatch(email);
+  }
+
+  bool sPValid(String password) {
+    // Check password length (at least 8 characters)
+    if (password.length < 8) {
+      return false;
+    }
+    RegExp upperCaseRegExp = RegExp(r'[A-Z]');
+    RegExp lowerCaseRegExp = RegExp(r'[a-z]');
+    RegExp digitRegExp = RegExp(r'[0-9]');
+
+    if (!upperCaseRegExp.hasMatch(password) ||
+        !lowerCaseRegExp.hasMatch(password) ||
+        !digitRegExp.hasMatch(password)) {
+      return false;
+    }
+    return true;
+  }
+
+  void showErrorDialog(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Error'),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -118,8 +166,11 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   // Function to show the "Change Name" dialog
-  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
   void _showChangeNameDialog() {
+    _firstNameController.clear();
+    _lastNameController.clear();
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -129,13 +180,13 @@ class _SettingsPageState extends State<SettingsPage> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               TextField(
-                controller: _nameController,
+                controller: _firstNameController,
                 decoration: const InputDecoration(
                   labelText: 'First Name',
                 ),
               ),
               TextField(
-                controller: _nameController,
+                controller: _lastNameController,
                 decoration: const InputDecoration(
                   labelText: 'Last Name',
                 ),
@@ -165,8 +216,13 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _confirmEmailController = TextEditingController();
   // Function to show the "Change Email" dialog box
   void _showChangeEmailDialog() {
+    // clear out any previous input
+    _emailController.clear();
+    _confirmEmailController.clear();
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -176,13 +232,13 @@ class _SettingsPageState extends State<SettingsPage> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               TextField(
-                controller: _nameController,
+                controller: _emailController,
                 decoration: const InputDecoration(
                   labelText: 'Email',
                 ),
               ),
               TextField(
-                controller: _nameController,
+                controller: _confirmEmailController,
                 decoration: const InputDecoration(
                   labelText: 'Confirm Email',
                 ),
@@ -199,10 +255,16 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             TextButton(
               onPressed: () {
-                // Handle confirm button press and update the email
-                // TODO: Update the email in database
-                // Close the dialog
-                Navigator.of(context).pop();
+                String email = _emailController.text;
+                //String confirmEmail = _confirmEmailController.text;
+                if (!isEmailValid(email)) {
+                  showErrorDialog(context, 'Please enter a valid email.');
+                } else {
+                  // Handle confirm button press and update the email
+                  // TODO: Update the email in database
+                  // Close the dialog
+                  Navigator.of(context).pop();
+                }
               },
               child: const Text('Confirm'),
             ),
@@ -212,8 +274,15 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
+  final TextEditingController _currentPWController = TextEditingController();
+  final TextEditingController _newPWController = TextEditingController();
+  final TextEditingController _confirmPWController = TextEditingController();
   // Function to show the "Change Password" dialog box
   void _showChangePasswordDialog() {
+    // clear out any previous input
+    _currentPWController.clear();
+    _newPWController.clear();
+    _confirmPWController.clear();
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -224,21 +293,21 @@ class _SettingsPageState extends State<SettingsPage> {
             children: <Widget>[
               TextField(
                 obscureText: true,
-                controller: _nameController,
+                controller: _currentPWController,
                 decoration: const InputDecoration(
                   labelText: 'Current Password',
                 ),
               ),
               TextField(
                 obscureText: true,
-                controller: _nameController,
+                controller: _newPWController,
                 decoration: const InputDecoration(
                   labelText: 'New Password',
                 ),
               ),
               TextField(
                 obscureText: true,
-                controller: _nameController,
+                controller: _confirmPWController,
                 decoration: const InputDecoration(
                   labelText: 'Confirm New Password',
                 ),
@@ -255,10 +324,15 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             TextButton(
               onPressed: () {
-                // Handle confirm button press and update the password
-                // TODO: Update the password in database
-                // Close the dialog
-                Navigator.of(context).pop();
+                String newPassword = passwordcontroller.text;
+                if (!sPValid(newPassword)) {
+                  showErrorDialog(context, 'Please enter a valid password.');
+                } else {
+                  // Handle confirm button press and update the password
+                  // TODO: Update the password in database
+                  // Close the dialog
+                  Navigator.of(context).pop();
+                }
               },
               child: const Text('Confirm'),
             ),
