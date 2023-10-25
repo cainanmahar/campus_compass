@@ -134,7 +134,7 @@ class CourseDialog extends StatelessWidget {
               // form fields for the user to input depending on what information they have available to search with *probably will cut down?*
               AutoCompleteFormField(
                 label: 'Class Name', 
-                options: extractUniqueCourseNumbers(dummyCourses),
+                options: extractUniqueClassNames(dummyCourses),
                 onOptionSelected: (selection) {
                   Course selectedCourse = dummyCourses.firstWhere((course) => course.className == selection);
                   onCourseSelected(selectedCourse);
@@ -196,7 +196,7 @@ List<String> extractUniqueCourseNumbers(List<Course> courses) {
   return courses.map((course) => course.courseNumber).toSet().toList();
 }
 
-List<String> extractUniqueCourseNames(List<Course> courses) {
+List<String> extractUniqueClassNames(List<Course> courses) {
   return courses.map((course) => course.className).toSet().toList();
 }
 
@@ -267,62 +267,3 @@ class AutoCompleteFormField extends StatelessWidget {
   }
 }
 
-// AutoCompleteFormField function from the login adapted to autocomplete fields for course input
-/*Widget AutoCompleteFormField({
-  required String label, // label of the input field 
-  required List<String> options, // list of string options for the autocomplete funcitonality 
-  TextEditingController? textEditingController, // allows the caller to provide a text controller to capture and control the input
-  bool obscureText = false}) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text( // displays the label of the input field
-        label,
-        style: const TextStyle(
-            fontSize: 15, fontWeight: FontWeight.w400, color: Colors.black87),
-      ),
-      const SizedBox(
-        height: 5,
-      ),
-      Autocomplete<String>(
-        optionsBuilder: (TextEditingValue textEditingValue) { // filters the list of autocomplete options based on user input
-          print("User Input: ${textEditingValue.text}");
-          print("Available options: $options");
-          return options;
-        },
-        onSelected: (String selection) { // called when a user selects an autocomplete suggestion
-          if (textEditingController != null){ 
-            textEditingController.text = selection;
-          }
-        },
-          fieldViewBuilder: (
-            BuildContext context, 
-            TextEditingController fieldTextEditingController,
-            FocusNode fieldFocusNode,
-            VoidCallback onFieldSubmitted) {
-              return TextField(
-                controller: textEditingController,
-                obscureText: obscureText,
-                decoration: const InputDecoration(
-                  contentPadding: EdgeInsets.symmetric(vertical:  0, horizontal: 10),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide:  BorderSide(
-                      color: Colors.grey,
-                    ),
-                  ),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey)
-                  ),
-                ),
-                onSubmitted:  (String value){
-                  onFieldSubmitted();
-                },
-              );
-            },
-          ),
-          const SizedBox(
-            height: 30,
-      ),
-    ],
-  );
-}*/
