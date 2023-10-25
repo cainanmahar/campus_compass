@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
-
   @override
   State<SignUpPage> createState() => _SignUpPageState();
 }
@@ -182,6 +181,26 @@ class _SignUpPageState extends State<SignUpPage> {
     return regExp.hasMatch(email);
   }
 
+  //Method to check if password contains an uppercase letter
+  bool containsLowercase(String password) {
+    return RegExp(r'[a-z]').hasMatch(password);
+  }
+
+  //Method to check if password contains an uppercase letter
+  bool containsUppercase(String password) {
+    return RegExp(r'[A-Z]').hasMatch(password);
+  }
+
+  // Method to check if password contains a number
+  bool containsNumber(String password) {
+    return RegExp(r'[0-9]').hasMatch(password);
+  }
+
+  //Method to check if password contains a symbol
+  bool containsSymbol(String password) {
+    return RegExp(r'[!@#\$%^&*(),.?":{}|<>]').hasMatch(password);
+  }
+
   bool sPValid(String password) {
     // Check password length (at least 8 characters)
     if (password.length < 8) {
@@ -215,26 +234,6 @@ class _SignUpPageState extends State<SignUpPage> {
         );
       },
     );
-  }
-
-  //Method to check if password contains an uppercase letter
-  bool containsLowercase(String password) {
-    return RegExp(r'[a-z]').hasMatch(password);
-  }
-
-  //Method to check if password contains an uppercase letter
-  bool containsUppercase(String password) {
-    return RegExp(r'[A-Z]').hasMatch(password);
-  }
-
-  // Method to check if password contains a number
-  bool containsNumber(String password) {
-    return RegExp(r'[0-9]').hasMatch(password);
-  }
-
-  //Method to check if password contains a symbol
-  bool containsSymbol(String password) {
-    return RegExp(r'[!@#\$%^&*(),.?":{}|<>]').hasMatch(password);
   }
 
   // Widget to display password criteria

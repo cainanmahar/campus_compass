@@ -8,54 +8,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final TextEditingController emailcontroller = TextEditingController();
-  final TextEditingController passwordcontroller = TextEditingController();
-
-//Createria that email mus follow
-  bool isEmailValid(String email) {
-    String emailPattern = r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)*(\.[a-z]{2,})$';
-    RegExp regExp = RegExp(emailPattern);
-
-    return regExp.hasMatch(email);
-  }
-
-  bool sPValid(String password) {
-    // Check password length (at least 8 characters)
-    if (password.length < 8) {
-      return false;
-    }
-    RegExp upperCaseRegExp = RegExp(r'[A-Z]');
-    RegExp lowerCaseRegExp = RegExp(r'[a-z]');
-    RegExp digitRegExp = RegExp(r'[0-9]');
-
-    if (!upperCaseRegExp.hasMatch(password) ||
-        !lowerCaseRegExp.hasMatch(password) ||
-        !digitRegExp.hasMatch(password)) {
-      return false;
-    }
-    return true;
-  }
-
-  void showErrorDialog(BuildContext context, String message) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Error'),
-          content: Text(message),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Close'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -119,11 +71,11 @@ class _LoginPageState extends State<LoginPage> {
                     padding: const EdgeInsets.symmetric(horizontal: 40),
                     child: Column(
                       children: [
-                        makeInput(label: 'Email', controller: emailcontroller),
+                        makeInput(label: 'Email', controller: emailController),
                         makeInput(
                             label: 'Password',
                             obscureText: true,
-                            controller: passwordcontroller),
+                            controller: newPWController),
                       ],
                     ),
                   ),
@@ -156,8 +108,8 @@ class _LoginPageState extends State<LoginPage> {
                         minWidth: double.infinity,
                         height: 60,
                         onPressed: () {
-                          String email = emailcontroller.text;
-                          String password = passwordcontroller.text;
+                          String email = emailController.text;
+                          String password = newPWController.text;
 
                           //checkingif input is being taken or not,
                           //print("Email: $email");
@@ -199,7 +151,7 @@ class _LoginPageState extends State<LoginPage> {
                       const Text("Forgot your password? "),
                       GestureDetector(
                         onTap: () {
-                          _showResetPasswordDialog();
+                          showResetPasswordDialog();
                         },
                         child: const Text(
                           "Reset Password",
@@ -243,66 +195,167 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  final TextEditingController _newPWController = TextEditingController();
-  final TextEditingController _confirmPWController = TextEditingController();
-  void _showResetPasswordDialog() {
+  void showResetPasswordDialog() {
     // clear any previous input
-    _newPWController.clear();
-    _confirmPWController.clear();
+    newPWController.clear();
+    confirmPWController.clear();
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return AlertDialog(
+              title: const Text('Reset Password'),
+              content: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    TextField(
+                      obscureText: true,
+                      controller: newPWController,
+                      decoration: const InputDecoration(
+                        labelText: 'New Password',
+                      ),
+                      onChanged: (value) {
+                        setState(() {});
+                      },
+                    ),
+                    passwordCriteriaWidget(newPWController.text),
+                    TextField(
+                      obscureText: true,
+                      controller: confirmPWController,
+                      decoration: const InputDecoration(
+                        labelText: 'Confirm New Password',
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    // Handle cancel button press
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    String newPasssword = newPWController.text;
+                    String confirmPassword = confirmPWController.text;
+                    if (newPasssword != confirmPassword) {
+                      showErrorDialog(context, 'Passwords do not match');
+                    }
+                    if (!sPValid(newPasssword)) {
+                      showErrorDialog(context, 'Please enter a valid password');
+                      return;
+                    } else {
+                      // Handle confirm button press and reset password
+                      // TODO: Update the password in database
+                      // Close the dialog
+                      Navigator.of(context).pop();
+                    }
+                  },
+                  child: const Text('Confirm'),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController confirmPWController = TextEditingController();
+  final TextEditingController newPWController = TextEditingController();
+
+//Createria that email mus follow
+  bool isEmailValid(String email) {
+    String emailPattern = r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)*(\.[a-z]{2,})$';
+    RegExp regExp = RegExp(emailPattern);
+    return regExp.hasMatch(email);
+  }
+
+  //Method to check if password contains an uppercase letter
+  bool containsLowercase(String password) {
+    return RegExp(r'[a-z]').hasMatch(password);
+  }
+
+  //Method to check if password contains an uppercase letter
+  bool containsUppercase(String password) {
+    return RegExp(r'[A-Z]').hasMatch(password);
+  }
+
+  // Method to check if password contains a number
+  bool containsNumber(String password) {
+    return RegExp(r'[0-9]').hasMatch(password);
+  }
+
+  //Method to check if password contains a symbol
+  bool containsSymbol(String password) {
+    return RegExp(r'[!@#\$%^&*(),.?":{}|<>]').hasMatch(password);
+  }
+
+  bool sPValid(String password) {
+    // Check password length (at least 8 characters)
+    if (password.length < 8) {
+      return false;
+    }
+    if (!containsLowercase(password) ||
+        !containsUppercase(password) ||
+        !containsNumber(password) ||
+        !containsSymbol(password)) {
+      return false;
+    }
+    return true;
+  }
+
+  void showErrorDialog(BuildContext context, String message) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Reset Password'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              TextField(
-                obscureText: true,
-                controller: _newPWController,
-                decoration: const InputDecoration(
-                  labelText: 'New Password',
-                ),
-              ),
-              TextField(
-                obscureText: true,
-                controller: _confirmPWController,
-                decoration: const InputDecoration(
-                  labelText: 'Confirm New Password',
-                ),
-              ),
-            ],
-          ),
+          title: const Text('Error'),
+          content: Text(message),
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                // Handle cancel button press
                 Navigator.of(context).pop();
               },
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                String newPasssword = _newPWController.text;
-                String confirmPassword = _confirmPWController.text;
-                if (newPasssword != confirmPassword) {
-                  showErrorDialog(context, 'Passwords do not match');
-                }
-                if (!sPValid(newPasssword)) {
-                  showErrorDialog(context, 'Please enter a valid password');
-                  return;
-                } else {
-                  // Handle confirm button press and reset password
-                  // TODO: Update the password in database
-                  // Close the dialog
-                  Navigator.of(context).pop();
-                }
-              },
-              child: const Text('Confirm'),
+              child: const Text('Close'),
             ),
           ],
         );
       },
+    );
+  }
+
+  // Widget to display password criteria
+  Widget passwordCriteriaWidget(String password) {
+    return Column(
+      children: [
+        criteriaRow('At least 8 characters', password.length >= 8),
+        criteriaRow('At least 1 uppercase', containsUppercase(password)),
+        criteriaRow('At least 1 number', containsNumber(password)),
+        criteriaRow('At least 1 symbol', containsSymbol(password)),
+      ],
+    );
+  }
+
+  // Widget for individual criteria row
+  Widget criteriaRow(String criteria, bool isMet) {
+    return Row(
+      children: [
+        Icon(
+          isMet ? Icons.check : Icons.close,
+          color: isMet ? Colors.green : Colors.red,
+        ),
+        const SizedBox(width: 10),
+        Text(criteria,
+            style: TextStyle(color: isMet ? Colors.green : Colors.red)),
+        const SizedBox(height: 10),
+      ],
     );
   }
 }
