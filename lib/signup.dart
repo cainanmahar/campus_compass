@@ -1,7 +1,63 @@
 import 'package:flutter/material.dart';
 
-class SignUpPage extends StatelessWidget {
+class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
+
+  @override
+  State<SignUpPage> createState() => _SignUpPageState();
+}
+
+class _SignUpPageState extends State<SignUpPage> {
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController newPWController = TextEditingController();
+  final TextEditingController confirmPWController = TextEditingController();
+
+  // Createria that email must follow
+  bool isEmailValid(String email) {
+    String emailPattern = r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)*(\.[a-z]{2,})$';
+    RegExp regExp = RegExp(emailPattern);
+
+    return regExp.hasMatch(email);
+  }
+
+  bool sPValid(String password) {
+    // Check password length (at least 8 characters)
+    if (password.length < 8) {
+      return false;
+    }
+    RegExp upperCaseRegExp = RegExp(r'[A-Z]');
+    RegExp lowerCaseRegExp = RegExp(r'[a-z]');
+    RegExp digitRegExp = RegExp(r'[0-9]');
+
+    if (!upperCaseRegExp.hasMatch(password) ||
+        !lowerCaseRegExp.hasMatch(password) ||
+        !digitRegExp.hasMatch(password)) {
+      return false;
+    }
+    return true;
+  }
+
+  void showErrorDialog(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Error'),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,12 +125,22 @@ class SignUpPage extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 40),
                       child: Column(
                         children: [
-                          makeInput(label: "First Name"),
-                          makeInput(label: "Last Name"),
-                          makeInput(label: "Email"),
-                          makeInput(label: "Password", obscureText: true),
                           makeInput(
-                              label: "Confirm Password", obscureText: true),
+                              label: "First Name",
+                              controller: firstNameController),
+                          makeInput(
+                              label: "Last Name",
+                              controller: lastNameController),
+                          makeInput(
+                              label: "Email", controller: emailController),
+                          makeInput(
+                              label: "Password",
+                              obscureText: true,
+                              controller: newPWController),
+                          makeInput(
+                              label: "Confirm Password",
+                              obscureText: true,
+                              controller: confirmPWController),
                         ],
                       ),
                     ),
@@ -89,7 +155,23 @@ class SignUpPage extends StatelessWidget {
                           minWidth: double.infinity,
                           height: 60,
                           onPressed: () {
-                            Navigator.pushNamed(context, '/login');
+                            String email = emailController.text;
+                            String password = newPWController.text;
+                            String confirmPassword = confirmPWController.text;
+                            if (!isEmailValid(email)) {
+                              showErrorDialog(
+                                  context, 'Invalid email address.');
+                              return;
+                            } else if (password != confirmPassword) {
+                              showErrorDialog(
+                                  context, 'Passwords do not match.');
+                              return;
+                            } else if (!sPValid(password)) {
+                              showErrorDialog(context, 'Invalid password.');
+                              return;
+                            } else {
+                              Navigator.pushNamed(context, '/login');
+                            }
                           },
                           color: Colors.lightBlue[800],
                           shape: RoundedRectangleBorder(
@@ -136,7 +218,8 @@ class SignUpPage extends StatelessWidget {
   }
 }
 
-Widget makeInput({label, obscureText = false}) {
+Widget makeInput(
+    {label, obscureText = false, required TextEditingController controller}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -149,6 +232,7 @@ Widget makeInput({label, obscureText = false}) {
         height: 3,
       ),
       TextField(
+        controller: controller,
         obscureText: obscureText,
         decoration: const InputDecoration(
           contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),

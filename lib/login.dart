@@ -107,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                       SizedBox(height: 20),
                       Text(
                         'Welcome back! Login with your credentials',
-                        style: TextStyle(fontSize: 15, color: Colors.blueGrey),
+                        style: TextStyle(fontSize: 15, color: Colors.black),
                       ),
                       SizedBox(
                         height: 30,
@@ -167,9 +167,11 @@ class _LoginPageState extends State<LoginPage> {
                           //and password meet the criteria
 
                           if (!isEmailValid(email)) {
-                            showErrorDialog(context, 'Invalid email address');
+                            showErrorDialog(context, 'Invalid email address.');
+                            return;
                           } else if (!sPValid(password)) {
-                            showErrorDialog(context, 'Invalid password');
+                            showErrorDialog(context, 'Invalid password.');
+                            return;
                           } else {
                             Navigator.pushNamed(context, '/map');
                           }

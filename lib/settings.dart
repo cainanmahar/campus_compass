@@ -8,10 +8,15 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  final TextEditingController emailcontroller = TextEditingController();
-  final TextEditingController passwordcontroller = TextEditingController();
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController confirmEmailController = TextEditingController();
+  final TextEditingController currentPWController = TextEditingController();
+  final TextEditingController newPWController = TextEditingController();
+  final TextEditingController confirmPWController = TextEditingController();
 
-//Createria that email mus follow
+  // Createria that email must follow
   bool isEmailValid(String email) {
     String emailPattern = r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)*(\.[a-z]{2,})$';
     RegExp regExp = RegExp(emailPattern);
@@ -137,7 +142,6 @@ class _SettingsPageState extends State<SettingsPage> {
                     minWidth: double.infinity,
                     height: 60,
                     onPressed: () {
-                      // TODO create dialog box to change password
                       _showChangePasswordDialog();
                     },
                     color: Colors.lightBlue[800],
@@ -166,8 +170,6 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   // Function to show the "Change Name" dialog
-  final TextEditingController firstNameController = TextEditingController();
-  final TextEditingController lastNameController = TextEditingController();
   void _showChangeNameDialog() {
     firstNameController.clear();
     lastNameController.clear();
@@ -216,8 +218,6 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController confirmEmailController = TextEditingController();
   // Function to show the "Change Email" dialog box
   void _showChangeEmailDialog() {
     // clear out any previous input
@@ -280,9 +280,6 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  final TextEditingController currentPWController = TextEditingController();
-  final TextEditingController newPWController = TextEditingController();
-  final TextEditingController confirmPWController = TextEditingController();
   // Function to show the "Change Password" dialog box
   void _showChangePasswordDialog() {
     // clear out any previous input
