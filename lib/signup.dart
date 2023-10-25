@@ -187,13 +187,10 @@ class _SignUpPageState extends State<SignUpPage> {
     if (password.length < 8) {
       return false;
     }
-    RegExp upperCaseRegExp = RegExp(r'[A-Z]');
-    RegExp lowerCaseRegExp = RegExp(r'[a-z]');
-    RegExp digitRegExp = RegExp(r'[0-9]');
-
-    if (!upperCaseRegExp.hasMatch(password) ||
-        !lowerCaseRegExp.hasMatch(password) ||
-        !digitRegExp.hasMatch(password)) {
+    if (!containsLowercase(password) ||
+        !containsUppercase(password) ||
+        !containsNumber(password) ||
+        !containsSymbol(password)) {
       return false;
     }
     return true;
@@ -218,6 +215,11 @@ class _SignUpPageState extends State<SignUpPage> {
         );
       },
     );
+  }
+
+  //Method to check if password contains an uppercase letter
+  bool containsLowercase(String password) {
+    return RegExp(r'[a-z]').hasMatch(password);
   }
 
   //Method to check if password contains an uppercase letter
