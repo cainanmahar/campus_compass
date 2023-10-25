@@ -36,6 +36,26 @@ class _LoginPageState extends State<LoginPage> {
     return true;
   }
 
+  void showErrorDialog(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Error'),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                       SizedBox(height: 20),
                       Text(
                         'Welcome back! Login with your credentials',
-                        style: TextStyle(fontSize: 15, color: Colors.blueGrey),
+                        style: TextStyle(fontSize: 15, color: Colors.black),
                       ),
                       SizedBox(
                         height: 30,
@@ -140,16 +160,18 @@ class _LoginPageState extends State<LoginPage> {
                           String password = passwordcontroller.text;
 
                           //checkingif input is being taken or not,
-                          print("Email: $email");
-                          print('Password: $password');
+                          //print("Email: $email");
+                          //print('Password: $password');
 
                           //if statment that will only go to map if both email
                           //and password meet the criteria
 
                           if (!isEmailValid(email)) {
-                            print('email is not correct');
+                            showErrorDialog(context, 'Invalid email address.');
+                            return;
                           } else if (!sPValid(password)) {
-                            print("Password incorrect..");
+                            showErrorDialog(context, 'Invalid password.');
+                            return;
                           } else {
                             Navigator.pushNamed(context, '/map');
                           }
@@ -179,11 +201,13 @@ class _LoginPageState extends State<LoginPage> {
                         onTap: () {
                           _showResetPasswordDialog();
                         },
-                        child: const Text("Reset Password",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 18,
-                                decoration: TextDecoration.underline)),
+                        child: const Text(
+                          "Reset Password",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 18,
+                              decoration: TextDecoration.underline),
+                        ),
                       ),
                     ],
                   ),
@@ -219,8 +243,12 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _newPWController = TextEditingController();
+  final TextEditingController _confirmPWController = TextEditingController();
   void _showResetPasswordDialog() {
+    // clear any previous input
+    _newPWController.clear();
+    _confirmPWController.clear();
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -231,13 +259,14 @@ class _LoginPageState extends State<LoginPage> {
             children: <Widget>[
               TextField(
                 obscureText: true,
-                controller: _nameController,
+                controller: _newPWController,
                 decoration: const InputDecoration(
                   labelText: 'New Password',
                 ),
               ),
               TextField(
-                controller: _nameController,
+                obscureText: true,
+                controller: _confirmPWController,
                 decoration: const InputDecoration(
                   labelText: 'Confirm New Password',
                 ),
@@ -254,9 +283,14 @@ class _LoginPageState extends State<LoginPage> {
             ),
             TextButton(
               onPressed: () {
-                String newPasssword = passwordcontroller.text;
+                String newPasssword = _newPWController.text;
+                String confirmPassword = _confirmPWController.text;
+                if (newPasssword != confirmPassword) {
+                  showErrorDialog(context, 'Passwords do not match');
+                }
                 if (!sPValid(newPasssword)) {
-                  print('Please enter valid password');
+                  showErrorDialog(context, 'Please enter a valid password');
+                  return;
                 } else {
                   // Handle confirm button press and reset password
                   // TODO: Update the password in database
