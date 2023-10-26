@@ -2,65 +2,11 @@ import 'package:flutter/material.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
-
   @override
   State<SettingsPage> createState() => _SettingsPageState();
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  final TextEditingController firstNameController = TextEditingController();
-  final TextEditingController lastNameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController confirmEmailController = TextEditingController();
-  final TextEditingController currentPWController = TextEditingController();
-  final TextEditingController newPWController = TextEditingController();
-  final TextEditingController confirmPWController = TextEditingController();
-
-  // Createria that email must follow
-  bool isEmailValid(String email) {
-    String emailPattern = r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)*(\.[a-z]{2,})$';
-    RegExp regExp = RegExp(emailPattern);
-
-    return regExp.hasMatch(email);
-  }
-
-  bool sPValid(String password) {
-    // Check password length (at least 8 characters)
-    if (password.length < 8) {
-      return false;
-    }
-    RegExp upperCaseRegExp = RegExp(r'[A-Z]');
-    RegExp lowerCaseRegExp = RegExp(r'[a-z]');
-    RegExp digitRegExp = RegExp(r'[0-9]');
-
-    if (!upperCaseRegExp.hasMatch(password) ||
-        !lowerCaseRegExp.hasMatch(password) ||
-        !digitRegExp.hasMatch(password)) {
-      return false;
-    }
-    return true;
-  }
-
-  void showErrorDialog(BuildContext context, String message) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Error'),
-          content: Text(message),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Close'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -286,67 +232,175 @@ class _SettingsPageState extends State<SettingsPage> {
     currentPWController.clear();
     newPWController.clear();
     confirmPWController.clear();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return AlertDialog(
+              title: const Text('Change Password'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  TextField(
+                    obscureText: true,
+                    controller: currentPWController,
+                    decoration: const InputDecoration(
+                      labelText: 'Current Password',
+                    ),
+                  ),
+                  TextField(
+                    obscureText: true,
+                    controller: newPWController,
+                    decoration: const InputDecoration(
+                      labelText: 'New Password',
+                    ),
+                    onChanged: (value) {
+                      setState(() {});
+                    },
+                  ),
+                  passwordCriteriaWidget(
+                      newPWController.text), // <- Added this line
+                  TextField(
+                    obscureText: true,
+                    controller: confirmPWController,
+                    decoration: const InputDecoration(
+                      labelText: 'Confirm New Password',
+                    ),
+                  ),
+                ],
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    // Handle cancel button press
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    String newPassword = newPWController.text;
+                    String confirmPassword = confirmPWController.text;
+                    if (newPassword != confirmPassword) {
+                      showErrorDialog(context, 'Passwords do not match.');
+                      return;
+                    } else if (!sPValid(newPassword)) {
+                      showErrorDialog(
+                          context, 'Please enter a valid password.');
+                      return;
+                    } else {
+                      // Handle confirm button press and update the password
+                      // TODO: Update the password in database
+                      // Close the dialog
+                      Navigator.of(context).pop();
+                    }
+                  },
+                  child: const Text('Confirm'),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController confirmEmailController = TextEditingController();
+  final TextEditingController currentPWController = TextEditingController();
+  final TextEditingController newPWController = TextEditingController();
+  final TextEditingController confirmPWController = TextEditingController();
+
+  // Createria that email must follow
+  bool isEmailValid(String email) {
+    String emailPattern = r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)*(\.[a-z]{2,})$';
+    RegExp regExp = RegExp(emailPattern);
+    return regExp.hasMatch(email);
+  }
+
+  //Method to check if password contains an uppercase letter
+  bool containsLowercase(String password) {
+    return RegExp(r'[a-z]').hasMatch(password);
+  }
+
+  //Method to check if password contains an uppercase letter
+  bool containsUppercase(String password) {
+    return RegExp(r'[A-Z]').hasMatch(password);
+  }
+
+  // Method to check if password contains a number
+  bool containsNumber(String password) {
+    return RegExp(r'[0-9]').hasMatch(password);
+  }
+
+  //Method to check if password contains a symbol
+  bool containsSymbol(String password) {
+    return RegExp(r'[!@#\$%^&*(),.?":{}|<>]').hasMatch(password);
+  }
+
+  bool sPValid(String password) {
+    // Check password length (at least 8 characters)
+    if (password.length < 8) {
+      return false;
+    }
+    if (!containsLowercase(password) ||
+        !containsUppercase(password) ||
+        !containsNumber(password) ||
+        !containsSymbol(password)) {
+      return false;
+    }
+    return true;
+  }
+
+  void showErrorDialog(BuildContext context, String message) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Change Password'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              TextField(
-                obscureText: true,
-                controller: currentPWController,
-                decoration: const InputDecoration(
-                  labelText: 'Current Password',
-                ),
-              ),
-              TextField(
-                obscureText: true,
-                controller: newPWController,
-                decoration: const InputDecoration(
-                  labelText: 'New Password',
-                ),
-              ),
-              TextField(
-                obscureText: true,
-                controller: confirmPWController,
-                decoration: const InputDecoration(
-                  labelText: 'Confirm New Password',
-                ),
-              ),
-            ],
-          ),
+          title: const Text('Error'),
+          content: Text(message),
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                // Handle cancel button press
                 Navigator.of(context).pop();
               },
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                String newPassword = newPWController.text;
-                String confirmPassword = confirmPWController.text;
-                if (newPassword != confirmPassword) {
-                  showErrorDialog(context, 'Passwords do not match.');
-                  return;
-                } else if (!sPValid(newPassword)) {
-                  showErrorDialog(context, 'Please enter a valid password.');
-                  return;
-                } else {
-                  // Handle confirm button press and update the password
-                  // TODO: Update the password in database
-                  // Close the dialog
-                  Navigator.of(context).pop();
-                }
-              },
-              child: const Text('Confirm'),
+              child: const Text('Close'),
             ),
           ],
         );
       },
+    );
+  }
+
+  // Widget to display password criteria
+  Widget passwordCriteriaWidget(String password) {
+    return Column(
+      children: [
+        criteriaRow('At least 8 characters', password.length >= 8),
+        criteriaRow('At least 1 uppercase', containsUppercase(password)),
+        criteriaRow('At least 1 number', containsNumber(password)),
+        criteriaRow('At least 1 symbol', containsSymbol(password)),
+      ],
+    );
+  }
+
+  // Widget for individual criteria row
+  Widget criteriaRow(String criteria, bool isMet) {
+    return Row(
+      children: [
+        Icon(
+          isMet ? Icons.check : Icons.close,
+          color: isMet ? Colors.green : Colors.red,
+        ),
+        const SizedBox(width: 10),
+        Text(criteria,
+            style: TextStyle(color: isMet ? Colors.green : Colors.red)),
+        const SizedBox(height: 10),
+      ],
     );
   }
 }
