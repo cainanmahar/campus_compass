@@ -12,8 +12,8 @@ class AddClassSchedule extends StatefulWidget {
 }
 
 class _AddClassScheduleState extends State<AddClassSchedule> {
-  final List<Course> _selectedCourses =
-      []; // list to keep track of selected courses
+  final List<Sections> 
+  _selectedCourses = []; // list to keep track of selected courses
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +56,12 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
               padding: const EdgeInsets.all(16.0),
               itemCount: _selectedCourses.length,
               itemBuilder: (BuildContext context, int index) {
-                Course course = _selectedCourses[index];
+
+                Sections section = _selectedCourses[index];
+                Courses course = dummyCourses.firstWhere((c) => 
+                c.courseNumber == section.courseNumber);
+
+                
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Column(
@@ -67,8 +72,8 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
                         'Course: ${course.courseNumber} | '
                         // '${course.sectionNumber} | '
                         '${course.className}'
-                        '\nBy ${course.professorName}'
-                        '\nIn ${course.building}, Room ${course.roomNumber}',
+                        '\nBy ${section.professorName}'
+                        '\nIn ${section.building}, Room ${section.roomNumber}',
                         style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                       const Divider(
@@ -109,7 +114,7 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
   }
 }
 class CourseDialog extends StatelessWidget {
-  final Function(Course) onCourseSelected;
+  final Function(Sections) onCourseSelected;
 
   const CourseDialog({Key? key, required this.onCourseSelected}) : super(key:key);
 
@@ -127,32 +132,24 @@ class CourseDialog extends StatelessWidget {
               // auto complete form fields that allow users to search for classes listed in the database, select, then display
               AutoCompleteFormField(
                 label: 'Course Number', 
-                options: extractUniqueCourseNumbers(dummyCourses),
+                options: dummyCourses.map((course) => course.courseNumber).toList(),
                 onOptionSelected: (selection) {
-                  Course selectedCourse = dummyCourses.firstWhere((course) => course.courseNumber == selection);
-                  onCourseSelected(selectedCourse);
+                  Sections selectedSection = dummySections.firstWhere((section) => 
+                  section.courseNumber == selection);
+                  onCourseSelected(selectedSection);
                 },
               ),
               const SizedBox(height: 16),
 
               AutoCompleteFormField(
                 label: 'Class Name', 
-                options: extractUniqueClassNames(dummyCourses),
+                options: dummyCourses.map((course) => course.className).toList(),
                 onOptionSelected: (selection) {
-                  Course selectedCourse = dummyCourses.firstWhere((course) => course.className == selection);
-                  onCourseSelected(selectedCourse);
+                  Courses selectedCourse = dummyCourses.firstWhere((course) => 
+                  course.className == selection);
                 },
               ),
               const SizedBox(height: 16),
-
-              AutoCompleteFormField(
-                label: 'Profesor Name', 
-                options: extractUniqueProfessorNames(dummyCourses),
-                onOptionSelected: (selection) {
-                  Course selectedCourse = dummyCourses.firstWhere((course) => course.professorName == selection);
-                  onCourseSelected(selectedCourse);
-                },
-              ),
 
               // form fields for the user to input depending on what information they have available to search with *probably will cut down?*
 
@@ -180,48 +177,55 @@ class CourseDialog extends StatelessWidget {
 
 
 // model class for course details used to work with our test data
-class Course {
-  final String courseNumber;
-  final String sectionNumber;
+class Courses {
+  final String courseNumber; // primary key for Courses
   final String className;
+
+  Courses({
+    required this.courseNumber,
+    required this.className,
+    });
+}
+
+class Sections {
+  final String courseNumber; // foreign key
+  final String sectionNumber; // primary key for sections
   final String professorName;
   final String building;
   final String roomNumber;
 
-  Course({
+  Sections({
     required this.courseNumber,
     required this.sectionNumber,
-    required this.className,
     required this.professorName,
     required this.building,
     required this.roomNumber,
   });
 }
 
-
 // functions to extract unique values from a list of courses (currently provided by test_data)
-List<String> extractUniqueCourseNumbers(List<Course> courses) {
-  return courses.map((course) => course.courseNumber).toSet().toList();
-}
-
-List<String> extractUniqueSectionNumbers(List<Course> courses) {
-   return courses.map((course) => course.sectionNumber).toSet().toList();
-}
-
-List<String> extractUniqueClassNames(List<Course> courses) {
+List<String> extractUniqueClassNames(List<Courses> courses) {
   return courses.map((course) => course.className).toSet().toList();
 }
 
-List<String> extractUniqueProfessorNames(List<Course> courses) {
-  return courses.map((course) => course.professorName).toSet().toList();
+List<String> extractUniqueCourseNumbers(List<Sections> sections) {
+  return sections.map((section) => section.courseNumber).toSet().toList();
 }
 
-List<String> extractUniqueBuildings(List<Course> courses) {
-  return courses.map((course) => course.building).toSet().toList();
+List<String> extractUniqueSectionNumbers(List<Sections> sections) {
+   return sections.map((section) => section.sectionNumber).toSet().toList();
 }
 
-List<String> extractUniqueRoomNumbers(List<Course> courses) {
-  return courses.map((course) => course.roomNumber).toSet().toList();
+List<String> extractUniqueProfessorNames(List<Sections> sections) {
+  return sections.map((section) => section.professorName).toSet().toList();
+}
+
+List<String> extractUniqueBuildings(List<Sections> sections) {
+  return sections.map((section) => section.building).toSet().toList();
+}
+
+List<String> extractUniqueRoomNumbers(List<Sections> sections) {
+  return sections.map((section) => section.roomNumber).toSet().toList();
 }
 
 class AutoCompleteFormField extends StatelessWidget {
