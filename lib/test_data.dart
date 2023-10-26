@@ -14,7 +14,7 @@ List<Courses> dummyCourses = [
   Courses(courseNumber: '3319',  
   className: 'Data Structures'),
 
-  Courses(courseNumber: '4314 ', 
+  Courses(courseNumber: '4314', 
   className: 'Data Mining'),
 
   Courses(courseNumber: '4319', 
@@ -70,7 +70,7 @@ List<Sections> dummySections = [
   building: 'AB1', 
   roomNumber: '204'),
 
-  Sections(courseNumber: '4314 ', 
+  Sections(courseNumber: '4314', 
   sectionNumber: '02', 
   professorName: 'Hyuk Cho',
    building: 'AB1' , 

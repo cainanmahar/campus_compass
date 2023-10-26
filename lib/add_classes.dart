@@ -131,22 +131,12 @@ class CourseDialog extends StatelessWidget {
 
               // auto complete form fields that allow users to search for classes listed in the database, select, then display
               AutoCompleteFormField(
-                label: 'Course Number', 
-                options: dummyCourses.map((course) => course.courseNumber).toList(),
-                onOptionSelected: (selection) {
-                  Sections selectedSection = dummySections.firstWhere((section) => 
-                  section.courseNumber == selection);
+                label: 'Search by Course Number or Class Name',
+                options: generateCombinedOptions(),
+                onOptionSelected: (selection){
+                  Sections selectedSection = dummySections.firstWhere((section) =>
+                  generateOptionString(section) == selection);
                   onCourseSelected(selectedSection);
-                },
-              ),
-              const SizedBox(height: 16),
-
-              AutoCompleteFormField(
-                label: 'Class Name', 
-                options: dummyCourses.map((course) => course.className).toList(),
-                onOptionSelected: (selection) {
-                  Courses selectedCourse = dummyCourses.firstWhere((course) => 
-                  course.className == selection);
                 },
               ),
               const SizedBox(height: 16),
@@ -203,6 +193,27 @@ class Sections {
   });
 }
 
+List<String> generateCombinedOptions() {
+  return dummySections.map((section) => generateOptionString(section)).toList();
+}
+
+String generateOptionString(Sections section) {
+  Courses course = dummyCourses.firstWhere(
+    (c) => c.courseNumber == section.courseNumber,
+    orElse: () {
+      // Log the error or notify developers somehow.
+      print("Error: Course not found for course number: ${section.courseNumber}");
+      
+      // Return a default course for UI purposes.
+      return Courses(courseNumber: 'Unknown', className: 'Unknown Course');
+    },
+  );
+  
+  return '${course.className} (${section.sectionNumber})';
+}
+
+/* Not currently in use functions since splitting of Courses into Courses and Sections
+
 // functions to extract unique values from a list of courses (currently provided by test_data)
 List<String> extractUniqueClassNames(List<Courses> courses) {
   return courses.map((course) => course.className).toSet().toList();
@@ -227,7 +238,7 @@ List<String> extractUniqueBuildings(List<Sections> sections) {
 List<String> extractUniqueRoomNumbers(List<Sections> sections) {
   return sections.map((section) => section.roomNumber).toSet().toList();
 }
-
+*/
 class AutoCompleteFormField extends StatelessWidget {
   // autocomplete widget
   final String label;
