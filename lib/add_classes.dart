@@ -2,19 +2,24 @@ import 'package:campus_compass/test_data.dart';
 import 'package:flutter/material.dart';
 
 class AddClassSchedule extends StatefulWidget {
-  // stateful widget for adding class schedules
+  // stateful constructor for adding class schedules
   const AddClassSchedule({super.key}); // calls parent class constructor
 
-  final String title = "Class Schedue"; // title property
+  // title of the app bar
+  final String title = "Class Schedue"; 
 
+  // create state for this widget
   @override
   State<AddClassSchedule> createState() => _AddClassScheduleState();
 }
 
 class _AddClassScheduleState extends State<AddClassSchedule> {
-  final List<Course> _selectedCourses =
-      []; // list to keep track of selected courses
 
+  // list to store selected courses
+  final List<Sections> 
+  _selectedCourses = [];
+
+  // building our main ui
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,14 +27,17 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
       backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       appBar: AppBar(
         backgroundColor:
-            const Color.fromARGB(255, 0, 73, 144), // color of body of scaffold
+            // color of body of scaffold
+            const Color.fromARGB(255, 0, 73, 144),
         title: Text(widget.title),
         actions: <Widget>[
           Row(
+            
             // inside the appBar to contain multiple children horizontally
             children: [
               InkWell(
-                onTap: () {}, // our edit button
+                // edit button functionality
+                onTap: () {}, 
                 child: const Padding(
                   padding: EdgeInsets.only(right: 16.0),
                   child: Icon(Icons.edit),
@@ -52,21 +60,32 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
       body: Column(
         children: [
           Expanded(
+            // listview to display selected courses
             child: ListView.builder(
               padding: const EdgeInsets.all(16.0),
               itemCount: _selectedCourses.length,
               itemBuilder: (BuildContext context, int index) {
-                Course course = _selectedCourses[index];
+                // extracts section and course details for the current index
+                Sections section = _selectedCourses[index];
+                Courses course = dummyCourses.firstWhere((c) => 
+                c.courseNumber == section.courseNumber);
+
+                // returns formatted details of the course
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment
-                        .start, // To align content to the start
+                    // align content to the start
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Course: ${course.courseNumber} - ${course.className}\nBy ${course.professorName}\nIn ${course.building} - ${course.roomNumber}',
+                        'Course: ${course.courseNumber} | '
+                        'Section: ${section.sectionNumber}'
+                        '\n${course.className}'
+                        '\nBy ${section.professorName}'
+                        '\nIn ${section.building}, Room ${section.roomNumber}',
                         style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                       ),
+                      // divider for visual separation
                       const Divider(
                         color: Colors.black,
                         thickness: 2,
@@ -78,13 +97,14 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
             ),
           ),
           Align(
-            // New aligned icon (+)
+            // New aligned icon (+) to the bottom right
             alignment: Alignment.bottomRight,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: InkWell(
+                // press to display dialog box to add course
                 onTap: () { 
-                  showDialog( // display of the dialog box after pressing our + button
+                  showDialog(
                     context: context,
                     builder: (context) => CourseDialog(
                       onCourseSelected: (selectedCourse){
@@ -95,6 +115,7 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
                     )   
                   );
                 },
+                // displaying the '+' icon
                 child: const Icon(Icons.add, color: Color.fromARGB(255, 0, 73, 144), size: 100.0) // stock '+' icon              
               ),
             ),
@@ -104,8 +125,10 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
     );
   }
 }
+
+// dialog that is shown when adding a new course
 class CourseDialog extends StatelessWidget {
-  final Function(Course) onCourseSelected;
+  final Function(Sections) onCourseSelected;
 
   const CourseDialog({Key? key, required this.onCourseSelected}) : super(key:key);
 
@@ -118,41 +141,22 @@ class CourseDialog extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              // header text of the dialog
               const Text('Add a Class', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-
+              const SizedBox(height: 16),
               // auto complete form fields that allow users to search for classes listed in the database, select, then display
               AutoCompleteFormField(
-                label: 'Course Number', 
-                options: extractUniqueCourseNumbers(dummyCourses),
-                onOptionSelected: (selection) {
-                  Course selectedCourse = dummyCourses.firstWhere((course) => course.courseNumber == selection);
-                  onCourseSelected(selectedCourse);
-                },
-              ),
-              const SizedBox(height: 16),
-
-              // form fields for the user to input depending on what information they have available to search with *probably will cut down?*
-              AutoCompleteFormField(
-                label: 'Class Name', 
-                options: extractUniqueCourseNumbers(dummyCourses),
-                onOptionSelected: (selection) {
-                  Course selectedCourse = dummyCourses.firstWhere((course) => course.className == selection);
-                  onCourseSelected(selectedCourse);
-                },
-              ),
-              const SizedBox(height: 16),
-
-              AutoCompleteFormField(
-                label: 'Professor Name', 
-                options: extractUniqueProfessorNames(dummyCourses),
-                onOptionSelected: (selection) {
-                  Course selectedCourse = dummyCourses.firstWhere((course) => course.professorName == selection);
-                  onCourseSelected(selectedCourse);
+                label: 'Search by Course Number or Class Name',
+                options: generateCombinedOptions(),
+                onOptionSelected: (selection){
+                  Sections selectedSection = dummySections.firstWhere((section) =>
+                  generateOptionString(section) == selection);
+                  onCourseSelected(selectedSection);
                 },
               ),
 
               const SizedBox(height: 20),
-              Row( // row with cancel and add class buttons - will likely remove add class due to redundancy
+              Row( // row with cancel
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   TextButton(
@@ -175,43 +179,82 @@ class CourseDialog extends StatelessWidget {
 
 
 // model class for course details used to work with our test data
-class Course {
-  final String courseNumber;
+class Courses {
+  final String courseNumber; // primary key for Courses
   final String className;
+
+  Courses({
+    required this.courseNumber,
+    required this.className,
+    });
+}
+
+// model class to represent section details
+class Sections {
+  final String courseNumber; // foreign key
+  final String sectionNumber; // primary key for sections
   final String professorName;
   final String building;
   final String roomNumber;
 
-  Course({
+  Sections({
     required this.courseNumber,
-    required this.className,
+    required this.sectionNumber,
     required this.professorName,
     required this.building,
     required this.roomNumber,
   });
 }
 
-// functions to extract unique values from a list of courses (currently provided by test_data)
-List<String> extractUniqueCourseNumbers(List<Course> courses) {
-  return courses.map((course) => course.courseNumber).toSet().toList();
+// function to generate options for the autocomplete search
+List<String> generateCombinedOptions() {
+  return dummySections.map((section) => generateOptionString(section)).toList();
 }
 
-List<String> extractUniqueCourseNames(List<Course> courses) {
+// function to format the string shown in autocomplete options
+String generateOptionString(Sections section) {
+  Courses course = dummyCourses.firstWhere(
+    (c) => c.courseNumber == section.courseNumber,
+    orElse: () {
+      // error handling 
+      print("Error: Course not found for course number: ${section.courseNumber}");
+      return Courses(courseNumber: 'Unknown', className: 'Unknown Course');
+    },
+  );
+  
+  return '${course.courseNumber} - ${course.className} (${section.sectionNumber})';
+}
+
+/* Not currently in use functions since splitting of Courses into Courses and Sections
+
+// functions to extract unique values from a list of courses (currently provided by test_data)
+List<String> extractUniqueClassNames(List<Courses> courses) {
   return courses.map((course) => course.className).toSet().toList();
 }
 
-List<String> extractUniqueProfessorNames(List<Course> courses) {
-  return courses.map((course) => course.professorName).toSet().toList();
+List<String> extractUniqueCourseNumbers(List<Sections> sections) {
+  return sections.map((section) => section.courseNumber).toSet().toList();
 }
 
-List<String> extractUniqueBuildings(List<Course> courses) {
-  return courses.map((course) => course.building).toSet().toList();
+List<String> extractUniqueSectionNumbers(List<Sections> sections) {
+   return sections.map((section) => section.sectionNumber).toSet().toList();
 }
 
-List<String> extractUniqueRoomNumbers(List<Course> courses) {
-  return courses.map((course) => course.roomNumber).toSet().toList();
+List<String> extractUniqueProfessorNames(List<Sections> sections) {
+  return sections.map((section) => section.professorName).toSet().toList();
 }
 
+List<String> extractUniqueBuildings(List<Sections> sections) {
+  return sections.map((section) => section.building).toSet().toList();
+}
+
+List<String> extractUniqueRoomNumbers(List<Sections> sections) {
+  return sections.map((section) => section.roomNumber).toSet().toList();
+}
+*/
+
+
+// our autocomplete widget for seaching and adding courses by name or number
 class AutoCompleteFormField extends StatelessWidget {
   // autocomplete widget
   final String label;
@@ -242,8 +285,8 @@ class AutoCompleteFormField extends StatelessWidget {
         if (onOptionSelected != null) {
           onOptionSelected!(selection);
         }
-        Navigator.of(context)
-            .pop(); // close the dialog when the option is selected
+        // close the dialog when the option is selected
+        Navigator.of(context).pop(); 
       },
       fieldViewBuilder: (BuildContext context,
           TextEditingController textEditingController,
@@ -267,62 +310,3 @@ class AutoCompleteFormField extends StatelessWidget {
   }
 }
 
-// AutoCompleteFormField function from the login adapted to autocomplete fields for course input
-/*Widget AutoCompleteFormField({
-  required String label, // label of the input field 
-  required List<String> options, // list of string options for the autocomplete funcitonality 
-  TextEditingController? textEditingController, // allows the caller to provide a text controller to capture and control the input
-  bool obscureText = false}) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text( // displays the label of the input field
-        label,
-        style: const TextStyle(
-            fontSize: 15, fontWeight: FontWeight.w400, color: Colors.black87),
-      ),
-      const SizedBox(
-        height: 5,
-      ),
-      Autocomplete<String>(
-        optionsBuilder: (TextEditingValue textEditingValue) { // filters the list of autocomplete options based on user input
-          print("User Input: ${textEditingValue.text}");
-          print("Available options: $options");
-          return options;
-        },
-        onSelected: (String selection) { // called when a user selects an autocomplete suggestion
-          if (textEditingController != null){ 
-            textEditingController.text = selection;
-          }
-        },
-          fieldViewBuilder: (
-            BuildContext context, 
-            TextEditingController fieldTextEditingController,
-            FocusNode fieldFocusNode,
-            VoidCallback onFieldSubmitted) {
-              return TextField(
-                controller: textEditingController,
-                obscureText: obscureText,
-                decoration: const InputDecoration(
-                  contentPadding: EdgeInsets.symmetric(vertical:  0, horizontal: 10),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide:  BorderSide(
-                      color: Colors.grey,
-                    ),
-                  ),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey)
-                  ),
-                ),
-                onSubmitted:  (String value){
-                  onFieldSubmitted();
-                },
-              );
-            },
-          ),
-          const SizedBox(
-            height: 30,
-      ),
-    ],
-  );
-}*/
