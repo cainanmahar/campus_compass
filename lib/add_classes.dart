@@ -64,7 +64,11 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
                         .start, // To align content to the start
                     children: [
                       Text(
-                        'Course: ${course.courseNumber} - ${course.className}\nBy ${course.professorName}\nIn ${course.building} - ${course.roomNumber}',
+                        'Course: ${course.courseNumber} | '
+                        // '${course.sectionNumber} | '
+                        '${course.className}'
+                        '\nBy ${course.professorName}'
+                        '\nIn ${course.building}, Room ${course.roomNumber}',
                         style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                       const Divider(
@@ -131,7 +135,6 @@ class CourseDialog extends StatelessWidget {
               ),
               const SizedBox(height: 16),
 
-              // form fields for the user to input depending on what information they have available to search with *probably will cut down?*
               AutoCompleteFormField(
                 label: 'Class Name', 
                 options: extractUniqueClassNames(dummyCourses),
@@ -143,13 +146,15 @@ class CourseDialog extends StatelessWidget {
               const SizedBox(height: 16),
 
               AutoCompleteFormField(
-                label: 'Professor Name', 
+                label: 'Profesor Name', 
                 options: extractUniqueProfessorNames(dummyCourses),
                 onOptionSelected: (selection) {
                   Course selectedCourse = dummyCourses.firstWhere((course) => course.professorName == selection);
                   onCourseSelected(selectedCourse);
                 },
               ),
+
+              // form fields for the user to input depending on what information they have available to search with *probably will cut down?*
 
               const SizedBox(height: 20),
               Row( // row with cancel and add class buttons - will likely remove add class due to redundancy
@@ -177,6 +182,7 @@ class CourseDialog extends StatelessWidget {
 // model class for course details used to work with our test data
 class Course {
   final String courseNumber;
+  final String sectionNumber;
   final String className;
   final String professorName;
   final String building;
@@ -184,6 +190,7 @@ class Course {
 
   Course({
     required this.courseNumber,
+    required this.sectionNumber,
     required this.className,
     required this.professorName,
     required this.building,
@@ -191,9 +198,14 @@ class Course {
   });
 }
 
+
 // functions to extract unique values from a list of courses (currently provided by test_data)
 List<String> extractUniqueCourseNumbers(List<Course> courses) {
   return courses.map((course) => course.courseNumber).toSet().toList();
+}
+
+List<String> extractUniqueSectionNumbers(List<Course> courses) {
+   return courses.map((course) => course.sectionNumber).toSet().toList();
 }
 
 List<String> extractUniqueClassNames(List<Course> courses) {
