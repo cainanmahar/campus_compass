@@ -180,7 +180,7 @@ class CourseDialog extends StatelessWidget {
 
 // model class for course details used to work with our test data
 class Courses {
-  final String courseNumber; // primary key for Courses
+  final int courseNumber; // primary key for Courses
   final String className;
 
   Courses({
@@ -191,8 +191,8 @@ class Courses {
 
 // model class to represent section details
 class Sections {
-  final String courseNumber; // foreign key
-  final String sectionNumber; // primary key for sections
+  final int courseNumber; // foreign key
+  final int sectionNumber; // primary key for sections
   final String professorName;
   final String building;
   final String roomNumber;
@@ -218,7 +218,7 @@ String generateOptionString(Sections section) {
     orElse: () {
       // error handling 
       print("Error: Course not found for course number: ${section.courseNumber}");
-      return Courses(courseNumber: 'Unknown', className: 'Unknown Course');
+      return Courses(courseNumber: -1, className: 'Unknown Course');
     },
   );
   
