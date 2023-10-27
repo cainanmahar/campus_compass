@@ -61,36 +61,40 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
         children: [
           Expanded(
             // listview to display selected courses
-            child: ListView.builder(
+            child: ListView.separated(
               padding: const EdgeInsets.all(16.0),
               itemCount: _selectedCourses.length,
+              separatorBuilder: (BuildContext context, int index)
+              => const Divider(
+                color: Colors.black,
+                thickness: 2,
+              ),
               itemBuilder: (BuildContext context, int index) {
                 // extracts section and course details for the current index
                 Sections section = _selectedCourses[index];
-                Courses course = dummyCourses.firstWhere((c) => 
-                c.courseNumber == section.courseNumber);
+                Courses course = dummyCourses.firstWhere(
+                (c) => c.courseNumber == section.courseNumber);
 
                 // returns formatted details of the course
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Column(
-                    // align content to the start
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Course: ${course.courseNumber} | '
-                        'Section: ${section.sectionNumber}'
-                        '\n${course.className}'
-                        '\nBy ${section.professorName}'
-                        '\nIn ${section.building}, Room ${section.roomNumber}',
-                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      // divider for visual separation
-                      const Divider(
-                        color: Colors.black,
-                        thickness: 2,
-                      ),
-                    ],
+                  child: ListTile(
+                    title: Text(
+                      'Course: ${course.courseNumber} | '
+                      'Section: ${section.sectionNumber}'
+                      '\n${course.className}'
+                      '\nBy ${section.professorName}'
+                      '\nIn ${section.building}, Room ${section.roomNumber}',
+                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.delete, color: Colors.orange),
+                      onPressed: () {
+                        setState(() {
+                          _selectedCourses.removeAt(index);
+                        });
+                      },
+                    ),  
                   ),
                 );
               },
