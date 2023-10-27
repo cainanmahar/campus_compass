@@ -276,8 +276,9 @@ class AutoCompleteFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Autocomplete<String>(
       optionsBuilder: (TextEditingValue textEditingValue) {
+        // if the input is empty, show all options
         if (textEditingValue.text == '') {
-          return const <String>[];
+          return options;
         }
         return options
             .where((option) => option

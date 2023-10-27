@@ -47,7 +47,7 @@ List<Sections> dummySections = [
   roomNumber: '206'),
 
   Sections(courseNumber: 2347, 
-  sectionNumber: 2, 
+  sectionNumber: 1, 
   professorName: 'Peter Cerna', 
   building: 'AB1',
   roomNumber: '204'),
