@@ -277,14 +277,15 @@ class AutoCompleteFormField extends StatelessWidget {
     return Autocomplete<String>(
       optionsBuilder: (TextEditingValue textEditingValue) {
         // if the input is empty, show all options
-        if (textEditingValue.text == '') {
-          return options;
+        if (textEditingValue.text.isEmpty) {
+          // when there's no text, show no options
+          return const Iterable<String>.empty();
         }
-        return options
-            .where((option) => option
-                .toLowerCase()
-                .contains(textEditingValue.text.toLowerCase()))
-            .toList();
+        else {
+          // otherwise, show the filtered list
+        return options.where((option) =>
+          option.toLowerCase().contains(textEditingValue.text.toLowerCase()));
+        }
       },
       onSelected: (String selection) {
         if (onOptionSelected != null) {
