@@ -61,36 +61,40 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
         children: [
           Expanded(
             // listview to display selected courses
-            child: ListView.builder(
+            child: ListView.separated(
               padding: const EdgeInsets.all(16.0),
               itemCount: _selectedCourses.length,
+              separatorBuilder: (BuildContext context, int index)
+              => const Divider(
+                color: Colors.black,
+                thickness: 2,
+              ),
               itemBuilder: (BuildContext context, int index) {
                 // extracts section and course details for the current index
                 Sections section = _selectedCourses[index];
-                Courses course = dummyCourses.firstWhere((c) => 
-                c.courseNumber == section.courseNumber);
+                Courses course = dummyCourses.firstWhere(
+                (c) => c.courseNumber == section.courseNumber);
 
                 // returns formatted details of the course
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Column(
-                    // align content to the start
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Course: ${course.courseNumber} | '
-                        'Section: ${section.sectionNumber}'
-                        '\n${course.className}'
-                        '\nBy ${section.professorName}'
-                        '\nIn ${section.building}, Room ${section.roomNumber}',
-                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      // divider for visual separation
-                      const Divider(
-                        color: Colors.black,
-                        thickness: 2,
-                      ),
-                    ],
+                  child: ListTile(
+                    title: Text(
+                      'Course: ${course.courseNumber} | '
+                      'Section: ${section.sectionNumber}'
+                      '\n${course.className}'
+                      '\nBy ${section.professorName}'
+                      '\nIn ${section.building}, Room ${section.roomNumber}',
+                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.delete, color: Colors.orange),
+                      onPressed: () {
+                        setState(() {
+                          _selectedCourses.removeAt(index);
+                        });
+                      },
+                    ),  
                   ),
                 );
               },
@@ -180,7 +184,7 @@ class CourseDialog extends StatelessWidget {
 
 // model class for course details used to work with our test data
 class Courses {
-  final String courseNumber; // primary key for Courses
+  final int courseNumber; // primary key for Courses
   final String className;
 
   Courses({
@@ -191,8 +195,8 @@ class Courses {
 
 // model class to represent section details
 class Sections {
-  final String courseNumber; // foreign key
-  final String sectionNumber; // primary key for sections
+  final int courseNumber; // foreign key
+  final int sectionNumber; // primary key for sections
   final String professorName;
   final String building;
   final String roomNumber;
@@ -218,7 +222,7 @@ String generateOptionString(Sections section) {
     orElse: () {
       // error handling 
       print("Error: Course not found for course number: ${section.courseNumber}");
-      return Courses(courseNumber: 'Unknown', className: 'Unknown Course');
+      return Courses(courseNumber: -1, className: 'Unknown Course');
     },
   );
   
@@ -272,14 +276,16 @@ class AutoCompleteFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Autocomplete<String>(
       optionsBuilder: (TextEditingValue textEditingValue) {
-        if (textEditingValue.text == '') {
-          return const <String>[];
+        // if the input is empty, show all options
+        if (textEditingValue.text.isEmpty) {
+          // when there's no text, show no options
+          return const Iterable<String>.empty();
         }
-        return options
-            .where((option) => option
-                .toLowerCase()
-                .contains(textEditingValue.text.toLowerCase()))
-            .toList();
+        else {
+          // otherwise, show the filtered list
+        return options.where((option) =>
+          option.toLowerCase().contains(textEditingValue.text.toLowerCase()));
+        }
       },
       onSelected: (String selection) {
         if (onOptionSelected != null) {
