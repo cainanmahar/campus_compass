@@ -301,6 +301,10 @@ class AutoCompleteFormField extends StatelessWidget {
         return TextFormField(
           controller: textEditingController,
           focusNode: focusNode,
+          onTap: () {
+            print('TextFormField tapped'); // debugging print statement
+            focusNode.requestFocus(); // explicitly request focus if needed
+          },
           decoration: InputDecoration(
             labelText: label,
             filled: true,
