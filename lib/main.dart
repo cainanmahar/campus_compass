@@ -7,6 +7,8 @@ import 'package:campus_compass/add_classes.dart';
 import 'package:campus_compass/settings.dart';
 import 'package:campus_compass/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 void main() {
   runApp(const MyApp());

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -311,6 +313,42 @@ class _LoginPageState extends State<LoginPage> {
     return true;
   }
 
+/////////////////////////////////////////////////////////////////////////////////////
+
+  void login() async {
+    final email = emailController.text;
+    final password = newPWController.text;
+    final apiUrl = 'NEEED API URL to connect'; // Replace with your API endpoint
+
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        body: jsonEncode({
+          'email': email,
+          'password': password,
+        }),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200) {
+        // Authentication successful
+        // ignore: use_build_context_synchronously
+        Navigator.pushNamed(
+            context, "/map"); // Navigate to the dashboard screen
+      } else {
+        // Authentication failed
+        // ignore: use_build_context_synchronously
+        showErrorDialog(context, 'Invalid email or password');
+      }
+    } catch (e) {
+      // Handle network errors or other exceptions
+      // ignore: use_build_context_synchronously
+      showErrorDialog(context, 'An error occurred. Please try again later.');
+    }
+  }
+
+///////////////////////////////////////////////////////////////////////////////// function, need to connect points
+
   void showErrorDialog(BuildContext context, String message) {
     showDialog(
       context: context,
@@ -394,6 +432,3 @@ Widget makeInput(
     ],
   );
 }
-
-//P@ssw0rd
-//user@example.com
