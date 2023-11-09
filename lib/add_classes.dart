@@ -298,20 +298,22 @@ class Sections {
 
   // factory constructor that creates a Sections object from data and a course
   factory Sections.fromData(Map<String, dynamic> data, String courseNumber) {
-    var sectionNumberStr = data['section_number'];
+    //print(data);
+    //var sectionNumberStr = data['section_number'];
     // default section number in case of parsing failure
-    int sectionNumber =
-        0; // *************** this is likely where some fuckery is going on
+    //int sectionNumber =
+    //0; // *************** this is likely where some fuckery is going on
 
     // parse the secion number to an integer
-    if (sectionNumberStr is String) {
-      sectionNumber = int.tryParse(sectionNumberStr) ??
-          0; // Provide a default value in case parsing fails
-    } else {
-      print(
-          'Warning: section_number is not a string or is null. Defaulting to 0.');
-    }
-
+    //if (sectionNumberStr is String) {
+    //sectionNumber = int.tryParse(sectionNumberStr) ??
+    //0; // Provide a default value in case parsing fails
+    //} else {
+    //print(
+    //'Warning: section_number is not a string or is null. Defaulting to 0.');
+    //}
+    int sectionNumber =
+        int.tryParse(data['section_number'] as String? ?? '0') ?? 0;
     // returns a new Sections object
     return Sections(
       courseNumber: courseNumber,

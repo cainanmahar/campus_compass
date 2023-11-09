@@ -59,18 +59,22 @@ class DatabaseService {
       // check if snapshot exists
       if (snapshot.exists) {
         print('Snapshot exists, raw value: ${snapshot.value}'); // debugging
+
+        // Check if snapshot.value is a List
         if (snapshot.value is List) {
-          // initialize an empty list to hold the sections
+          // Cast snapshot.value to List
+          List<dynamic> sectionsList = snapshot.value as List<dynamic>;
           List<Map<String, dynamic>> sections = [];
-          // iterate through the list to hold the sections
-          for (var value in (snapshot.value as List)) {
-            // skip null values
-            if (value != null) {
-              // add the section to the list after casting it to a Map<String, dynamic>
-              sections.add(Map<String, dynamic>.from(value));
+
+          // Iterate through the list starting from index 1 since index 0 is null
+          for (int i = 1; i < sectionsList.length; i++) {
+            // Check if the item is a Map before casting
+            if (sectionsList[i] is Map) {
+              Map<String, dynamic> sectionMap =
+                  Map<String, dynamic>.from(sectionsList[i]);
+              sections.add(sectionMap);
             }
           }
-          // return the list of sections
           return sections;
         } else {
           print('Snapshot value is not a List'); // debugging
@@ -85,5 +89,6 @@ class DatabaseService {
     }
     return [];
   }
+
   // Add database methods here
 }
