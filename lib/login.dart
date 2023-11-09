@@ -1,3 +1,5 @@
+import 'package:campus_compass/auth_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -8,6 +10,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  bool isLoading = false;
+  final AuthService authService = AuthService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,22 +83,6 @@ class _LoginPageState extends State<LoginPage> {
                       ],
                     ),
                   ),
-
-                  // Forgot password feature from the login page....commented this out.. Will be using audrey's
-                  // const SizedBox(height: 10),
-                  // GestureDetector(
-                  //   onTap: () {
-                  //     Navigator.pushNamed(context, '/settings');
-                  //   },
-                  //   child: const Text(
-                  //     "Forgot password?",
-                  //     style: TextStyle(
-                  //         color: Colors.grey,
-                  //         decoration: TextDecoration.underline),
-                  //   ),
-                  // ),
-                  //
-
                   Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 40,
@@ -107,38 +95,84 @@ class _LoginPageState extends State<LoginPage> {
                       child: MaterialButton(
                         minWidth: double.infinity,
                         height: 60,
-                        onPressed: () {
+                        onPressed: () async {
+                          // set loading to true
+                          setState(() {
+                            isLoading = true;
+                          });
+
                           String email = emailController.text;
                           String password = newPWController.text;
 
-                          //checkingif input is being taken or not,
-                          //print("Email: $email");
-                          //print('Password: $password');
-
-                          //if statment that will only go to map if both email
-                          //and password meet the criteria
-
                           if (!isEmailValid(email)) {
                             showErrorDialog(context, 'Invalid email address.');
+                            if (mounted) {
+                              setState(() {
+                                isLoading = false;
+                              });
+                            }
                             return;
                           } else if (!sPValid(password)) {
                             showErrorDialog(context, 'Invalid password.');
+                            if (mounted) {
+                              setState(() {
+                                isLoading = false;
+                              });
+                            }
                             return;
-                          } else {
-                            Navigator.pushNamed(context, '/map');
+                          }
+                          try {
+                            // Use the AuthService to sign in with email and password
+                            await authService.signInWithEmailAndPassword(
+                                email, password);
+                            // if successful go to map
+                            if (mounted) {
+                              Navigator.pushNamed(context, '/map');
+                            }
+                          } on FirebaseAuthException catch (e) {
+                            // Handle the firebase authentication error
+                            if (mounted) {
+                              showErrorDialog(
+                                  context,
+                                  e.message ??
+                                      'An error occured during sign in');
+                              setState(() {
+                                isLoading = false;
+                              });
+                            }
+                          } catch (e) {
+                            if (mounted) {
+                              // Handles other errors
+                              showErrorDialog(context, e.toString());
+                              setState(() {
+                                isLoading = false;
+                              });
+                            }
+                          } finally {
+                            if (mounted) {
+                              // Set loading to false
+                              setState(() {
+                                isLoading = false;
+                              });
+                            }
                           }
                         },
                         color: Colors.orange,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(40)),
-                        child: const Text(
-                          'Login',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                            color: Colors.black,
-                          ),
-                        ),
+                        child: isLoading
+                            ? const CircularProgressIndicator(
+                                valueColor:
+                                    AlwaysStoppedAnimation<Color>(Colors.white),
+                              )
+                            : const Text(
+                                'Login',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                ),
+                              ),
                       ),
                     ),
                   ),
@@ -151,7 +185,7 @@ class _LoginPageState extends State<LoginPage> {
                       const Text("Forgot your password? "),
                       GestureDetector(
                         onTap: () {
-                          showResetPasswordDialog();
+                          showResetPasswordDialog(context, authService);
                         },
                         child: const Text(
                           "Reset Password",
@@ -195,72 +229,80 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void showResetPasswordDialog() {
-    // clear any previous input
-    newPWController.clear();
-    confirmPWController.clear();
+  // Assuming you have an instance of AuthService available in your widget
+// If not, you can create one like this:
+// AuthService authService = AuthService();
+
+  void showResetPasswordDialog(BuildContext context, AuthService authService) {
+    TextEditingController emailController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: const Text('Reset Password'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                const Text(
+                    'Enter your email address and we will send you a link to reset your password.'),
+                TextField(
+                  controller: emailController,
+                  decoration: const InputDecoration(
+                    labelText: 'Email Address',
+                  ),
+                  keyboardType: TextInputType.emailAddress,
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () async {
+                String email = emailController.text.trim();
+                if (email.isEmpty || !isEmailValid(email)) {
+                  showErrorDialog(
+                      dialogContext, 'Please enter a valid email address.');
+                  return;
+                }
+
+                // Disable the send button while processing
+                Navigator.of(dialogContext).pop();
+                await authService.sendPasswordResetEmail(email).then((_) {
+                  // The then callback ensures we're still in a valid context
+                  showConfirmationDialog(
+                      context, 'Check your email to reset your password.');
+                }).catchError((error) {
+                  showErrorDialog(context,
+                      'Failed to send password reset email: ${error.toString()}');
+                });
+              },
+              child: const Text('Send Reset Link'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+// Shows a dialog with the confirmation message
+  void showConfirmationDialog(BuildContext context, String message) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (BuildContext context, StateSetter setState) {
-            return AlertDialog(
-              title: const Text('Reset Password'),
-              content: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    TextField(
-                      obscureText: true,
-                      controller: newPWController,
-                      decoration: const InputDecoration(
-                        labelText: 'New Password',
-                      ),
-                      onChanged: (value) {
-                        setState(() {});
-                      },
-                    ),
-                    passwordCriteriaWidget(newPWController.text),
-                    TextField(
-                      obscureText: true,
-                      controller: confirmPWController,
-                      decoration: const InputDecoration(
-                        labelText: 'Confirm New Password',
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    // Handle cancel button press
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('Cancel'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    String newPasssword = newPWController.text;
-                    String confirmPassword = confirmPWController.text;
-                    if (newPasssword != confirmPassword) {
-                      showErrorDialog(context, 'Passwords do not match');
-                    }
-                    if (!sPValid(newPasssword)) {
-                      showErrorDialog(context, 'Please enter a valid password');
-                      return;
-                    } else {
-                      // Handle confirm button press and reset password
-                      // TODO: Update the password in database
-                      // Close the dialog
-                      Navigator.of(context).pop();
-                    }
-                  },
-                  child: const Text('Confirm'),
-                ),
-              ],
-            );
-          },
+        return AlertDialog(
+          title: const Text('Email Sent'),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('OK'),
+            ),
+          ],
         );
       },
     );

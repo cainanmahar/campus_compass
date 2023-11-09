@@ -25,10 +25,10 @@ class HomePage extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.black, fontSize: 15),
               ),
-              /*
-              Removed home screen image to add more buttons for testing
+
+              /*Removed home screen image to add more buttons for testing
               Leaving code here in case we want to use home screen
-              in final application.
+              in final application.*/
               const SizedBox(height: 30),
               Container(
                 height: MediaQuery.of(context).size.height / 3,
@@ -38,7 +38,7 @@ class HomePage extends StatelessWidget {
                     fit: BoxFit.contain,
                   ),
                 ),
-              ),*/
+              ),
 
               // Login Button
               const SizedBox(height: 20),
@@ -49,7 +49,7 @@ class HomePage extends StatelessWidget {
                   // Navigate to the LoginPage when the login button is pressed
                   Navigator.pushNamed(context, '/login');
                 },
-                color: Colors.orange[300],
+                color: Colors.orange,
                 shape: RoundedRectangleBorder(
                     side: const BorderSide(
                       color: Colors.black,
@@ -90,6 +90,7 @@ class HomePage extends StatelessWidget {
                 ),
               ),
 
+              /* Buttons for testing purposes.
               // Map Button
               const SizedBox(height: 20),
               MaterialButton(
@@ -192,7 +193,7 @@ class HomePage extends StatelessWidget {
                     color: Colors.white,
                   ),
                 ),
-              ),
+              ),*/
             ],
           ),
         ),
