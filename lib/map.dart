@@ -21,7 +21,7 @@ class _MapPageState extends State<MapPage> {
       ),
 
       // Collapsible Menu
-      drawer: const AppDrawer(),
+      drawer: AppDrawer(),
 
       // Map part of the screen
       body: Stack(
@@ -34,14 +34,18 @@ class _MapPageState extends State<MapPage> {
                   const LatLng(29.066889, -93.930492),
                 ),
               ),
+              interactionOptions: const InteractionOptions(
+                flags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
+              ),
               initialCenter:
-                  const LatLng(30.309020846648558, -95.41179374141295),
+                  const LatLng(30.714786150948303, -95.54705543100049),
+              initialZoom: 19.5,
             ),
             children: [
               TileLayer(
                 wmsOptions: WMSTileLayerOptions(
-                  baseUrl: "http://164.92.112.125:8080/geoserver/ne/wms/?",
-                  layers: const ["ne:world"],
+                  baseUrl: "http://164.92.112.125:8080/geoserver/wms/?",
+                  layers: const ["Satellite_Imagery:high_res_campus_imagery"],
                 ),
               ),
             ],

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'auth_service.dart';
+import 'database_service.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -7,6 +10,15 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  final DatabaseService dbService = DatabaseService();
+  final AuthService authService = AuthService();
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController currentPWController = TextEditingController();
+  final TextEditingController newPWController = TextEditingController();
+  final TextEditingController confirmPWController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +70,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                   const SizedBox(height: 50),
 
-                  // Change Email button
+                  /* Change Email button
                   MaterialButton(
                     minWidth: double.infinity,
                     height: 60,
@@ -81,14 +93,14 @@ class _SettingsPageState extends State<SettingsPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 50),
+                  const SizedBox(height: 50),*/
 
                   // Change Password Button
                   MaterialButton(
                     minWidth: double.infinity,
                     height: 60,
                     onPressed: () {
-                      _showChangePasswordDialog();
+                      showResetPasswordDialog(context, authService);
                     },
                     color: Colors.lightBlue[800],
                     shape: RoundedRectangleBorder(
@@ -151,10 +163,39 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             TextButton(
               onPressed: () {
-                // Handle confirm button press and update the name
-                // TODO: Update the name in database
-                // Close the dialog
-                Navigator.of(context).pop();
+                // Get the first and last name from the text controllers
+                String newFirstName = firstNameController.text.trim();
+                String newLastName = lastNameController.text.trim();
+
+                // Perform some basic validation
+                if (newFirstName.isEmpty || newLastName.isEmpty) {
+                  showErrorDialog(
+                      context, 'Please enter both first and last names.');
+                  return;
+                }
+
+                User? user = FirebaseAuth.instance.currentUser;
+                if (user != null) {
+                  dbService
+                      .updateUserName(user.uid, newFirstName, newLastName)
+                      .then((_) {
+                    // Handle successful update, like showing a success message
+                    // Show success message using SnackBar
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Name updated successfully!'),
+                        duration: Duration(seconds: 5),
+                      ),
+                    );
+                    Navigator.of(context).pop(); // Close the dialog
+                    // You might want to refresh the UI or state at this point
+                  }).catchError((error) {
+                    // Handle errors
+                    showErrorDialog(context, 'Failed to update name: $error');
+                  });
+                } else {
+                  showErrorDialog(context, 'No user is signed in.');
+                }
               },
               child: const Text('Confirm'),
             ),
@@ -164,156 +205,80 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  // Function to show the "Change Email" dialog box
-  void _showChangeEmailDialog() {
-    // clear out any previous input
-    emailController.clear();
-    confirmEmailController.clear();
+  void showResetPasswordDialog(BuildContext context, AuthService authService) {
+    TextEditingController emailController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: const Text('Reset Password'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                const Text(
+                    'Enter your email address and we will send you a link to reset your password.'),
+                TextField(
+                  controller: emailController,
+                  decoration: const InputDecoration(
+                    labelText: 'Email Address',
+                  ),
+                  keyboardType: TextInputType.emailAddress,
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () async {
+                String email = emailController.text.trim();
+                if (email.isEmpty || !isEmailValid(email)) {
+                  showErrorDialog(
+                      dialogContext, 'Please enter a valid email address.');
+                  return;
+                }
+
+                // Disable the send button while processing
+                Navigator.of(dialogContext).pop();
+                await authService.sendPasswordResetEmail(email).then((_) {
+                  // The then callback ensures we're still in a valid context
+                  showConfirmationDialog(
+                      context, 'Check your email to reset your password.');
+                }).catchError((error) {
+                  showErrorDialog(context,
+                      'Failed to send password reset email: ${error.toString()}');
+                });
+              },
+              child: const Text('Send Reset Link'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // Shows a dialog with the confirmation message
+  void showConfirmationDialog(BuildContext context, String message) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Change Email'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              TextField(
-                controller: emailController,
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                ),
-              ),
-              TextField(
-                controller: confirmEmailController,
-                decoration: const InputDecoration(
-                  labelText: 'Confirm Email',
-                ),
-              ),
-            ],
-          ),
+          title: const Text('Email Sent'),
+          content: Text(message),
           actions: <Widget>[
             TextButton(
-              onPressed: () {
-                // Handle cancel button press
-                Navigator.of(context).pop();
-              },
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                String email = emailController.text;
-                String confirmEmail = confirmEmailController.text;
-                if (email != confirmEmail) {
-                  showErrorDialog(context, 'Emails do not match.');
-                  return;
-                }
-                //String confirmEmail = _confirmEmailController.text;
-                else if (!isEmailValid(email)) {
-                  showErrorDialog(context, 'Please enter a valid email.');
-                  return;
-                } else {
-                  // Handle confirm button press and update the email
-                  // TODO: Update the email in database
-                  // Close the dialog
-                  Navigator.of(context).pop();
-                }
-              },
-              child: const Text('Confirm'),
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('OK'),
             ),
           ],
         );
       },
     );
   }
-
-  // Function to show the "Change Password" dialog box
-  void _showChangePasswordDialog() {
-    // clear out any previous input
-    currentPWController.clear();
-    newPWController.clear();
-    confirmPWController.clear();
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (BuildContext context, StateSetter setState) {
-            return AlertDialog(
-              title: const Text('Change Password'),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  TextField(
-                    obscureText: true,
-                    controller: currentPWController,
-                    decoration: const InputDecoration(
-                      labelText: 'Current Password',
-                    ),
-                  ),
-                  TextField(
-                    obscureText: true,
-                    controller: newPWController,
-                    decoration: const InputDecoration(
-                      labelText: 'New Password',
-                    ),
-                    onChanged: (value) {
-                      setState(() {});
-                    },
-                  ),
-                  passwordCriteriaWidget(
-                      newPWController.text), // <- Added this line
-                  TextField(
-                    obscureText: true,
-                    controller: confirmPWController,
-                    decoration: const InputDecoration(
-                      labelText: 'Confirm New Password',
-                    ),
-                  ),
-                ],
-              ),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    // Handle cancel button press
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('Cancel'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    String newPassword = newPWController.text;
-                    String confirmPassword = confirmPWController.text;
-                    if (newPassword != confirmPassword) {
-                      showErrorDialog(context, 'Passwords do not match.');
-                      return;
-                    } else if (!sPValid(newPassword)) {
-                      showErrorDialog(
-                          context, 'Please enter a valid password.');
-                      return;
-                    } else {
-                      // Handle confirm button press and update the password
-                      // TODO: Update the password in database
-                      // Close the dialog
-                      Navigator.of(context).pop();
-                    }
-                  },
-                  child: const Text('Confirm'),
-                ),
-              ],
-            );
-          },
-        );
-      },
-    );
-  }
-
-  final TextEditingController firstNameController = TextEditingController();
-  final TextEditingController lastNameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController confirmEmailController = TextEditingController();
-  final TextEditingController currentPWController = TextEditingController();
-  final TextEditingController newPWController = TextEditingController();
-  final TextEditingController confirmPWController = TextEditingController();
 
   // Createria that email must follow
   bool isEmailValid(String email) {
@@ -404,3 +369,65 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 }
+
+/* // Function to show the "Change Email" dialog box
+  void _showChangeEmailDialog() {
+    // clear out any previous input
+    emailController.clear();
+    confirmEmailController.clear();
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Change Email'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              TextField(
+                controller: emailController,
+                decoration: const InputDecoration(
+                  labelText: 'Email',
+                ),
+              ),
+              TextField(
+                controller: confirmEmailController,
+                decoration: const InputDecoration(
+                  labelText: 'Confirm Email',
+                ),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                // Handle cancel button press
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                String email = emailController.text;
+                String confirmEmail = confirmEmailController.text;
+                if (email != confirmEmail) {
+                  showErrorDialog(context, 'Emails do not match.');
+                  return;
+                }
+                //String confirmEmail = _confirmEmailController.text;
+                else if (!isEmailValid(email)) {
+                  showErrorDialog(context, 'Please enter a valid email.');
+                  return;
+                } else {
+                  // Handle confirm button press and update the email
+                  // TODO: Update the email in database
+                  // Close the dialog
+                  Navigator.of(context).pop();
+                }
+              },
+              child: const Text('Confirm'),
+            ),
+          ],
+        );
+      },
+    );
+  }*/

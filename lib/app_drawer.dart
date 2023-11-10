@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:campus_compass/auth_service.dart';
 
 class AppDrawer extends StatelessWidget {
-  const AppDrawer({super.key});
+  final AuthService authService = AuthService();
+
+  AppDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -56,10 +59,30 @@ class AppDrawer extends StatelessWidget {
             onTap: () {
               // Close drawer first
               Navigator.pop(context);
-              // Navigate back to home screen
-              Navigator.popUntil(context, ModalRoute.withName('/'));
+              // Store a reference to the ScaffoldMessenger before the async gap
+              final scaffoldMessenger = ScaffoldMessenger.of(context);
+
+              // Attempt to sign out
+              authService.signOut().then((_) {
+                // Sign-out was successful
+                scaffoldMessenger.showSnackBar(
+                  const SnackBar(
+                    content: Text('You have been signed out.'),
+                  ),
+                );
+                // Redirect to the login or home page, or wherever you want to go
+                Navigator.pushReplacementNamed(context, '/login');
+              }).catchError((error) {
+                // Sign-out failed
+                scaffoldMessenger.showSnackBar(
+                  const SnackBar(
+                    content: Text('Sign-out failed. Please try again.'),
+                  ),
+                );
+              });
             },
           ),
+
           const Divider(
             color: Colors.grey,
           ),
