@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'auth_service.dart';
+import 'database_service.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -7,6 +10,13 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  final AuthService authService = AuthService();
+  final DatabaseService dbService = DatabaseService();
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController newPWController = TextEditingController();
+  final TextEditingController confirmPWController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -105,10 +115,12 @@ class _SignUpPageState extends State<SignUpPage> {
                       child: MaterialButton(
                         minWidth: double.infinity,
                         height: 60,
-                        onPressed: () {
+                        onPressed: () async {
                           String email = emailController.text;
                           String password = newPWController.text;
                           String confirmPassword = confirmPWController.text;
+                          String firstName = firstNameController.text;
+                          String lastName = lastNameController.text;
                           if (!isEmailValid(email)) {
                             showErrorDialog(context, 'Invalid email address.');
                             return;
@@ -118,8 +130,39 @@ class _SignUpPageState extends State<SignUpPage> {
                           } else if (!sPValid(password)) {
                             showErrorDialog(context, 'Invalid password.');
                             return;
-                          } else {
+                          }
+                          // If all validations pass, proceed with user registration
+                          try {
+                            // Use AuthService to create the user
+                            UserCredential userCredential = await authService
+                                .createUserWithEmailAndPassword(
+                                    email, password);
+
+                            // Get the user's unique ID
+                            String uid = userCredential.user!.uid;
+
+                            // Create user data
+                            Map<String, dynamic> userData = {
+                              'firstName': firstName,
+                              'lastName': lastName,
+                              'courses':
+                                  [], // Initialize with an empty array of courses
+                              'preferences': {},
+                            };
+
+                            // Use DatabaseService to store the additional information
+                            await dbService.createUserProfile(uid, userData);
+                            if (!mounted) {
+                              return;
+                            }
+                            // If the user is successfully created, navigate to the login page
                             Navigator.pushNamed(context, '/login');
+                          } catch (e) {
+                            if (!mounted) {
+                              return;
+                            }
+                            showErrorDialog(
+                                context, 'Failed to sign up: ${e.toString()}');
                           }
                         },
                         color: Colors.lightBlue[800],
@@ -166,12 +209,6 @@ class _SignUpPageState extends State<SignUpPage> {
       ),
     );
   }
-
-  final TextEditingController firstNameController = TextEditingController();
-  final TextEditingController lastNameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController newPWController = TextEditingController();
-  final TextEditingController confirmPWController = TextEditingController();
 
   // Createria that email must follow
   bool isEmailValid(String email) {

@@ -21,7 +21,7 @@ class _MapPageState extends State<MapPage> {
       ),
 
       // Collapsible Menu
-      drawer: const AppDrawer(),
+      drawer: AppDrawer(),
 
       // Map part of the screen
       body: Stack(
