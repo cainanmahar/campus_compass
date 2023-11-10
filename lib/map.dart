@@ -44,8 +44,8 @@ class _MapPageState extends State<MapPage> {
             children: [
               TileLayer(
                 wmsOptions: WMSTileLayerOptions(
-                  baseUrl: "http://164.92.112.125:8080/geoserver/wms/?",
-                  layers: const ["Satellite_Imagery:high_res_campus_imagery"],
+                  baseUrl: "http://144.126.221.0:8080/geoserver/wms/?",
+                  layers: const ["outdoors"],
                 ),
               ),
             ],
