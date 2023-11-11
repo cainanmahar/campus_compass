@@ -1,8 +1,6 @@
 import 'package:campus_compass/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -14,6 +12,9 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   bool isLoading = false;
   final AuthService authService = AuthService();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController confirmPWController = TextEditingController();
+  final TextEditingController newPWController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -310,10 +311,6 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController confirmPWController = TextEditingController();
-  final TextEditingController newPWController = TextEditingController();
-
 //Createria that email mus follow
   bool isEmailValid(String email) {
     String emailPattern = r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)*(\.[a-z]{2,})$';
@@ -354,42 +351,6 @@ class _LoginPageState extends State<LoginPage> {
     }
     return true;
   }
-
-/////////////////////////////////////////////////////////////////////////////////////
-
-  void login() async {
-    final email = emailController.text;
-    final password = newPWController.text;
-    final apiUrl = 'NEEED API URL to connect'; // Replace with your API endpoint
-
-    try {
-      final response = await http.post(
-        Uri.parse(apiUrl),
-        body: jsonEncode({
-          'email': email,
-          'password': password,
-        }),
-        headers: {'Content-Type': 'application/json'},
-      );
-
-      if (response.statusCode == 200) {
-        // Authentication successful
-        // ignore: use_build_context_synchronously
-        Navigator.pushNamed(
-            context, "/map"); // Navigate to the dashboard screen
-      } else {
-        // Authentication failed
-        // ignore: use_build_context_synchronously
-        showErrorDialog(context, 'Invalid email or password');
-      }
-    } catch (e) {
-      // Handle network errors or other exceptions
-      // ignore: use_build_context_synchronously
-      showErrorDialog(context, 'An error occurred. Please try again later.');
-    }
-  }
-
-///////////////////////////////////////////////////////////////////////////////// function, need to connect points
 
   void showErrorDialog(BuildContext context, String message) {
     showDialog(
