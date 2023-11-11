@@ -6,7 +6,7 @@ class AddClassSchedule extends StatefulWidget {
   const AddClassSchedule({super.key}); // calls parent class constructor
 
   // title of the app bar
-  final String title = "Class Schedue";
+  //final String title = "Class Schedule";
 
   // create state for this widget
   @override
@@ -78,38 +78,42 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
       // has two properties - body and appBar
       backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       appBar: AppBar(
-        backgroundColor:
-            // color of body of scaffold
-            const Color.fromARGB(255, 0, 73, 144),
-        title: Text(widget.title),
+        backgroundColor: Colors.lightBlue[800],
         actions: <Widget>[
-          Row(
-            // inside the appBar to contain multiple children horizontally
-            children: [
-              InkWell(
-                // edit button functionality
-                onTap: () {},
-                child: const Padding(
-                  padding: EdgeInsets.only(right: 16.0),
-                  child: Icon(Icons.edit),
-                ),
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: SizedBox(
+              height: kToolbarHeight,
+              child: Image.asset(
+                'assets/images/SHSU_Primary_Logo.png', // uni logo
+                fit: BoxFit.cover,
               ),
-              Padding(
-                padding: const EdgeInsets.only(right: 16.0),
-                child: SizedBox(
-                  height: kToolbarHeight,
-                  child: Image.asset(
-                    'assets/images/SHSU_Primary_Logo.png', // uni logo
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
         ],
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          const Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Text(
+              'Your Class Schedule',
+              style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            child: Text(
+              'Click the plus button below to search and add a class to your schedule.',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 15, color: Colors.black),
+            ),
+          ),
+          const SizedBox(height: 20),
           Expanded(
             // listview to display selected courses
             child: ListView.separated(
@@ -176,8 +180,8 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
                     );
                   },
                   // displaying the '+' icon
-                  child: const Icon(Icons.add,
-                      color: Color.fromARGB(255, 0, 73, 144),
+                  child: Icon(Icons.add,
+                      color: Colors.lightBlue[800],
                       size: 100.0) // stock '+' icon
                   ),
             ),
