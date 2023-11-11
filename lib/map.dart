@@ -11,6 +11,18 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
+  // List of the names of the layers
+  List<String> layerGeoserver = [
+    'outdoors',
+    '',
+  ];
+
+  //Tracks current layer index
+  int currentLayerIndex = 0;
+
+  //Tracks level layer, true or false
+  List<bool> isSelected = [true, false];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,13 +57,61 @@ class _MapPageState extends State<MapPage> {
               TileLayer(
                 wmsOptions: WMSTileLayerOptions(
                   baseUrl: "http://144.126.221.0:8080/geoserver/wms/?",
-                  layers: const ["outdoors"],
+                  layers: [layerGeoserver[0]],
                 ),
               ),
             ],
-          )
+          ),
+          Positioned(
+            bottom: 16,
+            right: 16,
+            child: Column(
+              children: [
+                Container(
+                  width: 40, // Adjust the width as needed
+                  height: 40, // Adjust the height as needed
+                  color: Colors.white,
+                  child: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        currentLayerIndex++;
+                        if (currentLayerIndex >= layerGeoserver.length) {
+                          currentLayerIndex = 0;
+                        }
+                        printLayerName();
+                      });
+                    },
+                    icon: const Icon(Icons.add, color: Colors.black),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Container(
+                  width: 40, // Adjust the width as needed
+                  height: 40, // Adjust the height as needed
+                  color: Colors.white,
+                  child: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        currentLayerIndex--;
+                        if (currentLayerIndex < 0) {
+                          currentLayerIndex = layerGeoserver.length - 1;
+                        }
+                        printLayerName();
+                      });
+                    },
+                    icon: const Icon(Icons.remove, color: Colors.black),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
+  }
+
+//Verifying output in Terminal: only purpose, Will be removed after all layers are added;
+  void printLayerName() {
+    print("Current Layer: ${layerGeoserver[currentLayerIndex]}");
   }
 }

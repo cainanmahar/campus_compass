@@ -12,6 +12,9 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   bool isLoading = false;
   final AuthService authService = AuthService();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController confirmPWController = TextEditingController();
+  final TextEditingController newPWController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -308,10 +311,6 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController confirmPWController = TextEditingController();
-  final TextEditingController newPWController = TextEditingController();
-
 //Createria that email mus follow
   bool isEmailValid(String email) {
     String emailPattern = r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)*(\.[a-z]{2,})$';
@@ -436,6 +435,3 @@ Widget makeInput(
     ],
   );
 }
-
-//P@ssw0rd
-//user@example.com
