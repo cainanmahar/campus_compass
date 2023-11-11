@@ -1,12 +1,14 @@
+import 'package:campus_compass/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:campus_compass/database_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class AddClassSchedule extends StatefulWidget {
   // stateful constructor for adding class schedules
   const AddClassSchedule({super.key}); // calls parent class constructor
 
   // title of the app bar
-  final String title = "Class Schedue";
+  //final String title = "Class Schedule";
 
   // create state for this widget
   @override
@@ -15,9 +17,11 @@ class AddClassSchedule extends StatefulWidget {
 
 // private state class for AddClassSchedule widget
 class _AddClassScheduleState extends State<AddClassSchedule> {
+  // firebase auth instance
+  final AuthService authService = AuthService();
+  final DatabaseService databaseService = DatabaseService();
   // list to store selected courses
-  final List<Sections> _selectedCourses = [];
-
+  List<Sections> _selectedCourses = [];
   // lists to store courses and sections fetched from the database
   List<Courses> _fetchedCourses = [];
   List<Sections> _fetchedSections = [];
@@ -26,50 +30,79 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
   @override
   void initState() {
     super.initState();
-    // calls a method to fetch data from the database
+    // call a method to fetch user data from db
+    _fetchUserCourses();
+    // calls a method to fetch course/section data from the database
     _fetchData();
+  }
+
+  void _fetchUserCourses() async {
+    User? user = authService.getCurrentUser();
+    if (user != null) {
+      var userData = await databaseService.getUserData(user.uid);
+      if (userData != null) {
+        List<dynamic> coursesList = userData['courses'] ?? [];
+        _selectedCourses = coursesList
+            .map((c) => Sections.fromMap(Map<String, dynamic>.from(c)))
+            .toList();
+      }
+    }
   }
 
   // method to fetch data from the database
   void _fetchData() async {
     // attempts to fetch course data from the database
-    var coursesData = await DatabaseService().fetchCourses();
+    var coursesData = await databaseService.fetchCourses();
     // if fetched successfully, process it
     if (coursesData != null) {
       // temp lists to store fetched data
       List<Courses> fetchedCourses = [];
       List<Sections> fetchedSections = [];
-
       // iterates through entries of the fetched data
       for (var entry in coursesData.entries) {
         // extracts the key (course number) and value (course data)
         String key = entry.key;
         var data = entry.value;
-
         // checks if the map is a map and if so casts it to the correct type
         var courseData = data is Map ? Map<String, dynamic>.from(data) : null;
         // if the course data is valid, create a Courses object and add it to the list
         if (courseData != null) {
           fetchedCourses.add(Courses.fromData(key, courseData));
-
           // fetches sections for each course and adds them to the sections list
-          var sectionsList = await DatabaseService().fetchSections(key);
+          var sectionsList = await databaseService.fetchSections(key);
           for (var sectionData in sectionsList) {
             fetchedSections.add(Sections.fromData(sectionData, key));
           }
         }
       }
-
       // triggers ui rebuild with new data
       setState(() {
         _fetchedCourses = fetchedCourses;
         _fetchedSections = fetchedSections;
       });
     }
-
     // debugging
     print('Fetched Courses: $_fetchedCourses');
     print('Fetched Sections: $_fetchedSections');
+  }
+
+  void _saveCoursesToDatabase() async {
+    User? user = authService.getCurrentUser();
+    if (user != null) {
+      List<Map<String, dynamic>> selectedCoursesData =
+          _selectedCourses.map((section) {
+        return {
+          'courseNumber': section.courseNumber,
+          'sectionNumber': section.sectionNumber,
+          'professorName': section.professorName, // Include these fields
+          'building': section.building,
+          'roomNumber': section.roomNumber
+        };
+      }).toList();
+
+      await databaseService
+          .updateUserData(user.uid, {'courses': selectedCoursesData});
+    }
   }
 
   @override
@@ -78,38 +111,43 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
       // has two properties - body and appBar
       backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       appBar: AppBar(
-        backgroundColor:
-            // color of body of scaffold
-            const Color.fromARGB(255, 0, 73, 144),
-        title: Text(widget.title),
+        backgroundColor: Colors.lightBlue[800],
         actions: <Widget>[
-          Row(
-            // inside the appBar to contain multiple children horizontally
-            children: [
-              InkWell(
-                // edit button functionality
-                onTap: () {},
-                child: const Padding(
-                  padding: EdgeInsets.only(right: 16.0),
-                  child: Icon(Icons.edit),
-                ),
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: SizedBox(
+              height: kToolbarHeight,
+              child: Image.asset(
+                'assets/images/SHSU_Primary_Logo.png', // uni logo
+                fit: BoxFit.cover,
               ),
-              Padding(
-                padding: const EdgeInsets.only(right: 16.0),
-                child: SizedBox(
-                  height: kToolbarHeight,
-                  child: Image.asset(
-                    'assets/images/SHSU_Primary_Logo.png', // uni logo
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
         ],
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          // Title for add classes screen
+          const Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Text(
+              'Your Class Schedule',
+              style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            child: Text(
+              'Click the plus button below to search and add a class to your schedule.',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 15, color: Colors.black),
+            ),
+          ),
+          const SizedBox(height: 20),
           Expanded(
             // listview to display selected courses
             child: ListView.separated(
@@ -144,6 +182,7 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
                       onPressed: () {
                         setState(() {
                           _selectedCourses.removeAt(index);
+                          _saveCoursesToDatabase();
                         });
                       },
                     ),
@@ -166,6 +205,8 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
                         onCourseSelected: (selectedCourse) {
                           setState(() {
                             _selectedCourses.add(selectedCourse);
+                            // save updated course to database
+                            _saveCoursesToDatabase();
                           });
                           Navigator.of(context).pop();
                         },
@@ -176,8 +217,8 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
                     );
                   },
                   // displaying the '+' icon
-                  child: const Icon(Icons.add,
-                      color: Color.fromARGB(255, 0, 73, 144),
+                  child: Icon(Icons.add,
+                      color: Colors.lightBlue[800],
                       size: 100.0) // stock '+' icon
                   ),
             ),
@@ -298,20 +339,6 @@ class Sections {
 
   // factory constructor that creates a Sections object from data and a course
   factory Sections.fromData(Map<String, dynamic> data, String courseNumber) {
-    //print(data);
-    //var sectionNumberStr = data['section_number'];
-    // default section number in case of parsing failure
-    //int sectionNumber =
-    //0; // *************** this is likely where some fuckery is going on
-
-    // parse the secion number to an integer
-    //if (sectionNumberStr is String) {
-    //sectionNumber = int.tryParse(sectionNumberStr) ??
-    //0; // Provide a default value in case parsing fails
-    //} else {
-    //print(
-    //'Warning: section_number is not a string or is null. Defaulting to 0.');
-    //}
     int sectionNumber =
         int.tryParse(data['section_number'] as String? ?? '0') ?? 0;
     // returns a new Sections object
@@ -322,6 +349,16 @@ class Sections {
       professorName: data['professor'] as String? ?? 'Unknown',
       building: data['building'] as String? ?? 'Unknown',
       roomNumber: data['room_number'] as String? ?? 'Unknown',
+    );
+  }
+
+  factory Sections.fromMap(Map<String, dynamic> map) {
+    return Sections(
+      courseNumber: map['courseNumber'] as String? ?? 'Unknown',
+      sectionNumber: map['sectionNumber'] as int? ?? 0,
+      professorName: map['professorName'] as String? ?? 'Unknown',
+      building: map['building'] as String? ?? 'Unknown',
+      roomNumber: map['roomNumber'] as String? ?? 'Unknown',
     );
   }
 }

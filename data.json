@@ -8,73 +8,86 @@
                     "section_number": "1",
                     "professor": "Dr. Pat Ko",
                     "building": "AB1",
-                    "room_number": "211"
+                    "room_number": "211",
+                    "location_node": "AB1_211"
                 },
                 "2": {
                     "section_number": "2",
                     "professor": "Dr. Pat Ko",
                     "building": "AB1",
-                    "room_number": "215"
+                    "room_number": "215",
+                    "location_node": "AB1_215"
                 },
                 "3": {
                     "section_number": "3",
                     "professor": "Dr. Haodi Jiang",
                     "building": "AB1",
-                    "room_number": "211"
+                    "room_number": "211",
+                    "location_node": "AB1_211"
                 },
                 "4": {
                     "section_number": "4",
                     "professor": "Dr. Pat Ko",
                     "building": "AB1",
-                    "room_number": "211"
+                    "room_number": "211",
+                    "location_node": "AB1_211"
                 },
                 "5": {
                     "section_number": "5",
                     "professor": "Dr. Xing Liu",
                     "building": "AB1",
-                    "room_number": "211"
+                    "room_number": "211",
+                    "location_node": "AB1_211"
+                    
                 },
                 "6": {
                     "section_number": "6",
                     "professor": "Dr. Pat Ko",
                     "building": "AB1",
-                    "room_number": "211"
+                    "room_number": "211",
+                    "location_node": "AB1_211"
                 },
                 "7": {
                     "section_number": "7",
                     "professor": "Dr. Pat Ko",
                     "building": "AB1",
-                    "room_number": "211"
+                    "room_number": "211",
+                    "location_node": "AB1_211"
                 },
                 "8": {
                     "section_number": "8",
                     "professor": "Dr. Pat Ko",
                     "building": "AB1",
-                    "room_number": "211"
+                    "room_number": "211",
+                    "location_node": "AB1_211"
                 },
                 "9": {
                     "section_number": "9",
                     "professor": "Dr. Pat Ko",
                     "building": "AB1",
-                    "room_number": "211"
+                    "room_number": "211",
+                    "location_node": "AB1_211"
                 },
                 "10": {
                     "section_number": "10",
                     "professor": "Dr. Pat Ko",
                     "building": "AB1",
-                    "room_number": "211"
+                    "room_number": "211",
+                    "location_node": "AB1_211"
                 },
                 "11": {
                     "section_number": "11",
                     "professor": "Dr. Haodi Jiang",
                     "building": "AB1",
-                    "room_number": "211"
+                    "room_number": "211",
+                    "location_node": "AB1_211"
                 },
                 "12": {
                     "section_number": "12",
                     "professor": "Dr. Xing Liu",
                     "building": "AB1",
-                    "room_number": "211"
+                    "room_number": "211",
+                    "location_node": "AB1_211"
                 }
             }
         },
@@ -86,37 +99,43 @@
                     "section_number": "1",
                     "professor": "Dr. Hyuk Cho",
                     "building": "AB1",
-                    "room_number": "211"
+                    "room_number": "211",
+                    "location_node": "AB1_211"
                 },
                 "2": {
                     "section_number": "2",
                     "professor": "Dr. Fan Liang",
                     "building": "AB1",
-                    "room_number": "209"
+                    "room_number": "209",
+                    "location_node": "AB1_209"
                 },
                 "3": {
                     "section_number": "3",
                     "professor": "Dr. Fan Liang",
                     "building": "AB1",
-                    "room_number": "215"
+                    "room_number": "215",
+                    "location_node": "AB1_215"
                 },
                 "4": {
                     "section_number": "4",
                     "professor": "Dr. Fan Liang",
                     "building": "AB1",
-                    "room_number": "215"
+                    "room_number": "215",
+                    "location_node": "AB1_215"
                 },
                 "5": {
                     "section_number": "5",
                     "professor": "Dr. Fan Liang",
                     "building": "AB1",
-                    "room_number": "209"
+                    "room_number": "209",
+                    "location_node": "AB1_209"
                 },
                 "6": {
                     "section_number": "6",
                     "professor": "Dr. Hyuk Cho",
                     "building": "AB1",
-                    "room_number": "211"
+                    "room_number": "211",
+                    "location_node": "AB1_211"
                 }
             }
         },
@@ -128,13 +147,15 @@
                     "section_number:": "1",
                     "professor": "Jayanthi Ramamoorthy",
                     "building": "AB1",
-                    "room_number": "204"
+                    "room_number": "204",
+                    "location_node": "AB1_204"
                 },
                 "2": {
                     "section_number": "2",
                     "professor": "Jayanthi Ramamoorthy",
                     "building": "AB1",
-                    "room_number": "209"
+                    "room_number": "209",
+                    "location_node": "AB1_209"
                 }
             }
         },
@@ -146,13 +167,15 @@
                     "section_number": "1",
                     "professor": "Dr. Xing Liu",
                     "building": "AB1",
-                    "room_number": "206"
+                    "room_number": "206",
+                    "location_node": "AB1_206"
                 },
                 "2": {
                     "section_number": "2",
                     "professor": "Dr. ABM Islam",
                     "building": "AB1",
-                    "room_number": "206"
+                    "room_number": "206",
+                    "location_node": "AB1_206"
                 }
             }
         },
@@ -164,7 +187,8 @@
                     "section_number": "1",
                     "professor": "Dr. Van Vung Pham",
                     "building": "AB1",
-                    "room_number": "204"
+                    "room_number": "204",
+                    "location_node": "AB1_204"
                 }
             }
         },
@@ -177,7 +201,8 @@
                     "section_number": "1",
                     "professor": "Dr. Amar Rasheed",
                     "building": "AB1",
-                    "room_number": "204"
+                    "room_number": "204",
+                    "location_node": "AB1_204"
                 }
             }
         },
@@ -189,13 +214,15 @@
                     "section_number": "1",
                     "professor": "Dr. Van Vung Pham",
                     "building": "AB1",
-                    "room_number": "204"
+                    "room_number": "204",
+                    "location_node": "AB1_204"
                 },
                 "2": {
                     "section_number": "2",
                     "professor": "Dr. Van Vung Pham",
                     "building": "AB1",
-                    "room_number": "204"
+                    "room_number": "204",
+                    "location_node": "AB1_204"
                 }
             }
         },
@@ -207,13 +234,15 @@
                     "section_number": "1",
                     "professor": "Dr. David Burris",
                     "building": "AB1",
-                    "room_number": "204"
+                    "room_number": "204",
+                    "location_node": "AB1_204"
                 },
                 "2": {
                     "section_number": "2",
                     "professor": "Dr. David Burris",
                     "building": "AB1",
-                    "room_number": "204"
+                    "room_number": "204",
+                    "location_node": "AB1_204"
                 }
             }
         },
@@ -225,7 +254,8 @@
                     "section_number": "1",
                     "professor": "Dr. Amar Rasheed",
                     "building": "AB1",
-                    "room_number": "206"
+                    "room_number": "206",
+                    "location_node": "AB1_206"
                 }
             }
         },
@@ -237,7 +267,8 @@
                     "section_number": "1",
                     "professor": "Robert Greenberg",
                     "building": "AB1",
-                    "room_number": "204"
+                    "room_number": "204",
+                    "location_node": "AB1_204"
                 }
             }
         },
@@ -249,7 +280,8 @@
                     "section_number": "1",
                     "professor": "Dr. ABM Islam",
                     "building": "AB1",
-                    "room_number": "215"
+                    "room_number": "215",
+                    "location_node": "AB1_215"
                 }
             }
         },
@@ -261,7 +293,8 @@
                     "section_number": "1",
                     "professor": "Dr. Hyuk Cho",
                     "building": "AB1",
-                    "room_number": "206"
+                    "room_number": "206",
+                    "location_node": "AB1_206"
                 }
             }
         },
@@ -273,7 +306,8 @@
                     "section_number": "1",
                     "professor": "Dr. Gary Smith",
                     "building": "AB1",
-                    "room_number": "204"
+                    "room_number": "204",
+                    "location_node": "AB1_204"
                 }
             }
         },
@@ -285,7 +319,8 @@
                     "section_number": "1",
                     "professor": "Dr. ABM Islam",
                     "building": "AB1",
-                    "room_number": "204"
+                    "room_number": "204",
+                    "location_node": "AB1_204"
                 }
             }
         },
@@ -297,7 +332,8 @@
                     "section_number": "1",
                     "professor": "Dr. Amar Rasheed",
                     "building": "AB1",
-                    "room_number": "204"
+                    "room_number": "204",
+                    "location_node": "AB1_204"
                 }
             }
         },
@@ -309,7 +345,8 @@
                     "section_number": "1",
                     "professor": "Dr. Pat Ko",
                     "building": "FAR",
-                    "room_number": "105"
+                    "room_number": "105",
+                    "location_node": "FAR_105"
                 }
             }
         },
@@ -321,7 +358,8 @@
                     "section_number": "1",
                     "professor": "Dr. Min Kyung An",
                     "building": "AB1",
-                    "room_number": "215"
+                    "room_number": "215",
+                    "location_node": "AB1_215"
                 }
             }
         },
@@ -333,7 +371,8 @@
                     "section_number": "1",
                     "professor": "Dr. Gary Smith",
                     "building": "AB1",
-                    "room_number": "206"
+                    "room_number": "206",
+                    "location_node": "AB1_206"
                 }
             }
         },
@@ -345,7 +384,8 @@
                     "section_number": "1",
                     "professor": "Dr. Hyuk Cho",
                     "building": "AB1",
-                    "room_number": "215"
+                    "room_number": "215",
+                    "location_node": "AB1_215"
                 }
             }
         },
@@ -357,7 +397,8 @@
                     "section_number": "1",
                     "professor": "Dr. Gary Smith",
                     "building": "AB1",
-                    "room_number": "206"
+                    "room_number": "206",
+                    "location_node": "AB1_206"
                 }
             }
         },
@@ -369,7 +410,8 @@
                     "section_number": "1",
                     "professor": "Dr. Bing Zhou",
                     "building": "AB1",
-                    "room_number": "206"
+                    "room_number": "206",
+                    "location_node": "AB1_206"
                 }
             }
         },
@@ -381,7 +423,8 @@
                     "section_number": "1",
                     "professor": "Dr. Xing Liu",
                     "building": "AB1",
-                    "room_number": "204"
+                    "room_number": "204",
+                    "location_node": "AB1_204"
                 }
             }
         },
@@ -393,7 +436,8 @@
                     "section_number": "1",
                     "professor": "Dr. N. Karpoor Shashidhar",
                     "building": "AB1",
-                    "room_number": "215"
+                    "room_number": "215",
+                    "location_node": "AB1_215"
                 }
             }
         },
@@ -405,7 +449,8 @@
                     "section_number": "1",
                     "professor": "Dr. Haodi Jiang",
                     "building": "AB1",
-                    "room_number": "215"
+                    "room_number": "215",
+                    "location_node": "AB1_215"
                 }
             }
         },
@@ -417,7 +462,8 @@
                     "section_number": "1",
                     "professor": "Dr. ABM Islam",
                     "building": "AB1",
-                    "room_number": "215"
+                    "room_number": "215",
+                    "location_node": "AB1_215"
                 }
             }
         },
@@ -429,7 +475,8 @@
                     "section_number": "1",
                     "professor": "Dr. N. Karpoor Shashidhar",
                     "building": "AB1",
-                    "room_number": "202"
+                    "room_number": "202",
+                    "location_node": "AB1_202"
                 }
             }
         },
@@ -441,7 +488,8 @@
                     "section_number": "1",
                     "professor": "Dr. Min Kyung An",
                     "building": "AB1",
-                    "room_number": "202"
+                    "room_number": "202",
+                    "location_node": "AB1_202"
                 }
             }
         },
@@ -453,7 +501,8 @@
                     "section_number": "1",
                     "professor": "Dr. Cihan Varol",
                     "building": "AB1",
-                    "room_number": "202"
+                    "room_number": "202",
+                    "location_node": "AB1_202"
                 }
             }
         },
@@ -465,7 +514,8 @@
                     "section_number": "1",
                     "professor": "Dr. Qingzhong Liu",
                     "building": "AB1",
-                    "room_number": "202"
+                    "room_number": "202",
+                    "location_node": "AB1_202"
                 }
             }
         }
@@ -532,6 +582,68 @@
         "Digital Forensics Laboratory Management": "DFSC7330",
         "Operating System Forensics": "DFSC7350",
         "Computational Forensics": "DFSC7362"
-    }
-    
+    },
+
+    "users": {
+        "QeDFp6vHkGaMcPdTebl6RGW1HOW2": {
+          "firstName": "monica ",
+          "lastName": "ortega"
+        },
+        "VfZjVkWr35OOFOVx1QFmVhR0UKP2": {
+          "firstName": "Peter",
+          "lastName": "Cerna"
+        },
+        "eQ987WSd19TVGpUV77VSxQyDhVk2": {
+          "firstName": "Cainan",
+          "lastName": "Mahar"
+        },
+        "fGUeIQcpawN0itmqfMH5H6cn3MH3": {
+          "firstName": "Audrey",
+          "lastName": "Gorter"
+        }
+    },
+
+    "location_nodes": {
+        "AB1_202": {
+            "location": "AB1 202",
+            "latitude": " ",
+            "longitude": " ",
+            "connected_nodes": [ ]  
+        },
+        "AB1_204": {
+            "location": "AB1 204",
+            "latitude": " ",
+            "longitude": " ",
+            "connected_nodes": [ ]  
+        },
+        "AB1_206": {
+            "location": "AB1 206",
+            "latitude": " ",
+            "longitude": " ",
+            "connected_nodes": [ ]  
+        },
+        "AB1_209": {
+            "location": "AB1 209",
+            "latitude": " ",
+            "longitude": " ",
+            "connected_nodes": [ ]  
+        },
+        "AB1_211": {
+            "location": "AB1 211",
+            "latitude": " ",
+            "longitude": " ",
+            "connected_nodes": [ ]  
+        },
+        "AB1_215": {
+            "location": "AB1 215",
+            "latitude": " ",
+            "longitude": " ",
+            "connected_nodes": [ ]  
+        }
+      }
 }
+
+      
+
+
+
