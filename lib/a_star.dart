@@ -1,3 +1,5 @@
+import 'package:campus_compass/map.dart';
+
 // node class that represents each waypoint in the graph
 class Node {
   // our unique node identifier

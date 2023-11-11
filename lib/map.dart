@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:campus_compass/app_drawer.dart';
+import 'package:campus_compass/a_star.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
