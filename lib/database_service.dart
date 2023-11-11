@@ -90,5 +90,28 @@ class DatabaseService {
     return [];
   }
 
+  // Method to fetch user data from the database
+  Future<Map<String, dynamic>?> getUserData(String uid) async {
+    try {
+      DataSnapshot snapshot = await _usersRef.child(uid).get();
+      if (snapshot.exists && snapshot.value is Map) {
+        return Map<String, dynamic>.from(
+            snapshot.value as Map<dynamic, dynamic>);
+      }
+    } catch (e) {
+      print('Error fetching user data: $e'); // debugging
+    }
+    return null;
+  }
+
+// Method to update user data in the database
+  Future<void> updateUserData(String uid, Map<String, dynamic> userData) async {
+    try {
+      await _usersRef.child(uid).update(userData);
+    } catch (e) {
+      print('Error updating user data: $e'); //debugging
+    }
+  }
+
   // Add database methods here
 }
