@@ -32,7 +32,6 @@ class _MapPageState extends State<MapPage> {
     drawRoute(); // initiatlize route drawing
   }
 
-  @override
   List<LatLng> routeCoordinates = [];
 
   void drawRoute() {
