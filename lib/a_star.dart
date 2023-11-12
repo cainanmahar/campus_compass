@@ -1,4 +1,14 @@
-import 'package:campus_compass/map.dart';
+
+
+// define your nodes
+Node lib = Node('lib', 30.71461, -95.54660);
+Node ab1 = Node('ab1', 30.71489, -95.54716);
+
+void initializeNodes() {
+  // assuming direct connection for simplicity
+  lib.addNeighbor(ab1);
+  ab1.addNeighbor(lib);
+}
 
 // node class that represents each waypoint in the graph
 class Node {
@@ -105,3 +115,4 @@ List<Node> reconstructPath(Node current, Node start) {
   // return the path in the correct order
   return path.reversed.toList();
 }
+
