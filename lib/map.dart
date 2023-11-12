@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:campus_compass/app_drawer.dart';
+import 'package:campus_compass/a_star.dart';
 
 class MapPage extends StatefulWidget {
+
+
   const MapPage({super.key});
 
   @override
@@ -17,11 +20,39 @@ class _MapPageState extends State<MapPage> {
     '',
   ];
 
+ 
+
   //Tracks current layer index
   int currentLayerIndex = 0;
 
   //Tracks level layer, true or false
   List<bool> isSelected = [true, false];
+
+  @override
+ void initState() {
+    super.initState();
+    initializeNodes(); // initialize nodes and their neighbors
+    drawRoute(); // initiatlize route drawing
+  }
+
+
+  @override
+  
+  List<LatLng> routeCoordinates = [];
+
+  void drawRoute(){
+    // perform a* search
+    var path = aStarSearch(lib, ab1);
+
+    // convert the path to a list of LatLng
+    if (path != null) {
+      routeCoordinates = path.map((node) => LatLng(node.x, node.y)).toList();
+    }
+  
+  setState(() {
+    
+  });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,9 +88,18 @@ class _MapPageState extends State<MapPage> {
               TileLayer(
                 wmsOptions: WMSTileLayerOptions(
                   baseUrl: "http://144.126.221.0:8080/geoserver/wms/?",
-                  layers: [layerGeoserver[0]],
+                  layers: [layerGeoserver[currentLayerIndex]],
                 ),
               ),
+              PolylineLayer(
+                polylines: [
+                  Polyline(
+                    points: routeCoordinates,
+                    strokeWidth: 4.0,
+                    color: Colors.blue,
+                  )
+                ],
+              )
             ],
           ),
           Positioned(
