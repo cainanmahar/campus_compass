@@ -51,7 +51,7 @@ class _MapPageState extends State<MapPage> {
 
   void drawRoute(int startID, int endID) {
     // perform a* search
-    var path = aStarSearch(startID, endID);
+    var path = aStarSearch(startID, endID, isAdaFilterEnabled);
 
     // convert the path to a list of LatLng
     if (path != null) {

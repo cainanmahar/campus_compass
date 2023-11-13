@@ -140,7 +140,7 @@ double heuristic(Node node, Node goal) {
 }
 
 // our A* implementation
-List<Node>? aStarSearch(int startID, int goalID) {
+List<Node>? aStarSearch(int startID, int goalID, bool adaOnly) {
   Node start = nodes[startID]!;
   Node goal = nodes[goalID]!;
   // open set contains the nodes to be evaluated
@@ -168,7 +168,7 @@ List<Node>? aStarSearch(int startID, int goalID) {
     closedSet.add(current);
 
     // explore neigbors of the current node
-    for (var neighbor in current.getNeighbors()) {
+    for (var neighbor in current.getNeighbors(adaOnly: adaOnly)) {
       // skip if already evaluated
       if (closedSet.contains(neighbor)) continue;
 
