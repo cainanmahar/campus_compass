@@ -78,7 +78,9 @@ class _MapPageState extends State<MapPage> {
             }
           },
           onSelected: (String selection) {
-            // Implement what happens when the user selects a room
+            // Implement a star routing to that room
+            // use the room as the endpoint
+            // library entrance as start point
             print('You selected $selection');
           },
           fieldViewBuilder: (BuildContext context,
