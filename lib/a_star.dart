@@ -1,52 +1,57 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:latlong2/latlong.dart';
+import 'package:flutter/services.dart';
 
 Map<int, Node> nodes = {};
 
 void initializeNodes() async {
-  var graphD = await File('graph.json').readAsString().then((String contents) {
-    return jsonDecode(contents);
-  });
+  String contents = await rootBundle.loadString('assets/graph.json');
+  var graphD = jsonDecode(contents);
 
-  assert(graphD is Map<String, dynamic>);
-  Map<String, dynamic> graph = graphD;
+  // Print the overall structure and type of the decoded JSON for debugging
+  //print("Decoded JSON: $graphD");
+  //print("Type of decoded JSON: ${graphD.runtimeType}");
 
-  assert(graph.containsKey('nodes'));
-  assert(graph['nodes'] is List<Map<String, dynamic>>);
-  List<Map<String, dynamic>> jsonNodes = graph['nodes'];
+  if (graphD is Map<String, dynamic>) {
+    // Handling 'nodes'
+    if (graphD['nodes'] is List) {
+      //print("Type of nodes: ${graphD['nodes'].runtimeType}");
 
-  assert(graph.containsKey('edges'));
-  assert(graph['edges'] is List<Map<String, dynamic>>);
-  List<Map<String, dynamic>> jsonEdges = graph['edges'];
+      for (var node in graphD['nodes']) {
+        if (node is Map<String, dynamic>) {
+          int? nodeId = node['id'];
+          double? latitude = node['latitude'];
+          double? longitude = node['longitude'];
 
-  for (var jsonNode in jsonNodes) {
-    assert(jsonNode['id'] is int);
-    assert(jsonNode['latidude'] is double);
-    assert(jsonNode['longitude'] is double);
+          if (nodeId is int && latitude is double && longitude is double) {
+            nodes[nodeId] = Node(latitude, longitude);
+          }
+        }
+      }
+    }
 
-    nodes[jsonNode['id']] = Node(jsonNode['latitude'], jsonNode['longitude']);
-  }
+    // Handling 'edges'
+    if (graphD['edges'] is List) {
+      //print("Type of edges: ${graphD['edges'].runtimeType}");
 
-  for (Map<String, dynamic> jsonEdge in jsonEdges) {
-    assert(jsonEdge.containsKey('node_1'));
-    assert(jsonEdge['node_1'] is int);
-    Node a = nodes[jsonEdge['node_1']]!;
+      for (var edge in graphD['edges']) {
+        if (edge is Map<String, dynamic>) {
+          int? node1Id = edge['node_1'];
+          int? node2Id = edge['node_2'];
+          double? distance = edge['distance'];
 
-    assert(jsonEdge.containsKey('node_2'));
-    assert(jsonEdge['node_2'] is int);
-    Node b = nodes[jsonEdge['node_2']]!;
+          if (node1Id is int && node2Id is int && distance is double) {
+            Node? node1 = nodes[node1Id];
+            Node? node2 = nodes[node2Id];
 
-    assert(jsonEdge.containsKey('distance'));
-    assert(jsonEdge['distance'] is double);
-    double distance = jsonEdge['distance']!;
-
-    assert(jsonEdge.containsKey('ada'));
-    assert(jsonEdge['ada'] is bool);
-    //bool ada = jsonEdge['ada']!;
-
-    a.addNeighbor(b, distance);
-    b.addNeighbor(a, distance);
+            if (node1 != null && node2 != null) {
+              node1.addNeighbor(node2, distance);
+              node2.addNeighbor(node1, distance);
+            }
+          }
+        }
+      }
+    }
   }
 }
 
@@ -88,7 +93,9 @@ double heuristic(Node node, Node goal) {
 }
 
 // our A* implementation
-List<Node>? aStarSearch(Node start, Node goal) {
+List<Node>? aStarSearch(int startID, int goalID) {
+  Node start = nodes[startID]!;
+  Node goal = nodes[goalID]!;
   // open set contains the nodes to be evaluated
   var openSet = <Node>{start};
   // closed set contains the nodes already evaluated

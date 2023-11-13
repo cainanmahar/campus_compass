@@ -34,8 +34,11 @@ class _MapPageState extends State<MapPage> {
     'Room 204',
     'Room 206',
     'Room 101',
+    'AB1 Entrance',
     // Add more rooms
   ];
+
+  int startId = 159942;
 
   @override
   void initState() {
@@ -46,9 +49,9 @@ class _MapPageState extends State<MapPage> {
 
   List<LatLng> routeCoordinates = [];
 
-  void drawRoute(Node start, Node goal) {
+  void drawRoute(int startID, int endID) {
     // perform a* search
-    var path = aStarSearch(start, goal);
+    var path = aStarSearch(startID, endID);
 
     // convert the path to a list of LatLng
     if (path != null) {
@@ -79,8 +82,8 @@ class _MapPageState extends State<MapPage> {
           },
           onSelected: (String selection) {
             // Implement a star routing to that room
-            // use the room as the endpoint
-            // library entrance as start point
+            // hardcoded endgoal is front of AB1 till I get endpoint json
+            drawRoute(startId, 134954);
             print('You selected $selection');
           },
           fieldViewBuilder: (BuildContext context,
