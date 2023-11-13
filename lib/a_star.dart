@@ -3,7 +3,6 @@ import 'package:latlong2/latlong.dart';
 import 'package:flutter/services.dart';
 
 Map<int, Node> nodes = {};
-List<Edge> edges = [];
 Map<String, int> endpointLocations =
     {}; // global variable for endpoint locations
 
@@ -44,13 +43,15 @@ void initializeNodes() async {
           double? distance = edge['distance'];
           bool? ada = edge['ada'];
 
-          if (node1Id is int && node2Id is int && distance is double) {
+          if (node1Id is int &&
+              node2Id is int &&
+              distance is double &&
+              ada is bool) {
             Node? node1 = nodes[node1Id];
             Node? node2 = nodes[node2Id];
 
             if (node1 != null && node2 != null) {
-              node1.addNeighbor(node2, distance);
-              node2.addNeighbor(node1, distance);
+              Node.connect(node1, node2, Edge(distance, ada));
             }
           }
         }
@@ -86,8 +87,8 @@ void loadEndpoints() async {
 class Node {
   LatLng coords;
 
-  // map to hold neigbors and their edge weights
-  Map<Node, double> neighbors;
+  // Map of neighbors and their corresponding edge data
+  Map<Node, Edge> connections;
 
   // our cost values
   // gCost = cost of the path from start node to the current node
@@ -99,25 +100,36 @@ class Node {
 
   // constructor to initialize the node
   Node(double lat, double lng)
-      : neighbors = {},
+      : connections = {},
         gCost = double.infinity,
         hCost = double.infinity,
         fCost = double.infinity,
         parent = null,
         coords = LatLng(lat, lng);
 
-  // method to add a neighbnor and its edge weight to this node
-  void addNeighbor(Node neighborNode, [double weight = 1]) {
-    neighbors[neighborNode] = weight;
+  void addNeighbor(Node other, Edge edge) {
+    connections[other] = edge;
+  }
+
+  // Gets a list of the neighbors of this node, optionally filtered by neighbors
+  // whose connection to this node is ada-compliant.
+  Iterable<Node> getNeighbors({bool adaOnly = false}) {
+    return connections.keys
+        .where((neighbor) => !adaOnly || connections[neighbor]!.ada);
+  }
+
+  // method to connect two nodes together
+  static void connect(Node a, Node b, Edge edge) {
+    a.addNeighbor(b, edge);
+    b.addNeighbor(a, edge);
   }
 }
 
 class Edge {
-  Node a, b;
   double weight;
   bool ada;
 
-  Edge(this.a, this.b, this.weight, this.ada);
+  Edge(this.weight, this.ada);
 }
 
 // our heuristic to estimate the cost from a node to the goal
@@ -156,12 +168,13 @@ List<Node>? aStarSearch(int startID, int goalID) {
     closedSet.add(current);
 
     // explore neigbors of the current node
-    for (var neighbor in current.neighbors.keys) {
+    for (var neighbor in current.getNeighbors()) {
       // skip if already evaluated
       if (closedSet.contains(neighbor)) continue;
 
       // calc the tentative gCost for the neighbor
-      var tentativeGScore = current.gCost + current.neighbors[neighbor]!;
+      var tentativeGScore =
+          current.gCost + current.connections[neighbor]!.weight;
 
       // discover new node
       if (!openSet.contains(neighbor)) {
@@ -178,7 +191,7 @@ List<Node>? aStarSearch(int startID, int goalID) {
       neighbor.fCost = neighbor.gCost + neighbor.hCost;
     }
   }
-  // return noul if no path is found
+  // return null if no path is found
   return null;
 }
 
