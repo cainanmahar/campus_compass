@@ -87,6 +87,9 @@ void loadEndpoints() async {
 class Node {
   LatLng coords;
 
+  // Map of neighbors and their corresponding edge data
+  Map<Node, Edge> neighbors;
+
   // our cost values
   // gCost = cost of the path from start node to the current node
   // hCost = cost of the heuristic estimate
@@ -97,32 +100,21 @@ class Node {
 
   // constructor to initialize the node
   Node(double lat, double lng)
-      : gCost = double.infinity,
+      : neighbors = {},
+        gCost = double.infinity,
         hCost = double.infinity,
         fCost = double.infinity,
         parent = null,
         coords = LatLng(lat, lng);
 
-  // Map to store every edge in the graph.
-  static Map<Node, Map<Node, Edge>> edges = {};
+  void addNeighbor(Node other, Edge edge) {
+    neighbors[other] = edge;
+  }
 
   // method to connect two nodes together
   static void connect(Node a, Node b, Edge edge) {
-    // We want to update the neighbors of a.
-    edges.update(a, (aNeighbors) {
-      aNeighbors[b] = edge; // a already has a neighbors map. write to it
-      return aNeighbors;
-    }, ifAbsent: () => {b: edge}); // a has no neighbors map. create it.
-
-    // Do it all again for b.
-    edges.update(b, (bNeighbors) {
-      bNeighbors[a] = edge;
-      return bNeighbors;
-    }, ifAbsent: () => {a: edge});
-  }
-
-  Map<Node, Edge>? getConnections() {
-    return edges[this];
+    a.addNeighbor(b, edge);
+    b.addNeighbor(a, edge);
   }
 }
 
@@ -158,12 +150,6 @@ List<Node>? aStarSearch(int startID, int goalID) {
   while (openSet.isNotEmpty) {
     // find the node in openSet with the lowest fCost
     var current = openSet.reduce((a, b) => a.fCost < b.fCost ? a : b);
-    // get the outgoing edges from that node.
-    // It shouldn't be possible to have connections == null, because this node
-    // being in the open set implies that it shares an edge with another node,
-    // which implies this node should have at least *one* connection because
-    // our graph is undirected.
-    var connections = current.getConnections()!;
 
     // if we find current is our goal node, return the path of how we got there
     if (current == goal) {
@@ -175,12 +161,12 @@ List<Node>? aStarSearch(int startID, int goalID) {
     closedSet.add(current);
 
     // explore neigbors of the current node
-    for (var neighbor in connections.keys) {
+    for (var neighbor in current.neighbors.keys) {
       // skip if already evaluated
       if (closedSet.contains(neighbor)) continue;
 
       // calc the tentative gCost for the neighbor
-      var tentativeGScore = current.gCost + connections[neighbor]!.weight;
+      var tentativeGScore = current.gCost + current.neighbors[neighbor]!.weight;
 
       // discover new node
       if (!openSet.contains(neighbor)) {
