@@ -28,6 +28,15 @@ class _MapPageState extends State<MapPage> {
   //Search Text Controller
   TextEditingController searchController = TextEditingController();
 
+  //List of rooms (just for testing purposes)
+  List<String> roomNumbers = [
+    'Room 202',
+    'Room 204',
+    'Room 206',
+    'Room 101',
+    // Add more rooms
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -56,16 +65,43 @@ class _MapPageState extends State<MapPage> {
         elevation: 0,
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
-        title: TextField(
-            controller: searchController,
-            decoration: const InputDecoration(
-              hintText: 'Search...',
-              prefixIcon: Icon(Icons.search, color: Colors.black),
-              border: InputBorder.none,
-            ),
-            onChanged: (value) {
-              //Implement search logic here
-            }),
+        title: Autocomplete<String>(
+          optionsBuilder: (TextEditingValue textEditingValue) {
+            if (textEditingValue.text.isEmpty) {
+              return const Iterable<String>.empty();
+            } else {
+              return roomNumbers.where((option) {
+                return option
+                    .toLowerCase()
+                    .contains(textEditingValue.text.toLowerCase());
+              });
+            }
+          },
+          onSelected: (String selection) {
+            // Implement what happens when the user selects a room
+            print('You selected $selection');
+          },
+          fieldViewBuilder: (BuildContext context,
+              TextEditingController textEditingController,
+              FocusNode focusNode,
+              VoidCallback onFieldSubmitted) {
+            return TextFormField(
+              controller: textEditingController,
+              focusNode: focusNode,
+              onFieldSubmitted: (String value) {
+                onFieldSubmitted();
+              },
+              decoration: const InputDecoration(
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: Colors.black,
+                ), // Search icon
+                hintText: 'Search...',
+                border: InputBorder.none,
+              ),
+            );
+          },
+        ),
       ),
 
       // Collapsible Menu
