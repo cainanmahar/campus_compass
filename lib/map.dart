@@ -29,18 +29,18 @@ class _MapPageState extends State<MapPage> {
   void initState() {
     super.initState();
     initializeNodes(); // initialize nodes and their neighbors
-    drawRoute(); // initiatlize route drawing
+    //drawRoute(); // initiatlize route drawing
   }
 
   List<LatLng> routeCoordinates = [];
 
-  void drawRoute() {
+  void drawRoute(Node start, Node goal) {
     // perform a* search
-    var path = aStarSearch(lib, ab1);
+    var path = aStarSearch(start, goal);
 
     // convert the path to a list of LatLng
     if (path != null) {
-      routeCoordinates = path.map((node) => LatLng(node.x, node.y)).toList();
+      routeCoordinates = path.map((node) => node.coords).toList();
     }
 
     setState(() {});

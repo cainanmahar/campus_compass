@@ -43,7 +43,7 @@ void initializeNodes() async {
 
     assert(jsonEdge.containsKey('ada'));
     assert(jsonEdge['ada'] is bool);
-    bool ada = jsonEdge['ada']!;
+    //bool ada = jsonEdge['ada']!;
 
     a.addNeighbor(b, distance);
     b.addNeighbor(a, distance);
