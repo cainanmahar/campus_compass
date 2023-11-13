@@ -25,6 +25,9 @@ class _MapPageState extends State<MapPage> {
   //Tracks level layer, true or false
   List<bool> isSelected = [true, false];
 
+  //Search Text Controller
+  TextEditingController searchController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -53,6 +56,16 @@ class _MapPageState extends State<MapPage> {
         elevation: 0,
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
+        title: TextField(
+            controller: searchController,
+            decoration: const InputDecoration(
+              hintText: 'Search...',
+              prefixIcon: Icon(Icons.search, color: Colors.black),
+              border: InputBorder.none,
+            ),
+            onChanged: (value) {
+              //Implement search logic here
+            }),
       ),
 
       // Collapsible Menu
