@@ -88,7 +88,7 @@ class Node {
   LatLng coords;
 
   // Map of neighbors and their corresponding edge data
-  Map<Node, Edge> neighbors;
+  Map<Node, Edge> connections;
 
   // our cost values
   // gCost = cost of the path from start node to the current node
@@ -100,7 +100,7 @@ class Node {
 
   // constructor to initialize the node
   Node(double lat, double lng)
-      : neighbors = {},
+      : connections = {},
         gCost = double.infinity,
         hCost = double.infinity,
         fCost = double.infinity,
@@ -108,7 +108,14 @@ class Node {
         coords = LatLng(lat, lng);
 
   void addNeighbor(Node other, Edge edge) {
-    neighbors[other] = edge;
+    connections[other] = edge;
+  }
+
+  // Gets a list of the neighbors of this node, optionally filtered by neighbors
+  // whose connection to this node is ada-compliant.
+  Iterable<Node> getNeighbors({bool adaOnly = false}) {
+    return connections.keys
+        .where((neighbor) => !adaOnly || connections[neighbor]!.ada);
   }
 
   // method to connect two nodes together
@@ -161,12 +168,13 @@ List<Node>? aStarSearch(int startID, int goalID) {
     closedSet.add(current);
 
     // explore neigbors of the current node
-    for (var neighbor in current.neighbors.keys) {
+    for (var neighbor in current.getNeighbors()) {
       // skip if already evaluated
       if (closedSet.contains(neighbor)) continue;
 
       // calc the tentative gCost for the neighbor
-      var tentativeGScore = current.gCost + current.neighbors[neighbor]!.weight;
+      var tentativeGScore =
+          current.gCost + current.connections[neighbor]!.weight;
 
       // discover new node
       if (!openSet.contains(neighbor)) {
