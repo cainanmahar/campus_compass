@@ -5,8 +5,6 @@ import 'package:campus_compass/app_drawer.dart';
 import 'package:campus_compass/a_star.dart';
 
 class MapPage extends StatefulWidget {
-
-
   const MapPage({super.key});
 
   @override
@@ -15,12 +13,11 @@ class MapPage extends StatefulWidget {
 
 class _MapPageState extends State<MapPage> {
   // List of the names of the layers
+  // TODO: Make this a 2-d array
   List<String> layerGeoserver = [
-    'outdoors',
-    '',
+    'outdoors_all',
+    'outdoors_ada',
   ];
-
- 
 
   //Tracks current layer index
   int currentLayerIndex = 0;
@@ -29,18 +26,15 @@ class _MapPageState extends State<MapPage> {
   List<bool> isSelected = [true, false];
 
   @override
- void initState() {
+  void initState() {
     super.initState();
     initializeNodes(); // initialize nodes and their neighbors
     drawRoute(); // initiatlize route drawing
   }
 
-
-  @override
-  
   List<LatLng> routeCoordinates = [];
 
-  void drawRoute(){
+  void drawRoute() {
     // perform a* search
     var path = aStarSearch(lib, ab1);
 
@@ -48,10 +42,8 @@ class _MapPageState extends State<MapPage> {
     if (path != null) {
       routeCoordinates = path.map((node) => LatLng(node.x, node.y)).toList();
     }
-  
-  setState(() {
-    
-  });
+
+    setState(() {});
   }
 
   @override
@@ -70,26 +62,22 @@ class _MapPageState extends State<MapPage> {
       body: Stack(
         children: [
           FlutterMap(
-            options: MapOptions(
-              cameraConstraint: CameraConstraint.contain(
-                bounds: LatLngBounds(
-                  const LatLng(30.926847, -96.762604),
-                  const LatLng(29.066889, -93.930492),
-                ),
-              ),
-              interactionOptions: const InteractionOptions(
+            options: const MapOptions(
+              interactionOptions: InteractionOptions(
                 flags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
               ),
-              initialCenter:
-                  const LatLng(30.714786150948303, -95.54705543100049),
+              initialCenter: LatLng(30.71475020, -95.54687941),
               initialZoom: 19.5,
+              crs: Epsg4326(),
             ),
             children: [
               TileLayer(
                 wmsOptions: WMSTileLayerOptions(
                   baseUrl: "http://144.126.221.0:8080/geoserver/wms/?",
                   layers: [layerGeoserver[currentLayerIndex]],
+                  crs: const Epsg4326(),
                 ),
+                maxNativeZoom: 22,
               ),
               PolylineLayer(
                 polylines: [
