@@ -25,6 +25,18 @@ class _MapPageState extends State<MapPage> {
   //Tracks level layer, true or false
   List<bool> isSelected = [true, false];
 
+  //Search Text Controller
+  TextEditingController searchController = TextEditingController();
+
+  //List of rooms (just for testing purposes)
+  List<String> roomNumbers = [
+    'Room 202',
+    'Room 204',
+    'Room 206',
+    'Room 101',
+    // Add more rooms
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -53,6 +65,45 @@ class _MapPageState extends State<MapPage> {
         elevation: 0,
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
+        title: Autocomplete<String>(
+          optionsBuilder: (TextEditingValue textEditingValue) {
+            if (textEditingValue.text.isEmpty) {
+              return const Iterable<String>.empty();
+            } else {
+              return roomNumbers.where((option) {
+                return option
+                    .toLowerCase()
+                    .contains(textEditingValue.text.toLowerCase());
+              });
+            }
+          },
+          onSelected: (String selection) {
+            // Implement a star routing to that room
+            // use the room as the endpoint
+            // library entrance as start point
+            print('You selected $selection');
+          },
+          fieldViewBuilder: (BuildContext context,
+              TextEditingController textEditingController,
+              FocusNode focusNode,
+              VoidCallback onFieldSubmitted) {
+            return TextFormField(
+              controller: textEditingController,
+              focusNode: focusNode,
+              onFieldSubmitted: (String value) {
+                onFieldSubmitted();
+              },
+              decoration: const InputDecoration(
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: Colors.black,
+                ), // Search icon
+                hintText: 'Search...',
+                border: InputBorder.none,
+              ),
+            );
+          },
+        ),
       ),
 
       // Collapsible Menu
