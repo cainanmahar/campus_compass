@@ -3,6 +3,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:flutter/services.dart';
 
 Map<int, Node> nodes = {};
+Map<String, int> endpointLocations = {}; // global variable for endpoint locations
 
 void initializeNodes() async {
   String contents = await rootBundle.loadString('assets/graph.json');
@@ -48,6 +49,28 @@ void initializeNodes() async {
               node1.addNeighbor(node2, distance);
               node2.addNeighbor(node1, distance);
             }
+          }
+        }
+      }
+    }
+  }
+}
+
+// New function to load and parse endpoints
+void loadEndpoints() async {
+  String endpointContents = await rootBundle.loadString('assets/outdoor_endpoints.json');
+  var endpointsJson = jsonDecode(endpointContents);
+
+  if (endpointsJson is Map<String, dynamic>) {
+    if (endpointsJson['outdoor_endpoints'] is List) {
+      List<dynamic> endpointsList = endpointsJson['outdoor_endpoints'];
+      for (var endpoint in endpointsList) {
+        if (endpoint is Map<String, dynamic>) {
+          String? location = endpoint['location'];
+          int? nodeId = endpoint['node_id'];
+
+          if (location != null && nodeId != null) {
+            endpointLocations[location] = nodeId;
           }
         }
       }
@@ -161,3 +184,5 @@ List<Node> reconstructPath(Node current, Node start) {
   // return the path in the correct order
   return path.reversed.toList();
 }
+
+

@@ -44,6 +44,7 @@ class _MapPageState extends State<MapPage> {
   void initState() {
     super.initState();
     initializeNodes(); // initialize nodes and their neighbors
+    loadEndpoints(); // load and parse endpoitn data from a_star.dart
     //drawRoute(); // initiatlize route drawing
   }
 
@@ -72,9 +73,10 @@ class _MapPageState extends State<MapPage> {
           optionsBuilder: (TextEditingValue textEditingValue) {
             if (textEditingValue.text.isEmpty) {
               return const Iterable<String>.empty();
-            } else {
-              return roomNumbers.where((option) {
-                return option
+            } else { 
+              // directly use endpointLocations from a_star.dart
+              return endpointLocations.keys.where((location) {
+                return location
                     .toLowerCase()
                     .contains(textEditingValue.text.toLowerCase());
               });
@@ -83,8 +85,9 @@ class _MapPageState extends State<MapPage> {
           onSelected: (String selection) {
             // Implement a star routing to that room
             // hardcoded endgoal is front of AB1 till I get endpoint json
-            drawRoute(startId, 134954);
-            print('You selected $selection');
+            int endNodeId = endpointLocations[selection] ?? 0; // default to 0 or handle appropriately
+            drawRoute(startId, endNodeId);
+            print('Selected location: $selection, Node ID: $endNodeId');
           },
           fieldViewBuilder: (BuildContext context,
               TextEditingController textEditingController,
