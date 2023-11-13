@@ -6,16 +6,18 @@ import 'package:campus_compass/a_star.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
-
   @override
   State<MapPage> createState() => _MapPageState();
 }
 
 class _MapPageState extends State<MapPage> {
+  // controls filter state
+  bool isAdaFilterEnabled = false;
+
   // List of the names of the layers
   // TODO: Make this a 2-d array
   List<String> layerGeoserver = [
-    'outdoors_all',
+    'outdoors_hl_nonada',
     'outdoors_ada',
   ];
 
@@ -24,9 +26,6 @@ class _MapPageState extends State<MapPage> {
 
   //Tracks level layer, true or false
   List<bool> isSelected = [true, false];
-
-  //Search Text Controller
-  TextEditingController searchController = TextEditingController();
 
   //List of rooms (just for testing purposes)
   List<String> roomNumbers = [
@@ -60,6 +59,13 @@ class _MapPageState extends State<MapPage> {
     }
 
     setState(() {});
+  }
+
+  void handleFilterChange(bool isAdaFilterEnabled) {
+    setState(() {
+      this.isAdaFilterEnabled = isAdaFilterEnabled;
+      currentLayerIndex = isAdaFilterEnabled ? 1 : 0; // Ada or non-Ada path
+    });
   }
 
   @override
@@ -114,7 +120,10 @@ class _MapPageState extends State<MapPage> {
       ),
 
       // Collapsible Menu
-      drawer: AppDrawer(),
+      drawer: AppDrawer(
+        isAdaFilterEnabled: isAdaFilterEnabled,
+        onFilterChanged: handleFilterChange,
+      ),
 
       // Map part of the screen
       body: Stack(

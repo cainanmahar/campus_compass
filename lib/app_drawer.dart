@@ -3,8 +3,13 @@ import 'package:campus_compass/auth_service.dart';
 
 class AppDrawer extends StatelessWidget {
   final AuthService authService = AuthService();
+  final Function(bool) onFilterChanged;
+  final bool isAdaFilterEnabled;
 
-  AppDrawer({super.key});
+  AppDrawer(
+      {super.key,
+      required this.isAdaFilterEnabled,
+      required this.onFilterChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -87,17 +92,13 @@ class AppDrawer extends StatelessWidget {
             color: Colors.grey,
           ),
           const ListTile(
-            title: Text('Filters'),
+            title: Text('Map preferences'),
           ),
-          const ListTile(leading: Filters(), title: Text("Filter 1")),
-          const ListTile(
-            leading: Filters(),
-            title: Text("Filter 2"),
-          ),
-          const ListTile(
-            leading: Filters(),
-            title: Text("Filter 3"),
-          ),
+          ListTile(
+              leading: Filters(
+                  isChecked: isAdaFilterEnabled,
+                  onFilterChanged: onFilterChanged),
+              title: const Text("Ada paths only")),
           //ElevatedButton(onPressed: (){Filters.resetFilter();}, style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),child: Text("Reset")),
         ],
       ),
@@ -106,13 +107,23 @@ class AppDrawer extends StatelessWidget {
 }
 
 class Filters extends StatefulWidget {
-  const Filters({super.key});
+  final Function(bool) onFilterChanged;
+  final bool isChecked;
+  const Filters(
+      {super.key, required this.isChecked, required this.onFilterChanged});
   @override
   State<Filters> createState() => _FiltersState();
 }
 
 class _FiltersState extends State<Filters> {
-  bool isChecked = false;
+  late bool isChecked;
+
+  @override
+  void initState() {
+    super.initState();
+    isChecked = widget.isChecked;
+  }
+
   @override
   Widget build(BuildContext context) {
     Color getColor(Set<MaterialState> states) {
@@ -133,6 +144,7 @@ class _FiltersState extends State<Filters> {
         setState(() {
           isChecked = value!;
         });
+        widget.onFilterChanged(isChecked);
       },
     );
   }
