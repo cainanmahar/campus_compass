@@ -1,40 +1,78 @@
+import 'dart:convert';
+import 'dart:io';
+import 'package:latlong2/latlong.dart';
 
+Map<int, Node> nodes = {};
 
-// define your nodes
-Node lib = Node('lib', 30.71461, -95.54660);
-Node ab1 = Node('ab1', 30.71489, -95.54716);
+void initializeNodes() async {
+  var graphD = await File('graph.json').readAsString().then((String contents) {
+    return jsonDecode(contents);
+  });
 
-void initializeNodes() {
-  // assuming direct connection for simplicity
-  lib.addNeighbor(ab1);
-  ab1.addNeighbor(lib);
+  assert(graphD is Map<String, dynamic>);
+  Map<String, dynamic> graph = graphD;
+
+  assert(graph.containsKey('nodes'));
+  assert(graph['nodes'] is List<Map<String, dynamic>>);
+  List<Map<String, dynamic>> jsonNodes = graph['nodes'];
+
+  assert(graph.containsKey('edges'));
+  assert(graph['edges'] is List<Map<String, dynamic>>);
+  List<Map<String, dynamic>> jsonEdges = graph['edges'];
+
+  for (var jsonNode in jsonNodes) {
+    assert(jsonNode['id'] is int);
+    assert(jsonNode['latidude'] is double);
+    assert(jsonNode['longitude'] is double);
+
+    nodes[jsonNode['id']] = Node(jsonNode['latitude'], jsonNode['longitude']);
+  }
+
+  for (Map<String, dynamic> jsonEdge in jsonEdges) {
+    assert(jsonEdge.containsKey('node_1'));
+    assert(jsonEdge['node_1'] is int);
+    Node a = nodes[jsonEdge['node_1']]!;
+
+    assert(jsonEdge.containsKey('node_2'));
+    assert(jsonEdge['node_2'] is int);
+    Node b = nodes[jsonEdge['node_2']]!;
+
+    assert(jsonEdge.containsKey('distance'));
+    assert(jsonEdge['distance'] is double);
+    double distance = jsonEdge['distance']!;
+
+    assert(jsonEdge.containsKey('ada'));
+    assert(jsonEdge['ada'] is bool);
+    bool ada = jsonEdge['ada']!;
+
+    a.addNeighbor(b, distance);
+    b.addNeighbor(a, distance);
+  }
 }
 
 // node class that represents each waypoint in the graph
 class Node {
-  // our unique node identifier
-  String identifier;
-  double x, y;
-  double? latitude, longitude;
+  LatLng coords;
 
   // map to hold neigbors and their edge weights
   Map<Node, double> neighbors;
 
   // our cost values
   // gCost = cost of the path from start node to the current node
-  // hCost = cost of the heuristic estimate 
+  // hCost = cost of the heuristic estimate
   // fCost = gCost + hCost, used to evaluate which node to explore next
   double gCost, hCost, fCost;
   // parent node for path reconstruction
   Node? parent;
 
   // constructor to initialize the node
-  Node(this.identifier, this.x, this.y, {this.latitude, this.longitude})
+  Node(double lat, double lng)
       : neighbors = {},
         gCost = double.infinity,
         hCost = double.infinity,
         fCost = double.infinity,
-        parent = null;
+        parent = null,
+        coords = LatLng(lat, lng);
 
   // method to add a neighbnor and its edge weight to this node
   void addNeighbor(Node neighborNode, [double weight = 1]) {
@@ -45,11 +83,12 @@ class Node {
 // our heuristic to estimate the cost from a node to the goal
 double heuristic(Node node, Node goal) {
   // currently manhattan distance
-  return (node.x - goal.x).abs() + (node.y - goal.y).abs();
+  const distCalc = DistanceVincenty(roundResult: false);
+  return distCalc.as(LengthUnit.Meter, node.coords, goal.coords);
 }
+
 // our A* implementation
 List<Node>? aStarSearch(Node start, Node goal) {
-
   // open set contains the nodes to be evaluated
   var openSet = <Node>{start};
   // closed set contains the nodes already evaluated
@@ -115,4 +154,3 @@ List<Node> reconstructPath(Node current, Node start) {
   // return the path in the correct order
   return path.reversed.toList();
 }
-
