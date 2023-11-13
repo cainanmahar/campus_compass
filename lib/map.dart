@@ -72,8 +72,8 @@ class _MapPageState extends State<MapPage> {
         title: Autocomplete<String>(
           optionsBuilder: (TextEditingValue textEditingValue) {
             if (textEditingValue.text.isEmpty) {
-              return const Iterable<String>.empty();
-            } else { 
+              return endpointLocations.keys;
+            } else {
               // directly use endpointLocations from a_star.dart
               return endpointLocations.keys.where((location) {
                 return location
@@ -85,7 +85,8 @@ class _MapPageState extends State<MapPage> {
           onSelected: (String selection) {
             // Implement a star routing to that room
             // hardcoded endgoal is front of AB1 till I get endpoint json
-            int endNodeId = endpointLocations[selection] ?? 0; // default to 0 or handle appropriately
+            int endNodeId = endpointLocations[selection] ??
+                0; // default to 0 or handle appropriately
             drawRoute(startId, endNodeId);
             print('Selected location: $selection, Node ID: $endNodeId');
           },
