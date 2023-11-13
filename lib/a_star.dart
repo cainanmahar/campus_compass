@@ -3,6 +3,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:flutter/services.dart';
 
 Map<int, Node> nodes = {};
+List<Edge> edges = [];
 Map<String, int> endpointLocations =
     {}; // global variable for endpoint locations
 
@@ -109,6 +110,14 @@ class Node {
   void addNeighbor(Node neighborNode, [double weight = 1]) {
     neighbors[neighborNode] = weight;
   }
+}
+
+class Edge {
+  Node a, b;
+  double weight;
+  bool ada;
+
+  Edge(this.a, this.b, this.weight, this.ada);
 }
 
 // our heuristic to estimate the cost from a node to the goal
