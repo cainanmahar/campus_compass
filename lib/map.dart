@@ -11,7 +11,7 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
- // State variables to track the selection of start and end nodes
+  // State variables to track the selection of start and end nodes
   bool isSelectingStartNode = true;
   int? startId;
   int? endNodeId;
@@ -49,7 +49,7 @@ class _MapPageState extends State<MapPage> {
   // int startId = 159942;
   // Controller for managing the text in the search field
   TextEditingController searchController = TextEditingController();
-  
+
   @override
   void initState() {
     super.initState();
@@ -79,6 +79,7 @@ class _MapPageState extends State<MapPage> {
       currentLayerIndex = isAdaFilterEnabled ? 1 : 0; // Ada or non-Ada path
     });
   }
+
   // Method to reset the selection of start and end nodes
   void resetSelections() {
     setState(() {
@@ -113,22 +114,27 @@ class _MapPageState extends State<MapPage> {
             }
           },
           onSelected: (String selection) {
+            print('onSelected callback called');
             int selectedNodeId = endpointLocations[selection] ?? 0;
             setState(() {
               if (isSelectingStartNode) {
                 startId = selectedNodeId;
                 startLocationName = selection; // Set start location name
                 isSelectingStartNode = false;
+                print(selection);
               } else {
+                print(selectedNodeId);
                 endNodeId = selectedNodeId;
                 endLocationName = selection; // Set end location name
-                if (startId != null){
+                if (startId != null) {
                   drawRoute(startId!, endNodeId!);
                 }
                 // Switch back to selecting start node for next selection
                 isSelectingStartNode = true;
               }
               // Clear the search input
+
+              searchController.text = selection;
               searchController.clear();
             });
             print('Selected location: $selection, Node ID: $endNodeId');
@@ -137,6 +143,7 @@ class _MapPageState extends State<MapPage> {
               TextEditingController textEditingController,
               FocusNode focusNode,
               VoidCallback onFieldSubmitted) {
+            searchController = textEditingController;
             return TextFormField(
               controller: textEditingController,
               focusNode: focusNode,
