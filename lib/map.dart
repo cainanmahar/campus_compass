@@ -6,16 +6,18 @@ import 'package:campus_compass/a_star.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
-
   @override
   State<MapPage> createState() => _MapPageState();
 }
 
 class _MapPageState extends State<MapPage> {
+  // controls filter state
+  bool isAdaFilterEnabled = false;
+
   // List of the names of the layers
   // TODO: Make this a 2-d array
   List<String> layerGeoserver = [
-    'outdoors_all',
+    'outdoors_hl_nonada',
     'outdoors_ada',
   ];
 
@@ -25,30 +27,31 @@ class _MapPageState extends State<MapPage> {
   //Tracks level layer, true or false
   List<bool> isSelected = [true, false];
 
-  //Search Text Controller
-  TextEditingController searchController = TextEditingController();
-
   //List of rooms (just for testing purposes)
   List<String> roomNumbers = [
     'Room 202',
     'Room 204',
     'Room 206',
     'Room 101',
+    'AB1 Entrance',
     // Add more rooms
   ];
+
+  int startId = 159942;
 
   @override
   void initState() {
     super.initState();
     initializeNodes(); // initialize nodes and their neighbors
+    loadEndpoints(); // load and parse endpoitn data from a_star.dart
     //drawRoute(); // initiatlize route drawing
   }
 
   List<LatLng> routeCoordinates = [];
 
-  void drawRoute(Node start, Node goal) {
+  void drawRoute(int startID, int endID) {
     // perform a* search
-    var path = aStarSearch(start, goal);
+    var path = aStarSearch(startID, endID, isAdaFilterEnabled);
 
     // convert the path to a list of LatLng
     if (path != null) {
@@ -56,6 +59,13 @@ class _MapPageState extends State<MapPage> {
     }
 
     setState(() {});
+  }
+
+  void handleFilterChange(bool isAdaFilterEnabled) {
+    setState(() {
+      this.isAdaFilterEnabled = isAdaFilterEnabled;
+      currentLayerIndex = isAdaFilterEnabled ? 1 : 0; // Ada or non-Ada path
+    });
   }
 
   @override
@@ -68,10 +78,11 @@ class _MapPageState extends State<MapPage> {
         title: Autocomplete<String>(
           optionsBuilder: (TextEditingValue textEditingValue) {
             if (textEditingValue.text.isEmpty) {
-              return const Iterable<String>.empty();
+              return endpointLocations.keys;
             } else {
-              return roomNumbers.where((option) {
-                return option
+              // directly use endpointLocations from a_star.dart
+              return endpointLocations.keys.where((location) {
+                return location
                     .toLowerCase()
                     .contains(textEditingValue.text.toLowerCase());
               });
@@ -79,9 +90,11 @@ class _MapPageState extends State<MapPage> {
           },
           onSelected: (String selection) {
             // Implement a star routing to that room
-            // use the room as the endpoint
-            // library entrance as start point
-            print('You selected $selection');
+            // hardcoded endgoal is front of AB1 till I get endpoint json
+            int endNodeId = endpointLocations[selection] ??
+                0; // default to 0 or handle appropriately
+            drawRoute(startId, endNodeId);
+            print('Selected location: $selection, Node ID: $endNodeId');
           },
           fieldViewBuilder: (BuildContext context,
               TextEditingController textEditingController,
@@ -107,7 +120,10 @@ class _MapPageState extends State<MapPage> {
       ),
 
       // Collapsible Menu
-      drawer: AppDrawer(),
+      drawer: AppDrawer(
+        isAdaFilterEnabled: isAdaFilterEnabled,
+        onFilterChanged: handleFilterChange,
+      ),
 
       // Map part of the screen
       body: Stack(

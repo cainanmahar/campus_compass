@@ -1,52 +1,86 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:latlong2/latlong.dart';
+import 'package:flutter/services.dart';
 
 Map<int, Node> nodes = {};
+Map<String, int> endpointLocations =
+    {}; // global variable for endpoint locations
 
 void initializeNodes() async {
-  var graphD = await File('graph.json').readAsString().then((String contents) {
-    return jsonDecode(contents);
-  });
+  String contents = await rootBundle.loadString('assets/graph.json');
+  var graphD = jsonDecode(contents);
 
-  assert(graphD is Map<String, dynamic>);
-  Map<String, dynamic> graph = graphD;
+  // Print the overall structure and type of the decoded JSON for debugging
+  //print("Decoded JSON: $graphD");
+  //print("Type of decoded JSON: ${graphD.runtimeType}");
 
-  assert(graph.containsKey('nodes'));
-  assert(graph['nodes'] is List<Map<String, dynamic>>);
-  List<Map<String, dynamic>> jsonNodes = graph['nodes'];
+  if (graphD is Map<String, dynamic>) {
+    // Handling 'nodes'
+    if (graphD['nodes'] is List) {
+      //print("Type of nodes: ${graphD['nodes'].runtimeType}");
 
-  assert(graph.containsKey('edges'));
-  assert(graph['edges'] is List<Map<String, dynamic>>);
-  List<Map<String, dynamic>> jsonEdges = graph['edges'];
+      for (var node in graphD['nodes']) {
+        if (node is Map<String, dynamic>) {
+          int? nodeId = node['id'];
+          double? latitude = node['latitude'];
+          double? longitude = node['longitude'];
 
-  for (var jsonNode in jsonNodes) {
-    assert(jsonNode['id'] is int);
-    assert(jsonNode['latidude'] is double);
-    assert(jsonNode['longitude'] is double);
+          if (nodeId is int && latitude is double && longitude is double) {
+            nodes[nodeId] = Node(latitude, longitude);
+          }
+        }
+      }
+    }
 
-    nodes[jsonNode['id']] = Node(jsonNode['latitude'], jsonNode['longitude']);
+    // Handling 'edges'
+    if (graphD['edges'] is List) {
+      //print("Type of edges: ${graphD['edges'].runtimeType}");
+
+      for (var edge in graphD['edges']) {
+        if (edge is Map<String, dynamic>) {
+          int? node1Id = edge['node_1'];
+          int? node2Id = edge['node_2'];
+          double? distance = edge['distance'];
+          bool? ada = edge['ada'];
+
+          if (node1Id is int &&
+              node2Id is int &&
+              distance is double &&
+              ada is bool) {
+            Node? node1 = nodes[node1Id];
+            Node? node2 = nodes[node2Id];
+
+            if (node1 != null && node2 != null) {
+              Node.connect(node1, node2, Edge(distance, ada));
+            }
+          }
+        }
+      }
+    }
   }
+}
 
-  for (Map<String, dynamic> jsonEdge in jsonEdges) {
-    assert(jsonEdge.containsKey('node_1'));
-    assert(jsonEdge['node_1'] is int);
-    Node a = nodes[jsonEdge['node_1']]!;
+// New function to load and parse endpoints
+// will need modifications once we get indoor nav graph
+void loadEndpoints() async {
+  String endpointContents =
+      await rootBundle.loadString('assets/outdoor_endpoints.json');
+  var endpointsJson = jsonDecode(endpointContents);
 
-    assert(jsonEdge.containsKey('node_2'));
-    assert(jsonEdge['node_2'] is int);
-    Node b = nodes[jsonEdge['node_2']]!;
+  if (endpointsJson is Map<String, dynamic>) {
+    if (endpointsJson['outdoor_endpoints'] is List) {
+      List<dynamic> endpointsList = endpointsJson['outdoor_endpoints'];
+      for (var endpoint in endpointsList) {
+        if (endpoint is Map<String, dynamic>) {
+          String? location = endpoint['location'];
+          int? nodeId = endpoint['node_id'];
 
-    assert(jsonEdge.containsKey('distance'));
-    assert(jsonEdge['distance'] is double);
-    double distance = jsonEdge['distance']!;
-
-    assert(jsonEdge.containsKey('ada'));
-    assert(jsonEdge['ada'] is bool);
-    //bool ada = jsonEdge['ada']!;
-
-    a.addNeighbor(b, distance);
-    b.addNeighbor(a, distance);
+          if (location != null && nodeId != null) {
+            endpointLocations[location] = nodeId;
+          }
+        }
+      }
+    }
   }
 }
 
@@ -54,8 +88,8 @@ void initializeNodes() async {
 class Node {
   LatLng coords;
 
-  // map to hold neigbors and their edge weights
-  Map<Node, double> neighbors;
+  // Map of neighbors and their corresponding edge data
+  Map<Node, Edge> connections;
 
   // our cost values
   // gCost = cost of the path from start node to the current node
@@ -67,17 +101,36 @@ class Node {
 
   // constructor to initialize the node
   Node(double lat, double lng)
-      : neighbors = {},
+      : connections = {},
         gCost = double.infinity,
         hCost = double.infinity,
         fCost = double.infinity,
         parent = null,
         coords = LatLng(lat, lng);
 
-  // method to add a neighbnor and its edge weight to this node
-  void addNeighbor(Node neighborNode, [double weight = 1]) {
-    neighbors[neighborNode] = weight;
+  void addNeighbor(Node other, Edge edge) {
+    connections[other] = edge;
   }
+
+  // Gets a list of the neighbors of this node, optionally filtered by neighbors
+  // whose connection to this node is ada-compliant.
+  Iterable<Node> getNeighbors({bool adaOnly = false}) {
+    return connections.keys
+        .where((neighbor) => !adaOnly || connections[neighbor]!.ada);
+  }
+
+  // method to connect two nodes together
+  static void connect(Node a, Node b, Edge edge) {
+    a.addNeighbor(b, edge);
+    b.addNeighbor(a, edge);
+  }
+}
+
+class Edge {
+  double weight;
+  bool ada;
+
+  Edge(this.weight, this.ada);
 }
 
 // our heuristic to estimate the cost from a node to the goal
@@ -88,7 +141,9 @@ double heuristic(Node node, Node goal) {
 }
 
 // our A* implementation
-List<Node>? aStarSearch(Node start, Node goal) {
+List<Node>? aStarSearch(int startID, int goalID, bool adaOnly) {
+  Node start = nodes[startID]!;
+  Node goal = nodes[goalID]!;
   // open set contains the nodes to be evaluated
   var openSet = <Node>{start};
   // closed set contains the nodes already evaluated
@@ -114,12 +169,13 @@ List<Node>? aStarSearch(Node start, Node goal) {
     closedSet.add(current);
 
     // explore neigbors of the current node
-    for (var neighbor in current.neighbors.keys) {
+    for (var neighbor in current.getNeighbors(adaOnly: adaOnly)) {
       // skip if already evaluated
       if (closedSet.contains(neighbor)) continue;
 
       // calc the tentative gCost for the neighbor
-      var tentativeGScore = current.gCost + current.neighbors[neighbor]!;
+      var tentativeGScore =
+          current.gCost + current.connections[neighbor]!.weight;
 
       // discover new node
       if (!openSet.contains(neighbor)) {
@@ -136,7 +192,7 @@ List<Node>? aStarSearch(Node start, Node goal) {
       neighbor.fCost = neighbor.gCost + neighbor.hCost;
     }
   }
-  // return noul if no path is found
+  // return null if no path is found
   return null;
 }
 

@@ -73,6 +73,8 @@ flutter:
     - assets/images/merged_icon_with_cross.png
     - assets/images/paw_blue_plus.png
     - assets/images/paw_thick.png
+    - assets/graph.json
+    - assets/outdoor_endpoints.json
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

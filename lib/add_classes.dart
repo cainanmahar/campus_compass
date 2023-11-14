@@ -82,24 +82,26 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
       });
     }
     // debugging
-    print('Fetched Courses: $_fetchedCourses');
-    print('Fetched Sections: $_fetchedSections');
+    //print('Fetched Courses: $_fetchedCourses');
+    //print('Fetched Sections: $_fetchedSections');
   }
 
   void _saveCoursesToDatabase() async {
+    // gets user from database
     User? user = authService.getCurrentUser();
     if (user != null) {
+      // structure the data we want to save
       List<Map<String, dynamic>> selectedCoursesData =
           _selectedCourses.map((section) {
         return {
           'courseNumber': section.courseNumber,
           'sectionNumber': section.sectionNumber,
-          'professorName': section.professorName, // Include these fields
+          'professorName': section.professorName,
           'building': section.building,
           'roomNumber': section.roomNumber
         };
       }).toList();
-
+      // save the list of courses to the DB
       await databaseService
           .updateUserData(user.uid, {'courses': selectedCoursesData});
     }
@@ -108,11 +110,28 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // has two properties - body and appBar
       backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       appBar: AppBar(
         backgroundColor: Colors.lightBlue[800],
         actions: <Widget>[
+          // Map IconButton
+          IconButton(
+            onPressed: () {
+              // Navigate to the map page when the map icon is pressed
+              Navigator.pushNamed(context, '/map');
+            },
+            icon:
+                const Icon(Icons.map), // Choose an appropriate icon for the map
+          ),
+          // FAQ IconButton
+          IconButton(
+            onPressed: () {
+              // Navigate to the FAQ page when the question mark icon is pressed
+              Navigator.pushNamed(context, '/faq');
+            },
+            icon: const Icon(Icons.question_mark),
+          ),
+          // Existing padding and image
           Padding(
             padding: const EdgeInsets.only(right: 16.0),
             child: SizedBox(
@@ -247,8 +266,9 @@ class CourseDialog extends StatelessWidget {
   // ui of the dialog
   @override
   Widget build(BuildContext context) {
-    print(
-        'Options for autocomplete: ${generateCombinedOptions(fetchedSections, fetchedCourses)}'); // debugging
+    //debug print statement
+    //print(
+    //'Options for autocomplete: ${generateCombinedOptions(fetchedSections, fetchedCourses)}');
     return Dialog(
       child: Container(
         padding: const EdgeInsets.all(20.0),
@@ -371,7 +391,7 @@ List<String> generateCombinedOptions(
       .map((section) => generateOptionString(section, fetchedCourses))
       .toList();
 
-  print('Combined Options: $combinedOptions'); // debugging
+  //print('Combined Options: $combinedOptions'); // debugging
   return combinedOptions;
 }
 
@@ -381,8 +401,7 @@ String generateOptionString(Sections section, List<Courses> fetchedCourses) {
   Courses course = fetchedCourses.firstWhere(
     (c) => c.courseNumber == section.courseNumber,
     orElse: () {
-      print(
-          "Error: Course not found for course number: ${section.courseNumber}");
+      //print("Error: Course not found for course number: ${section.courseNumber}");
       return Courses(courseNumber: "Unkown", className: 'Unknown Course');
     },
   );
@@ -418,7 +437,7 @@ class AutoCompleteFormField extends StatelessWidget {
                   .toLowerCase()
                   .contains(textEditingValue.text.toLowerCase()))
               .toList();
-          print('Filtered options: $filteredOptions'); // debugging
+          //print('Filtered options: $filteredOptions'); // debugging
           return filteredOptions;
         }
       },
