@@ -82,8 +82,8 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
       });
     }
     // debugging
-    print('Fetched Courses: $_fetchedCourses');
-    print('Fetched Sections: $_fetchedSections');
+    //print('Fetched Courses: $_fetchedCourses');
+    //print('Fetched Sections: $_fetchedSections');
   }
 
   void _saveCoursesToDatabase() async {
@@ -266,8 +266,9 @@ class CourseDialog extends StatelessWidget {
   // ui of the dialog
   @override
   Widget build(BuildContext context) {
-    print(
-        'Options for autocomplete: ${generateCombinedOptions(fetchedSections, fetchedCourses)}'); // debugging
+    //debug print statement
+    //print(
+    //'Options for autocomplete: ${generateCombinedOptions(fetchedSections, fetchedCourses)}');
     return Dialog(
       child: Container(
         padding: const EdgeInsets.all(20.0),
@@ -390,7 +391,7 @@ List<String> generateCombinedOptions(
       .map((section) => generateOptionString(section, fetchedCourses))
       .toList();
 
-  print('Combined Options: $combinedOptions'); // debugging
+  //print('Combined Options: $combinedOptions'); // debugging
   return combinedOptions;
 }
 
@@ -400,8 +401,7 @@ String generateOptionString(Sections section, List<Courses> fetchedCourses) {
   Courses course = fetchedCourses.firstWhere(
     (c) => c.courseNumber == section.courseNumber,
     orElse: () {
-      print(
-          "Error: Course not found for course number: ${section.courseNumber}");
+      //print("Error: Course not found for course number: ${section.courseNumber}");
       return Courses(courseNumber: "Unkown", className: 'Unknown Course');
     },
   );
@@ -437,7 +437,7 @@ class AutoCompleteFormField extends StatelessWidget {
                   .toLowerCase()
                   .contains(textEditingValue.text.toLowerCase()))
               .toList();
-          print('Filtered options: $filteredOptions'); // debugging
+          //print('Filtered options: $filteredOptions'); // debugging
           return filteredOptions;
         }
       },
