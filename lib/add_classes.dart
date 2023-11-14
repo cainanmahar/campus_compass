@@ -87,19 +87,21 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
   }
 
   void _saveCoursesToDatabase() async {
+    // gets user from database
     User? user = authService.getCurrentUser();
     if (user != null) {
+      // structure the data we want to save
       List<Map<String, dynamic>> selectedCoursesData =
           _selectedCourses.map((section) {
         return {
           'courseNumber': section.courseNumber,
           'sectionNumber': section.sectionNumber,
-          'professorName': section.professorName, // Include these fields
+          'professorName': section.professorName,
           'building': section.building,
           'roomNumber': section.roomNumber
         };
       }).toList();
-
+      // save the list of courses to the DB
       await databaseService
           .updateUserData(user.uid, {'courses': selectedCoursesData});
     }
@@ -108,11 +110,11 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // has two properties - body and appBar
       backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       appBar: AppBar(
         backgroundColor: Colors.lightBlue[800],
         actions: <Widget>[
+          // Existing padding and image
           Padding(
             padding: const EdgeInsets.only(right: 16.0),
             child: SizedBox(
@@ -122,6 +124,14 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
                 fit: BoxFit.cover,
               ),
             ),
+          ),
+          // Add FAQ IconButton
+          IconButton(
+            onPressed: () {
+              // Navigate to the FAQ page when the question mark icon is pressed
+              Navigator.pushNamed(context, '/faq');
+            },
+            icon: const Icon(Icons.question_mark),
           ),
         ],
       ),
