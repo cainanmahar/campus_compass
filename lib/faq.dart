@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 
 class FaqPage extends StatelessWidget {
+  // list of faq questions
   final List<String> questions = [
     'How do I create an Account?',
     'How can I reset my password?',
     'How can I see my classes?',
   ];
 
+  // list of faq answers
   final List<String> answers = [
     'You can create an account by clicking on the "Sign Up" button on the homepage.',
     'Click on the "Forgot Password" link on the login page to reset your password.',

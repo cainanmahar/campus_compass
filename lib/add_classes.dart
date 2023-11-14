@@ -7,9 +7,6 @@ class AddClassSchedule extends StatefulWidget {
   // stateful constructor for adding class schedules
   const AddClassSchedule({super.key}); // calls parent class constructor
 
-  // title of the app bar
-  //final String title = "Class Schedule";
-
   // create state for this widget
   @override
   State<AddClassSchedule> createState() => _AddClassScheduleState();
@@ -36,9 +33,12 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
     _fetchData();
   }
 
+  // method to get saved courses for user from DB
   void _fetchUserCourses() async {
+    // get user from authentication service
     User? user = authService.getCurrentUser();
     if (user != null) {
+      // if user exists get course data
       var userData = await databaseService.getUserData(user.uid);
       if (userData != null) {
         List<dynamic> coursesList = userData['courses'] ?? [];
@@ -120,8 +120,7 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
               // Navigate to the map page when the map icon is pressed
               Navigator.pushNamed(context, '/map');
             },
-            icon:
-                const Icon(Icons.map), // Choose an appropriate icon for the map
+            icon: const Icon(Icons.map),
           ),
           // FAQ IconButton
           IconButton(

@@ -31,22 +31,4 @@ class AuthService {
   User? getCurrentUser() {
     return _auth.currentUser;
   }
-
-  // Method to listen to auth state changes
-  Stream<User?> authStateChanges() {
-    return _auth.authStateChanges();
-  }
-
-  // Method to update the user's email
-  Future<void> updateEmail(String newEmail) async {
-    User? user = _auth.currentUser;
-    if (user != null) {
-      await user.updateEmail(newEmail);
-    } else {
-      throw FirebaseAuthException(
-        code: 'no-user-signed-in',
-        message: 'No user signed in to update email',
-      );
-    }
-  }
 }
