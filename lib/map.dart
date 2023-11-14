@@ -211,11 +211,11 @@ class _MapPageState extends State<MapPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Start Node: ${startLocationName ?? "Not selected"}',
+                    'Start: ${startLocationName ?? ""}',
                     style: const TextStyle(fontSize: 16),
                   ),
                   Text(
-                    'End Node: ${endLocationName ?? "Not selected"}',
+                    'End: ${endLocationName ?? ""}',
                     style: TextStyle(fontSize: 16),
                   ),
                 ],
