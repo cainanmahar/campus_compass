@@ -11,6 +11,15 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
+ // State variables to track the selection of start and end nodes
+  bool isSelectingStartNode = true;
+  int? startId;
+  int? endNodeId;
+
+// State variables to store the names of the selected start and end locations
+  String? startLocationName;
+  String? endLocationName;
+
   // controls filter state
   bool isAdaFilterEnabled = false;
 
@@ -37,8 +46,10 @@ class _MapPageState extends State<MapPage> {
     // Add more rooms
   ];
 
-  int startId = 159942;
-
+  // int startId = 159942;
+  // Controller for managing the text in the search field
+  TextEditingController searchController = TextEditingController();
+  
   @override
   void initState() {
     super.initState();
@@ -49,6 +60,7 @@ class _MapPageState extends State<MapPage> {
 
   List<LatLng> routeCoordinates = [];
 
+  // Method to draw the route on the map based on start and end IDs
   void drawRoute(int startID, int endID) {
     // perform a* search
     var path = aStarSearch(startID, endID, isAdaFilterEnabled);
@@ -65,6 +77,18 @@ class _MapPageState extends State<MapPage> {
     setState(() {
       this.isAdaFilterEnabled = isAdaFilterEnabled;
       currentLayerIndex = isAdaFilterEnabled ? 1 : 0; // Ada or non-Ada path
+    });
+  }
+  // Method to reset the selection of start and end nodes
+  void resetSelections() {
+    setState(() {
+      startId = null;
+      endNodeId = null;
+      startLocationName = null;
+      endLocationName = null;
+      isSelectingStartNode = true;
+      routeCoordinates.clear(); // clear the route
+      searchController.clear(); // clear the search field
     });
   }
 
@@ -89,11 +113,24 @@ class _MapPageState extends State<MapPage> {
             }
           },
           onSelected: (String selection) {
-            // Implement a star routing to that room
-            // hardcoded endgoal is front of AB1 till I get endpoint json
-            int endNodeId = endpointLocations[selection] ??
-                0; // default to 0 or handle appropriately
-            drawRoute(startId, endNodeId);
+            int selectedNodeId = endpointLocations[selection] ?? 0;
+            setState(() {
+              if (isSelectingStartNode) {
+                startId = selectedNodeId;
+                startLocationName = selection; // Set start location name
+                isSelectingStartNode = false;
+              } else {
+                endNodeId = selectedNodeId;
+                endLocationName = selection; // Set end location name
+                if (startId != null){
+                  drawRoute(startId!, endNodeId!);
+                }
+                // Switch back to selecting start node for next selection
+                isSelectingStartNode = true;
+              }
+              // Clear the search input
+              searchController.clear();
+            });
             print('Selected location: $selection, Node ID: $endNodeId');
           },
           fieldViewBuilder: (BuildContext context,
@@ -117,6 +154,12 @@ class _MapPageState extends State<MapPage> {
             );
           },
         ),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.refresh, color: Colors.black),
+            onPressed: resetSelections,
+          ),
+        ],
       ),
 
       // Collapsible Menu
@@ -156,6 +199,28 @@ class _MapPageState extends State<MapPage> {
                 ],
               )
             ],
+          ),
+          Positioned(
+            top: 10,
+            left: 10,
+            right: 10,
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              color: Colors.white.withOpacity(0.9),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Start: ${startLocationName ?? ""}',
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                  Text(
+                    'End: ${endLocationName ?? ""}',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ],
+              ),
+            ),
           ),
           Positioned(
             bottom: 16,

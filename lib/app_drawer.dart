@@ -6,6 +6,7 @@ class AppDrawer extends StatelessWidget {
   final Function(bool) onFilterChanged;
   final bool isAdaFilterEnabled;
 
+  // drawer requires necessary filter variables
   AppDrawer(
       {super.key,
       required this.isAdaFilterEnabled,
@@ -37,7 +38,7 @@ class AppDrawer extends StatelessWidget {
             ),
           ),
 
-          //Settings icon
+          //Settings button
           ListTile(
             leading: const Icon(Icons.settings),
             title: const Text('Settings'),
@@ -47,7 +48,7 @@ class AppDrawer extends StatelessWidget {
             },
           ),
 
-          // FAQs icon
+          // FAQs button
           ListTile(
             leading: const Icon(Icons.question_mark),
             title: const Text('FAQs'),
@@ -87,7 +88,7 @@ class AppDrawer extends StatelessWidget {
               });
             },
           ),
-
+          // Map preference filters
           const Divider(
             color: Colors.grey,
           ),
@@ -106,6 +107,7 @@ class AppDrawer extends StatelessWidget {
   }
 }
 
+// filters class
 class Filters extends StatefulWidget {
   final Function(bool) onFilterChanged;
   final bool isChecked;
@@ -141,6 +143,7 @@ class _FiltersState extends State<Filters> {
       fillColor: MaterialStateProperty.resolveWith(getColor),
       value: isChecked,
       onChanged: (bool? value) {
+        // change map layer to ada path or non ada path
         setState(() {
           isChecked = value!;
         });

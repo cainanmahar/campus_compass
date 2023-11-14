@@ -56,6 +56,7 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   const Column(
                     children: [
+                      // login screen title
                       Text(
                         'Login',
                         style: TextStyle(
@@ -73,7 +74,7 @@ class _LoginPageState extends State<LoginPage> {
                       )
                     ],
                   ),
-                  // Text Fields
+                  // Text Fields for user to enter email and password
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 40),
                     child: Column(
@@ -107,6 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                           String email = emailController.text;
                           String password = newPWController.text;
 
+                          // checks if email is valid (contains @)
                           if (!isEmailValid(email)) {
                             showErrorDialog(context, 'Invalid email address.');
                             if (mounted) {
@@ -115,6 +117,7 @@ class _LoginPageState extends State<LoginPage> {
                               });
                             }
                             return;
+                            // checks if password follows criteria
                           } else if (!sPValid(password)) {
                             showErrorDialog(context, 'Invalid password.');
                             if (mounted) {
@@ -160,6 +163,7 @@ class _LoginPageState extends State<LoginPage> {
                             }
                           }
                         },
+                        // login button
                         color: Colors.orange,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(40)),
@@ -232,10 +236,8 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  // Assuming you have an instance of AuthService available in your widget
-// If not, you can create one like this:
-// AuthService authService = AuthService();
-
+  // function to display reset password dialog
+  // sends user a reset password link to email address
   void showResetPasswordDialog(BuildContext context, AuthService authService) {
     TextEditingController emailController = TextEditingController();
 
