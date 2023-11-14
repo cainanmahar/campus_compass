@@ -114,6 +114,23 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
       appBar: AppBar(
         backgroundColor: Colors.lightBlue[800],
         actions: <Widget>[
+          // Map IconButton
+          IconButton(
+            onPressed: () {
+              // Navigate to the map page when the map icon is pressed
+              Navigator.pushNamed(context, '/map');
+            },
+            icon:
+                const Icon(Icons.map), // Choose an appropriate icon for the map
+          ),
+          // FAQ IconButton
+          IconButton(
+            onPressed: () {
+              // Navigate to the FAQ page when the question mark icon is pressed
+              Navigator.pushNamed(context, '/faq');
+            },
+            icon: const Icon(Icons.question_mark),
+          ),
           // Existing padding and image
           Padding(
             padding: const EdgeInsets.only(right: 16.0),
@@ -124,14 +141,6 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
                 fit: BoxFit.cover,
               ),
             ),
-          ),
-          // Add FAQ IconButton
-          IconButton(
-            onPressed: () {
-              // Navigate to the FAQ page when the question mark icon is pressed
-              Navigator.pushNamed(context, '/faq');
-            },
-            icon: const Icon(Icons.question_mark),
           ),
         ],
       ),
