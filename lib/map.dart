@@ -1,4 +1,7 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:campus_compass/app_drawer.dart';
@@ -22,6 +25,10 @@ class _MapPageState extends State<MapPage> {
 
   // controls filter state
   bool isAdaFilterEnabled = false;
+
+// List that contains the floor levels, and the corresponding boolean list, Function bellow will iterate true them and change this based on index.
+  List<String> floorLayers = ['L1', 'L2', 'L3'];
+  List<bool> selectedLayer = [true, false, false];
 
   // List of the names of the layers
   // TODO: Make this a 2-d array
@@ -114,16 +121,13 @@ class _MapPageState extends State<MapPage> {
             }
           },
           onSelected: (String selection) {
-            print('onSelected callback called');
             int selectedNodeId = endpointLocations[selection] ?? 0;
             setState(() {
               if (isSelectingStartNode) {
                 startId = selectedNodeId;
                 startLocationName = selection; // Set start location name
                 isSelectingStartNode = false;
-                print(selection);
               } else {
-                print(selectedNodeId);
                 endNodeId = selectedNodeId;
                 endLocationName = selection; // Set end location name
                 if (startId != null) {
@@ -143,7 +147,8 @@ class _MapPageState extends State<MapPage> {
               TextEditingController textEditingController,
               FocusNode focusNode,
               VoidCallback onFieldSubmitted) {
-            searchController = textEditingController;
+            searchController =
+                textEditingController; //Ensures same controller is used for both the search field and clearing its content
             return TextFormField(
               controller: textEditingController,
               focusNode: focusNode,
@@ -230,46 +235,44 @@ class _MapPageState extends State<MapPage> {
             ),
           ),
           Positioned(
-            bottom: 16,
+            bottom: 20,
             right: 16,
-            child: Column(
-              children: [
-                Container(
-                  width: 40, // Adjust the width as needed
-                  height: 40, // Adjust the height as needed
+            child: IntrinsicWidth(
+              child: Container(
+                decoration: BoxDecoration(
                   color: Colors.white,
-                  child: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        currentLayerIndex++;
-                        if (currentLayerIndex >= layerGeoserver.length) {
-                          currentLayerIndex = 0;
-                        }
-                        printLayerName();
-                      });
-                    },
-                    icon: const Icon(Icons.add, color: Colors.black),
-                  ),
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                const SizedBox(height: 8),
-                Container(
-                  width: 40, // Adjust the width as needed
-                  height: 40, // Adjust the height as needed
-                  color: Colors.white,
-                  child: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        currentLayerIndex--;
-                        if (currentLayerIndex < 0) {
-                          currentLayerIndex = layerGeoserver.length - 1;
+                child: ToggleButtons(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(10.0),
+                  fillColor: Colors.orangeAccent,
+                  selectedColor: Colors.white,
+
+                  direction: Axis.vertical,
+                  isSelected: selectedLayer,
+                  onPressed: (int index) {
+                    //when the user presses on the button this selects the index.
+                    setState(() {
+                      for (int buttonIndex = 0;
+                          buttonIndex < selectedLayer.length;
+                          buttonIndex++) {
+                        if (buttonIndex == index) {
+                          // if matches, will set that button index in the boolean list to true
+                          selectedLayer[buttonIndex] = true;
+                        } else {
+                          selectedLayer[buttonIndex] =
+                              false; // Otherwise, set it as not selected
                         }
-                        printLayerName();
-                      });
-                    },
-                    icon: const Icon(Icons.remove, color: Colors.black),
-                  ),
+                      }
+                    });
+                  },
+                  //constraints: const BoxConstraints(
+                  // minHeight: 40.0, // Adjust the height as needed
+                  //), // Adjust the width as needed)
+                  children: floorLayers.map((floor) => Text(floor)).toList(),
                 ),
-              ],
+              ),
             ),
           ),
         ],
