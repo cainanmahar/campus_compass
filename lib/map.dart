@@ -211,7 +211,7 @@ class _MapPageState extends State<MapPage> {
               TileLayer(
                 wmsOptions: WMSTileLayerOptions(
                   baseUrl: "http://144.126.221.0:8080/geoserver/wms/?",
-                  layers: [outdoorLayers[currentLayerIndex], indoorLayers[0]],
+                  layers: [outdoorLayers[currentLayerIndex]],
                   crs: const Epsg4326(),
                 ),
                 maxNativeZoom: 22,
