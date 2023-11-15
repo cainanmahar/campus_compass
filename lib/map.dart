@@ -18,10 +18,11 @@ class _MapPageState extends State<MapPage> {
   bool isSelectingStartNode = true;
   int? startId;
   int? endNodeId;
-
-// State variables to store the names of the selected start and end locations
+  // State variables to store the names of the selected start and end locations
   String? startLocationName;
   String? endLocationName;
+  // State variable to store route coords for route  generation
+  List<LatLng> routeCoordinates = [];
 
   // controls filter state
   bool isAdaFilterEnabled = false;
@@ -32,30 +33,19 @@ class _MapPageState extends State<MapPage> {
 
   // List of the names of the layers
   // TODO: Make this a 2-d array
-  List<String> layerGeoserver = [
+  List<String> outdoorLayers = [
     'outdoors_hl_nonada',
     'outdoors_ada',
   ];
 
+  List<String> indoorLayers = ['Campus_Maps:ab1_level1'];
+  // List that contains the floor levels, and the corresponding boolean list, Function bellow will iterate true them and change this based on index.
+  List<String> floorLayers = ['L1', 'L2', 'L3'];
+  List<bool> selectedLayer = [true, false, false];
   //Tracks current layer index
   int currentLayerIndex = 0;
-
   //Tracks level layer, true or false
   List<bool> isSelected = [true, false];
-
-  //List of rooms (just for testing purposes)
-  List<String> roomNumbers = [
-    'Room 202',
-    'Room 204',
-    'Room 206',
-    'Room 101',
-    'AB1 Entrance',
-    // Add more rooms
-  ];
-
-  // int startId = 159942;
-  // Controller for managing the text in the search field
-  TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
@@ -64,8 +54,6 @@ class _MapPageState extends State<MapPage> {
     loadEndpoints(); // load and parse endpoitn data from a_star.dart
     //drawRoute(); // initiatlize route drawing
   }
-
-  List<LatLng> routeCoordinates = [];
 
   // Method to draw the route on the map based on start and end IDs
   void drawRoute(int startID, int endID) {
@@ -96,8 +84,95 @@ class _MapPageState extends State<MapPage> {
       endLocationName = null;
       isSelectingStartNode = true;
       routeCoordinates.clear(); // clear the route
-      searchController.clear(); // clear the search field
+      ; // clear the search field
     });
+  }
+
+  Future<void> showSearchDialog(BuildContext context) async {
+    String? selectedStartLocation;
+    String? selectedEndLocation;
+
+    await showDialog<void>(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: const Text('Select Locations'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                const Text('Start Location:'),
+                Autocomplete<String>(
+                  optionsBuilder: (TextEditingValue textEditingValue) {
+                    return _optionsBuilder(textEditingValue);
+                  },
+                  onSelected: (String selection) {
+                    selectedStartLocation = selection;
+                  },
+                ),
+                const SizedBox(height: 20),
+                const Text('End Location:'),
+                Autocomplete<String>(
+                  optionsBuilder: (TextEditingValue textEditingValue) {
+                    return _optionsBuilder(textEditingValue);
+                  },
+                  onSelected: (String selection) {
+                    selectedEndLocation = selection;
+                  },
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+                _handleSelections(selectedStartLocation, selectedEndLocation);
+              },
+            ),
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Iterable<String> _optionsBuilder(TextEditingValue textEditingValue) {
+    if (textEditingValue.text.isEmpty) {
+      return const Iterable<String>.empty();
+    } else {
+      return endpointLocations.keys.where((String option) {
+        return option
+            .toLowerCase()
+            .contains(textEditingValue.text.toLowerCase());
+      });
+    }
+  }
+
+  void _handleSelections(String? start, String? end) {
+    if (start != null && start.isNotEmpty) {
+      int startNodeId = endpointLocations[start] ?? 0;
+      setState(() {
+        startId = startNodeId;
+        startLocationName = start;
+      });
+    }
+
+    if (end != null && end.isNotEmpty) {
+      int endNodeId = endpointLocations[end] ?? 0;
+      setState(() {
+        endNodeId = endNodeId;
+        endLocationName = end;
+        if (startId != null) {
+          drawRoute(startId!, endNodeId);
+        }
+      });
+    }
   }
 
   @override
@@ -107,66 +182,13 @@ class _MapPageState extends State<MapPage> {
         elevation: 0,
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
-        title: Autocomplete<String>(
-          optionsBuilder: (TextEditingValue textEditingValue) {
-            if (textEditingValue.text.isEmpty) {
-              return endpointLocations.keys;
-            } else {
-              // directly use endpointLocations from a_star.dart
-              return endpointLocations.keys.where((location) {
-                return location
-                    .toLowerCase()
-                    .contains(textEditingValue.text.toLowerCase());
-              });
-            }
-          },
-          onSelected: (String selection) {
-            int selectedNodeId = endpointLocations[selection] ?? 0;
-            setState(() {
-              if (isSelectingStartNode) {
-                startId = selectedNodeId;
-                startLocationName = selection; // Set start location name
-                isSelectingStartNode = false;
-              } else {
-                endNodeId = selectedNodeId;
-                endLocationName = selection; // Set end location name
-                if (startId != null) {
-                  drawRoute(startId!, endNodeId!);
-                }
-                // Switch back to selecting start node for next selection
-                isSelectingStartNode = true;
-              }
-              // Clear the search input
-
-              searchController.text = selection;
-              searchController.clear();
-            });
-            print('Selected location: $selection, Node ID: $endNodeId');
-          },
-          fieldViewBuilder: (BuildContext context,
-              TextEditingController textEditingController,
-              FocusNode focusNode,
-              VoidCallback onFieldSubmitted) {
-            searchController =
-                textEditingController; //Ensures same controller is used for both the search field and clearing its content
-            return TextFormField(
-              controller: textEditingController,
-              focusNode: focusNode,
-              onFieldSubmitted: (String value) {
-                onFieldSubmitted();
-              },
-              decoration: const InputDecoration(
-                prefixIcon: Icon(
-                  Icons.search,
-                  color: Colors.black,
-                ), // Search icon
-                hintText: 'Search...',
-                border: InputBorder.none,
-              ),
-            );
-          },
-        ),
+        title: const Text('Campus Compass'),
         actions: <Widget>[
+          IconButton(
+              icon: const Icon(Icons.search),
+              onPressed: () => showSearchDialog(
+                    context,
+                  )),
           IconButton(
             icon: const Icon(Icons.refresh, color: Colors.black),
             onPressed: resetSelections,
@@ -189,14 +211,14 @@ class _MapPageState extends State<MapPage> {
                 flags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
               ),
               initialCenter: LatLng(30.71475020, -95.54687941),
-              initialZoom: 19.5,
+              initialZoom: 18,
               crs: Epsg4326(),
             ),
             children: [
               TileLayer(
                 wmsOptions: WMSTileLayerOptions(
                   baseUrl: "http://144.126.221.0:8080/geoserver/wms/?",
-                  layers: [layerGeoserver[currentLayerIndex]],
+                  layers: [outdoorLayers[currentLayerIndex]],
                   crs: const Epsg4326(),
                 ),
                 maxNativeZoom: 22,
@@ -228,7 +250,29 @@ class _MapPageState extends State<MapPage> {
                   ),
                   Text(
                     'End: ${endLocationName ?? ""}',
-                    style: TextStyle(fontSize: 16),
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Positioned(
+            top: 10,
+            left: 10,
+            right: 10,
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              color: Colors.white.withOpacity(0.9),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Start: ${startLocationName ?? ""}',
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                  Text(
+                    'End: ${endLocationName ?? ""}',
+                    style: const TextStyle(fontSize: 16),
                   ),
                 ],
               ),
@@ -271,6 +315,36 @@ class _MapPageState extends State<MapPage> {
                   // minHeight: 40.0, // Adjust the height as needed
                   //), // Adjust the width as needed)
                   children: floorLayers.map((floor) => Text(floor)).toList(),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: ToggleButtons(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(10.0),
+                  fillColor: Colors.orangeAccent,
+                  selectedColor: Colors.white,
+
+                  direction: Axis.vertical,
+                  isSelected: selectedLayer,
+                  onPressed: (int index) {
+                    //when the user presses on the button this selects the index.
+                    setState(() {
+                      for (int buttonIndex = 0;
+                          buttonIndex < selectedLayer.length;
+                          buttonIndex++) {
+                        if (buttonIndex == index) {
+                          // if matches, will set that button index in the boolean list to true
+                          selectedLayer[buttonIndex] = true;
+                        } else {
+                          selectedLayer[buttonIndex] =
+                              false; // Otherwise, set it as not selected
+                        }
+                      }
+                    });
+                  },
+                  //constraints: const BoxConstraints(
+                  // minHeight: 40.0, // Adjust the height as needed
+                  //), // Adjust the width as needed)
+                  children: floorLayers.map((floor) => Text(floor)).toList(),
                 ),
               ),
             ),
@@ -282,6 +356,6 @@ class _MapPageState extends State<MapPage> {
 
 //Verifying output in Terminal: only purpose, Will be removed after all layers are added;
   void printLayerName() {
-    print("Current Layer: ${layerGeoserver[currentLayerIndex]}");
+    print("Current Layer: ${outdoorLayers[currentLayerIndex]}");
   }
 }
