@@ -1,5 +1,4 @@
 import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:latlong2/latlong.dart';
@@ -26,10 +25,6 @@ class _MapPageState extends State<MapPage> {
 
   // controls filter state
   bool isAdaFilterEnabled = false;
-
-// List that contains the floor levels, and the corresponding boolean list, Function bellow will iterate true them and change this based on index.
-  List<String> floorLayers = ['L1', 'L2', 'L3'];
-  List<bool> selectedLayer = [true, false, false];
 
   // List of the names of the layers
   // TODO: Make this a 2-d array
@@ -315,36 +310,6 @@ class _MapPageState extends State<MapPage> {
                   // minHeight: 40.0, // Adjust the height as needed
                   //), // Adjust the width as needed)
                   children: floorLayers.map((floor) => Text(floor)).toList(),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: ToggleButtons(
-                  color: Colors.black,
-                  borderRadius: BorderRadius.circular(10.0),
-                  fillColor: Colors.orangeAccent,
-                  selectedColor: Colors.white,
-
-                  direction: Axis.vertical,
-                  isSelected: selectedLayer,
-                  onPressed: (int index) {
-                    //when the user presses on the button this selects the index.
-                    setState(() {
-                      for (int buttonIndex = 0;
-                          buttonIndex < selectedLayer.length;
-                          buttonIndex++) {
-                        if (buttonIndex == index) {
-                          // if matches, will set that button index in the boolean list to true
-                          selectedLayer[buttonIndex] = true;
-                        } else {
-                          selectedLayer[buttonIndex] =
-                              false; // Otherwise, set it as not selected
-                        }
-                      }
-                    });
-                  },
-                  //constraints: const BoxConstraints(
-                  // minHeight: 40.0, // Adjust the height as needed
-                  //), // Adjust the width as needed)
-                  children: floorLayers.map((floor) => Text(floor)).toList(),
                 ),
               ),
             ),
@@ -354,7 +319,7 @@ class _MapPageState extends State<MapPage> {
     );
   }
 
-//Verifying output in Terminal: only purpose, Will be removed after all layers are added;
+  ///Verifying output in Terminal: only purpose, Will be removed after all layers are added;
   void printLayerName() {
     print("Current Layer: ${outdoorLayers[currentLayerIndex]}");
   }
