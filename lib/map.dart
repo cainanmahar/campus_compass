@@ -173,14 +173,16 @@ class _MapPageState extends State<MapPage> {
   }
 
   List<String> getBothLayers() {
-    String outdoorLayer = outdoorLayers[currentLayerIndex];
-    List<String> layers = [outdoorLayer]; // Start with the outdoor layer
+    // Start with the outdoor layer
+    List<String> layers = [outdoorLayers[currentLayerIndex]];
     for (int i = 0; i < selectedLayer.length; i++) {
       if (selectedLayer[i]) {
-        String indoorLayer =
-            indoorLayers[i]; // Get the corresponding indoor layer
-        layers.add(indoorLayer); // Add it to the layers list
-        break; // Exit the loop after adding the indoor layer
+        // Get the corresponding indoor layer
+        String indoorLayer = indoorLayers[i];
+        // Add it to the layers list
+        layers.add(indoorLayer);
+        // Exit the loop after adding the indoor layer
+        break;
       }
     }
 
