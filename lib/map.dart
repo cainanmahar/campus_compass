@@ -243,7 +243,7 @@ class _MapPageState extends State<MapPage> {
                   Polyline(
                     points: routeCoordinates,
                     strokeWidth: 4.0,
-                    color: Colors.blue,
+                    color: Colors.yellow,
                   )
                 ],
               )
