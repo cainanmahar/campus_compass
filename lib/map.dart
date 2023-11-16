@@ -172,16 +172,6 @@ class _MapPageState extends State<MapPage> {
     }
   }
 
-  void indoorSelection(int level) {
-    setState(() {
-      for (int i = 0; i < selectedLayer.length; i++) {
-        if (i == level) {
-          selectedLayer[i];
-        }
-      }
-    });
-  }
-
   List<String> getBothLayers() {
     String outdoorLayer = outdoorLayers[currentLayerIndex];
     List<String> layers = [outdoorLayer]; // Start with the outdoor layer
