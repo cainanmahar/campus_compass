@@ -11,7 +11,6 @@ void initializeNodes() async {
   var graphD = jsonDecode(contents);
 
   // Print the overall structure and type of the decoded JSON for debugging
-  //print("Decoded JSON: $graphD");
   //print("Type of decoded JSON: ${graphD.runtimeType}");
 
   if (graphD is Map<String, dynamic>) {
@@ -24,9 +23,11 @@ void initializeNodes() async {
           int? nodeId = node['id'];
           double? latitude = node['latitude'];
           double? longitude = node['longitude'];
+          bool indoors = node.containsKey('indoors') ? node['indoors'] : false;
+          int? level = indoors ? node['level'] : 0;
 
           if (nodeId is int && latitude is double && longitude is double) {
-            nodes[nodeId] = Node(latitude, longitude);
+            nodes[nodeId] = Node(latitude, longitude, indoors, level);
           }
         }
       }
@@ -87,7 +88,8 @@ void loadEndpoints() async {
 // node class that represents each waypoint in the graph
 class Node {
   LatLng coords;
-
+  bool indoors;
+  int? level;
   // Map of neighbors and their corresponding edge data
   Map<Node, Edge> connections;
 
@@ -100,7 +102,7 @@ class Node {
   Node? parent;
 
   // constructor to initialize the node
-  Node(double lat, double lng)
+  Node(double lat, double lng, this.indoors, this.level)
       : connections = {},
         gCost = double.infinity,
         hCost = double.infinity,
@@ -141,7 +143,7 @@ double heuristic(Node node, Node goal) {
 }
 
 // our A* implementation
-List<Node>? aStarSearch(int startID, int goalID, bool adaOnly) {
+Map<int?, List<Node>>? aStarSearch(int startID, int goalID, bool adaOnly) {
   Node start = nodes[startID]!;
   Node goal = nodes[goalID]!;
   // open set contains the nodes to be evaluated
@@ -161,7 +163,9 @@ List<Node>? aStarSearch(int startID, int goalID, bool adaOnly) {
 
     // if we find current is our goal node, return the path of how we got there
     if (current == goal) {
-      return reconstructPath(current, start);
+      var segmentedPaths = segmentPath(reconstructPath(current, start));
+      print("Segmented Paths: $segmentedPaths");
+      return segmentedPaths;
     }
 
     // move the current node out of openSet to closedSet
@@ -193,20 +197,46 @@ List<Node>? aStarSearch(int startID, int goalID, bool adaOnly) {
     }
   }
   // return null if no path is found
-  return null;
+  return {};
 }
 
 // reconstructs path from goal to the start
 List<Node> reconstructPath(Node current, Node start) {
   // start the path with the goal node
   var path = <Node>[current];
-
   // trace back from goal to start
   while (current.parent != null && current != start) {
     current = current.parent!;
     path.add(current);
   }
-
   // return the path in the correct order
   return path.reversed.toList();
+}
+
+Map<int?, List<Node>> segmentPath(List<Node> path) {
+  Map<int?, List<Node>> segmentedPaths = {};
+  List<Node> currentSegment = [];
+  int? currentFloor = getFloorLevel(path.first);
+
+  for (var node in path) {
+    var nodeFloor = getFloorLevel(node);
+    if (nodeFloor != currentFloor) {
+      if (currentFloor != null) {
+        segmentedPaths[currentFloor] = List.from(currentSegment);
+      }
+      currentSegment.clear();
+      currentFloor = nodeFloor;
+    }
+    currentSegment.add(node);
+  }
+
+  if (currentSegment.isNotEmpty) {
+    segmentedPaths[currentFloor] = currentSegment;
+  }
+
+  return segmentedPaths;
+}
+
+int? getFloorLevel(Node node) {
+  return node.level;
 }
