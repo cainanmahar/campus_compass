@@ -31,7 +31,11 @@ class _MapPageState extends State<MapPage> {
     'outdoors_ada',
   ];
 
-  List<String> indoorLayers = ['Campus_Maps:ab1_level1'];
+  List<String> indoorLayers = [
+    'Campus_Maps:ab1_level1',
+    'outdoors_all',
+    'Campus_Maps:ab1_level2'
+  ];
   // List that contains the floor levels, and the corresponding boolean list, Function bellow will iterate true them and change this based on index.
   List<String> floorLayers = ['L1', 'L2', 'L3'];
   List<bool> selectedLayer = [true, false, false];
@@ -168,6 +172,31 @@ class _MapPageState extends State<MapPage> {
     }
   }
 
+  void indoorSelection(int level) {
+    setState(() {
+      for (int i = 0; i < selectedLayer.length; i++) {
+        if (i == level) {
+          selectedLayer[i];
+        }
+      }
+    });
+  }
+
+  List<String> getBothLayers() {
+    String outdoorLayer = outdoorLayers[currentLayerIndex];
+    List<String> layers = [outdoorLayer]; // Start with the outdoor layer
+    for (int i = 0; i < selectedLayer.length; i++) {
+      if (selectedLayer[i]) {
+        String indoorLayer =
+            indoorLayers[i]; // Get the corresponding indoor layer
+        layers.add(indoorLayer); // Add it to the layers list
+        break; // Exit the loop after adding the indoor layer
+      }
+    }
+
+    return layers; // Return the layers list
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -211,7 +240,7 @@ class _MapPageState extends State<MapPage> {
               TileLayer(
                 wmsOptions: WMSTileLayerOptions(
                   baseUrl: "http://144.126.221.0:8080/geoserver/wms/?",
-                  layers: [outdoorLayers[currentLayerIndex]],
+                  layers: getBothLayers(),
                   crs: const Epsg4326(),
                 ),
                 maxNativeZoom: 22,
