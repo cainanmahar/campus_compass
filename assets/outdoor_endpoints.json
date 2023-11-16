@@ -24,6 +24,12 @@
         "location": "Library North",
         "type": "outdoor",
         "floor": 0
+      },
+      {
+        "node_id": 19,
+        "location": "AB1 213",
+        "type": "outdoor",
+        "floor": 0
       }
     ]
   }
