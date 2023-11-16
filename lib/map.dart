@@ -27,7 +27,7 @@ class _MapPageState extends State<MapPage> {
   // List of the names of the layers
   // TODO: Make this a 2-d array
   List<String> outdoorLayers = [
-    'outdoors_hl_nonada',
+    'outdoors_all',
     'outdoors_ada',
   ];
 
