@@ -185,8 +185,8 @@ class _MapPageState extends State<MapPage> {
         break;
       }
     }
-
-    return layers; // Return the layers list
+    // Return the layers list
+    return layers;
   }
 
   @override
