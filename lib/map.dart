@@ -33,11 +33,10 @@ class _MapPageState extends State<MapPage> {
 
   List<String> indoorLayers = [
     'Campus_Maps:ab1_level1',
-    'outdoors_all',
     'Campus_Maps:ab1_level2'
   ];
   // List that contains the floor levels, and the corresponding boolean list, Function bellow will iterate true them and change this based on index.
-  List<String> floorLayers = ['L1', 'L2', 'L3'];
+  List<String> floorLayers = ['G', 'L1', 'L2'];
   List<bool> selectedLayer = [true, false, false];
   //Tracks current layer index
   int currentLayerIndex = 0;
@@ -173,20 +172,22 @@ class _MapPageState extends State<MapPage> {
   }
 
   List<String> getBothLayers() {
-    // Start with the outdoor layer
-    List<String> layers = [outdoorLayers[currentLayerIndex]];
-    for (int i = 0; i < selectedLayer.length; i++) {
-      if (selectedLayer[i]) {
-        // Get the corresponding indoor layer
-        String indoorLayer = indoorLayers[i];
-        // Add it to the layers list
-        layers.add(indoorLayer);
-        // Exit the loop after adding the indoor layer
-        break;
-      }
+    // Determine the outdoor layer based on ADA filter
+    String outdoorLayer = outdoorLayers[currentLayerIndex];
+
+    // Determine the indoor layer based on selected floor
+    String indoorLayer = '';
+    if (selectedLayer[1]) {
+      // If L1 is selected
+      indoorLayer = 'Campus_Maps:ab1_level1';
+    } else if (selectedLayer[2]) {
+      // If L2 is selected
+      indoorLayer = 'Campus_Maps:ab1_level2';
     }
-    // Return the layers list
-    return layers;
+    // For G, we only show the outdoor layer
+
+    // Return the combined layers list based on the selected floor
+    return indoorLayer.isEmpty ? [outdoorLayer] : [outdoorLayer, indoorLayer];
   }
 
   @override
@@ -310,19 +311,14 @@ class _MapPageState extends State<MapPage> {
                   direction: Axis.vertical,
                   isSelected: selectedLayer,
                   onPressed: (int index) {
-                    //when the user presses on the button this selects the index.
                     setState(() {
                       for (int buttonIndex = 0;
                           buttonIndex < selectedLayer.length;
                           buttonIndex++) {
-                        if (buttonIndex == index) {
-                          // if matches, will set that button index in the boolean list to true
-                          selectedLayer[buttonIndex] = true;
-                        } else {
-                          selectedLayer[buttonIndex] =
-                              false; // Otherwise, set it as not selected
-                        }
+                        selectedLayer[buttonIndex] = buttonIndex == index;
                       }
+                      // Update map layers based on the new floor selection
+                      // This will trigger a rebuild of the FlutterMap with updated layers
                     });
                   },
                   //constraints: const BoxConstraints(
