@@ -18,8 +18,8 @@ class _MapPageState extends State<MapPage> {
   // State variables to store the names of the selected start and end locations
   String? startLocationName;
   String? endLocationName;
-  // State variable to store route coords for route  generation
-  List<LatLng> routeCoordinates = [];
+  // State variable to store route coords for route generation
+  Map<int?, List<LatLng>> segmentedRouteCoordinates = {};
 
   // controls filter state
   bool isAdaFilterEnabled = false;
@@ -51,16 +51,16 @@ class _MapPageState extends State<MapPage> {
     //drawRoute(); // initiatlize route drawing
   }
 
-  // Method to draw the route on the map based on start and end IDs
+  // Method to perform a star search and draw the route
   void drawRoute(int startID, int endID) {
-    // perform a* search
-    var path = aStarSearch(startID, endID, isAdaFilterEnabled);
-
-    // convert the path to a list of LatLng
-    if (path != null) {
-      routeCoordinates = path.map((node) => node.coords).toList();
+    var segmentedPaths = aStarSearch(startID, endID, isAdaFilterEnabled);
+    if (segmentedPaths != null) {
+      segmentedRouteCoordinates.clear();
+      segmentedPaths.forEach((floor, nodes) {
+        segmentedRouteCoordinates[floor] =
+            nodes.map((node) => node.coords).toList();
+      });
     }
-
     setState(() {});
   }
 
@@ -79,8 +79,7 @@ class _MapPageState extends State<MapPage> {
       startLocationName = null;
       endLocationName = null;
       isSelectingStartNode = true;
-      routeCoordinates.clear(); // clear the route
-      ; // clear the search field
+      segmentedRouteCoordinates.clear(); // clear the route
     });
   }
 
@@ -240,13 +239,53 @@ class _MapPageState extends State<MapPage> {
               ),
               PolylineLayer(
                 polylines: [
-                  Polyline(
-                    points: routeCoordinates,
-                    strokeWidth: 4.0,
-                    color: Colors.yellow,
-                  )
+                  if (selectedLayer[0] &&
+                      segmentedRouteCoordinates.containsKey(0)) // Outdoor Layer
+                    Polyline(
+                      points: segmentedRouteCoordinates[0]!,
+                      strokeWidth: 8.0, // Increase the width for the border
+                      color: Colors.black, // Use black color for the border
+                    ),
+                  if (selectedLayer[0] &&
+                      segmentedRouteCoordinates.containsKey(0)) // Outdoor Layer
+                    Polyline(
+                      points: segmentedRouteCoordinates[0]!,
+                      strokeWidth:
+                          4.0, // Set the desired width for the main polyline
+                      color: Colors.orange,
+                    ),
+                  if (selectedLayer[1] &&
+                      segmentedRouteCoordinates.containsKey(1)) // Level 1
+                    Polyline(
+                      points: segmentedRouteCoordinates[1]!,
+                      strokeWidth: 8.0, // Increase the width for the border
+                      color: Colors.black, // Use black color for the border
+                    ),
+                  if (selectedLayer[1] &&
+                      segmentedRouteCoordinates.containsKey(1)) // Level 1
+                    Polyline(
+                      points: segmentedRouteCoordinates[1]!,
+                      strokeWidth:
+                          4.0, // Set the desired width for the main polyline
+                      color: Colors.orange,
+                    ),
+                  if (selectedLayer[2] &&
+                      segmentedRouteCoordinates.containsKey(2)) // Level 2
+                    Polyline(
+                      points: segmentedRouteCoordinates[2]!,
+                      strokeWidth: 8.0, // Increase the width for the border
+                      color: Colors.black, // Use black color for the border
+                    ),
+                  if (selectedLayer[2] &&
+                      segmentedRouteCoordinates.containsKey(2)) // Level 2
+                    Polyline(
+                      points: segmentedRouteCoordinates[2]!,
+                      strokeWidth:
+                          4.0, // Set the desired width for the main polyline
+                      color: Colors.orange,
+                    ),
                 ],
-              )
+              ),
             ],
           ),
           Positioned(
