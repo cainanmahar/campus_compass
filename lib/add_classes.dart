@@ -194,6 +194,7 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
                     ),
                     trailing: IconButton(
                       icon: const Icon(Icons.delete, color: Colors.orange),
+                      // deletes a course from the user's selected courses
                       onPressed: () {
                         setState(() {
                           _selectedCourses.removeAt(index);
