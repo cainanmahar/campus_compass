@@ -1,4 +1,6 @@
 import 'package:campus_compass/auth_service.dart';
+import 'package:campus_compass/dialog_utils.dart';
+import 'package:campus_compass/form_validation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -9,7 +11,8 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends State<LoginPage>
+    with formValidation, DialogUtils {
   bool isLoading = false;
   final AuthService authService = AuthService();
   final TextEditingController emailController = TextEditingController();
@@ -193,7 +196,8 @@ class _LoginPageState extends State<LoginPage> {
                       const Text("Forgot your password? "),
                       GestureDetector(
                         onTap: () {
-                          showResetPasswordDialog(context, authService);
+                          showResetPasswordDialog(
+                              context, authService, isEmailValid);
                         },
                         child: const Text(
                           "Reset Password",
@@ -234,174 +238,6 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
       ),
-    );
-  }
-
-  // Function to display various errors to user as a dialog box
-  // takes in the error message as a string
-  void showErrorDialog(BuildContext context, String message) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Error'),
-          content: Text(message),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Close'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  // function to display reset password dialog
-  // sends user a reset password link to email address
-  void showResetPasswordDialog(BuildContext context, AuthService authService) {
-    TextEditingController emailController = TextEditingController();
-
-    showDialog(
-      context: context,
-      builder: (BuildContext dialogContext) {
-        return AlertDialog(
-          title: const Text('Reset Password'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                const Text(
-                    'Enter your email address and we will send you a link to reset your password.'),
-                TextField(
-                  controller: emailController,
-                  decoration: const InputDecoration(
-                    labelText: 'Email Address',
-                  ),
-                  keyboardType: TextInputType.emailAddress,
-                ),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.of(dialogContext).pop(),
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () async {
-                String email = emailController.text.trim();
-                if (email.isEmpty || !isEmailValid(email)) {
-                  showErrorDialog(
-                      dialogContext, 'Please enter a valid email address.');
-                  return;
-                }
-
-                // Disable the send button while processing
-                Navigator.of(dialogContext).pop();
-                await authService.sendPasswordResetEmail(email).then((_) {
-                  // The then callback ensures we're still in a valid context
-                  showConfirmationDialog(
-                      context, 'Check your email to reset your password.');
-                }).catchError((error) {
-                  showErrorDialog(context,
-                      'Failed to send password reset email: ${error.toString()}');
-                });
-              },
-              child: const Text('Send Reset Link'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-// Shows a dialog with the confirmation message
-  void showConfirmationDialog(BuildContext context, String message) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Email Sent'),
-          content: Text(message),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-//Createria that email mus follow
-  bool isEmailValid(String email) {
-    String emailPattern = r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)*(\.[a-z]{2,})$';
-    RegExp regExp = RegExp(emailPattern);
-    return regExp.hasMatch(email);
-  }
-
-  //Method to check if password contains an uppercase letter
-  bool containsLowercase(String password) {
-    return RegExp(r'[a-z]').hasMatch(password);
-  }
-
-  //Method to check if password contains an uppercase letter
-  bool containsUppercase(String password) {
-    return RegExp(r'[A-Z]').hasMatch(password);
-  }
-
-  // Method to check if password contains a number
-  bool containsNumber(String password) {
-    return RegExp(r'[0-9]').hasMatch(password);
-  }
-
-  //Method to check if password contains a symbol
-  bool containsSymbol(String password) {
-    return RegExp(r'[!@#\$%^&*(),.?":{}|<>]').hasMatch(password);
-  }
-
-  bool sPValid(String password) {
-    // Check password length (at least 8 characters)
-    if (password.length < 8) {
-      return false;
-    }
-    if (!containsLowercase(password) ||
-        !containsUppercase(password) ||
-        !containsNumber(password) ||
-        !containsSymbol(password)) {
-      return false;
-    }
-    return true;
-  }
-
-  // Widget to display password criteria
-  Widget passwordCriteriaWidget(String password) {
-    return Column(
-      children: [
-        criteriaRow('At least 8 characters', password.length >= 8),
-        criteriaRow('At least 1 uppercase', containsUppercase(password)),
-        criteriaRow('At least 1 number', containsNumber(password)),
-        criteriaRow('At least 1 symbol', containsSymbol(password)),
-      ],
-    );
-  }
-
-  // Widget for individual criteria row
-  Widget criteriaRow(String criteria, bool isMet) {
-    return Row(
-      children: [
-        Icon(
-          isMet ? Icons.check : Icons.close,
-          color: isMet ? Colors.green : Colors.red,
-        ),
-        const SizedBox(width: 10),
-        Text(criteria,
-            style: TextStyle(color: isMet ? Colors.green : Colors.red)),
-        const SizedBox(height: 10),
-      ],
     );
   }
 }
