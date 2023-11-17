@@ -95,7 +95,8 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
           'sectionNumber': section.sectionNumber,
           'professorName': section.professorName,
           'building': section.building,
-          'roomNumber': section.roomNumber
+          'roomNumber': section.roomNumber,
+          'endpointId': section.endpointId
         };
       }).toList();
       // save the list of courses to the DB
@@ -344,6 +345,7 @@ class Sections {
   final String professorName;
   final String building;
   final String roomNumber;
+  final int endpointId;
 
   // constructor for Sections
   Sections({
@@ -352,6 +354,7 @@ class Sections {
     required this.professorName,
     required this.building,
     required this.roomNumber,
+    required this.endpointId
   });
 
   // factory constructor that creates a Sections object from data and a course
@@ -366,6 +369,7 @@ class Sections {
       professorName: data['professor'] as String? ?? 'Unknown',
       building: data['building'] as String? ?? 'Unknown',
       roomNumber: data['room_number'] as String? ?? 'Unknown',
+      endpointId: data['endpoint_id'] as int? ?? 0,
     );
   }
 
@@ -376,6 +380,7 @@ class Sections {
       professorName: map['professorName'] as String? ?? 'Unknown',
       building: map['building'] as String? ?? 'Unknown',
       roomNumber: map['roomNumber'] as String? ?? 'Unknown',
+      endpointId: map['endpoint_id'] as int? ?? 0,
     );
   }
 }
