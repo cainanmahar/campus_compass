@@ -166,11 +166,9 @@ Map<int?, List<Node>>? aStarSearch(int startID, int goalID, bool adaOnly) {
     if (current == goal) {
       return segmentPath(reconstructPath(current, start));
     }
-
     // move the current node out of openSet to closedSet
     openSet.remove(current);
     closedSet.add(current);
-
     // explore neigbors of the current node
     for (var neighbor in current.getNeighbors(adaOnly: adaOnly)) {
       // skip if already evaluated
@@ -187,7 +185,6 @@ Map<int?, List<Node>>? aStarSearch(int startID, int goalID, bool adaOnly) {
         // continue if not a better path
         continue;
       }
-
       // update neigbor node costs and parent
       neighbor.parent = current;
       neighbor.gCost = tentativeGScore;
@@ -231,11 +228,9 @@ Map<int?, List<Node>> segmentPath(List<Node> path) {
     }
     currentSegment.add(node);
   }
-
   if (currentSegment.isNotEmpty) {
     segmentedPaths[currentFloor] = currentSegment;
   }
-
   return segmentedPaths;
 }
 
