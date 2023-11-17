@@ -5,10 +5,14 @@ import 'package:campus_compass/signup.dart';
 import 'package:campus_compass/login.dart';
 import 'package:campus_compass/add_classes.dart';
 import 'package:campus_compass/settings.dart';
-import 'package:campus_compass/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:campus_compass/firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async {
+  // initialize firebase
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 
@@ -19,8 +23,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Campus Compass',
-      theme: globalTheme,
       initialRoute: '/',
+      // define routes for various pages
       routes: {
         '/': (context) => const HomePage(),
         '/login': (context) => const LoginPage(),
