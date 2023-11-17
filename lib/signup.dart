@@ -1,3 +1,4 @@
+import 'package:campus_compass/dialog_utils.dart';
 import 'package:campus_compass/form_validation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,7 +11,8 @@ class SignUpPage extends StatefulWidget {
   State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> with formValidation {
+class _SignUpPageState extends State<SignUpPage>
+    with formValidation, DialogUtils {
   final AuthService authService = AuthService();
   final DatabaseService dbService = DatabaseService();
   final TextEditingController firstNameController = TextEditingController();
@@ -215,55 +217,6 @@ class _SignUpPageState extends State<SignUpPage> with formValidation {
           ),
         ),
       ),
-    );
-  }
-
-  // Function to show error when user enters invalid info
-  void showErrorDialog(BuildContext context, String message) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Error'),
-          content: Text(message),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Close'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  // Widget to display password criteria
-  Widget passwordCriteriaWidget(String password) {
-    return Column(
-      children: [
-        criteriaRow('At least 8 characters', password.length >= 8),
-        criteriaRow('At least 1 uppercase', containsUppercase(password)),
-        criteriaRow('At least 1 number', containsNumber(password)),
-        criteriaRow('At least 1 symbol', containsSymbol(password)),
-      ],
-    );
-  }
-
-  // Widget for individual criteria row
-  Widget criteriaRow(String criteria, bool isMet) {
-    return Row(
-      children: [
-        Icon(
-          isMet ? Icons.check : Icons.close,
-          color: isMet ? Colors.green : Colors.red,
-        ),
-        const SizedBox(width: 10),
-        Text(criteria,
-            style: TextStyle(color: isMet ? Colors.green : Colors.red)),
-        const SizedBox(height: 10),
-      ],
     );
   }
 }
