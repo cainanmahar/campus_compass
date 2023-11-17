@@ -24,10 +24,10 @@ void initializeNodes() async {
           double? latitude = node['latitude'];
           double? longitude = node['longitude'];
           bool indoors = node.containsKey('indoors') ? node['indoors'] : false;
-          int? level = indoors ? node['level'] : 0;
-
+          bool vertical = indoors ? node['vertical']! : false;
+          int level = indoors && !vertical ? node['level'] : 0;
           if (nodeId is int && latitude is double && longitude is double) {
-            nodes[nodeId] = Node(latitude, longitude, indoors, level);
+            nodes[nodeId] = Node(latitude, longitude, indoors, level, vertical);
           }
         }
       }
@@ -89,7 +89,8 @@ void loadEndpoints() async {
 class Node {
   LatLng coords;
   bool indoors;
-  int? level;
+  bool vertical;
+  int level;
   // Map of neighbors and their corresponding edge data
   Map<Node, Edge> connections;
 
@@ -102,7 +103,7 @@ class Node {
   Node? parent;
 
   // constructor to initialize the node
-  Node(double lat, double lng, this.indoors, this.level)
+  Node(double lat, double lng, this.indoors, this.level, this.vertical)
       : connections = {},
         gCost = double.infinity,
         hCost = double.infinity,
@@ -163,15 +164,11 @@ Map<int?, List<Node>>? aStarSearch(int startID, int goalID, bool adaOnly) {
 
     // if we find current is our goal node, return the path of how we got there
     if (current == goal) {
-      var segmentedPaths = segmentPath(reconstructPath(current, start));
-      print("Segmented Paths: $segmentedPaths");
-      return segmentedPaths;
+      return segmentPath(reconstructPath(current, start));
     }
-
     // move the current node out of openSet to closedSet
     openSet.remove(current);
     closedSet.add(current);
-
     // explore neigbors of the current node
     for (var neighbor in current.getNeighbors(adaOnly: adaOnly)) {
       // skip if already evaluated
@@ -188,7 +185,6 @@ Map<int?, List<Node>>? aStarSearch(int startID, int goalID, bool adaOnly) {
         // continue if not a better path
         continue;
       }
-
       // update neigbor node costs and parent
       neighbor.parent = current;
       neighbor.gCost = tentativeGScore;
@@ -220,23 +216,28 @@ Map<int?, List<Node>> segmentPath(List<Node> path) {
 
   for (var node in path) {
     var nodeFloor = getFloorLevel(node);
-    if (nodeFloor != currentFloor) {
+    var isVertical = getVertical(node);
+    if (nodeFloor != currentFloor && !isVertical) {
+      var lastSegment = List.from(currentSegment);
       if (currentFloor != null) {
-        segmentedPaths[currentFloor] = List.from(currentSegment);
+        segmentedPaths[currentFloor] = List.from(lastSegment);
       }
       currentSegment.clear();
+      currentSegment.add(lastSegment.last);
       currentFloor = nodeFloor;
     }
     currentSegment.add(node);
   }
-
   if (currentSegment.isNotEmpty) {
     segmentedPaths[currentFloor] = currentSegment;
   }
-
   return segmentedPaths;
 }
 
 int? getFloorLevel(Node node) {
   return node.level;
+}
+
+bool getVertical(Node node) {
+  return node.vertical;
 }

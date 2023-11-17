@@ -81,9 +81,6 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
         _fetchedSections = fetchedSections;
       });
     }
-    // debugging
-    //print('Fetched Courses: $_fetchedCourses');
-    //print('Fetched Sections: $_fetchedSections');
   }
 
   void _saveCoursesToDatabase() async {
