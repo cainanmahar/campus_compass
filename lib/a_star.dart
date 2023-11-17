@@ -163,9 +163,7 @@ Map<int?, List<Node>>? aStarSearch(int startID, int goalID, bool adaOnly) {
 
     // if we find current is our goal node, return the path of how we got there
     if (current == goal) {
-      var segmentedPaths = segmentPath(reconstructPath(current, start));
-      print("Segmented Paths: $segmentedPaths");
-      return segmentedPaths;
+      return segmentPath(reconstructPath(current, start));
     }
 
     // move the current node out of openSet to closedSet

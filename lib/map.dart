@@ -24,18 +24,18 @@ class _MapPageState extends State<MapPage> {
   // controls filter state
   bool isAdaFilterEnabled = false;
 
-  // List of the names of the layers
-  // TODO: Make this a 2-d array
+  // List of the names of the outdoor layers
   List<String> outdoorLayers = [
     'outdoors_all',
     'outdoors_ada',
   ];
-
+  // List of the names of the indoor layers
   List<String> indoorLayers = [
     'level1',
     'level2',
   ];
-  // List that contains the floor levels, and the corresponding boolean list, Function bellow will iterate true them and change this based on index.
+  // List that contains the floor levels, and the corresponding boolean list,
+  //Function bellow will iterate through them and change this based on index.
   List<String> floorLayers = ['G', 'L1', 'L2'];
   List<bool> selectedLayer = [true, false, false];
   //Tracks current layer index
@@ -46,32 +46,37 @@ class _MapPageState extends State<MapPage> {
   @override
   void initState() {
     super.initState();
-    initializeNodes(); // initialize nodes and their neighbors
-    loadEndpoints(); // load and parse endpoitn data from a_star.dart
-    //drawRoute(); // initiatlize route drawing
+    // initialize nodes and their neighbors
+    initializeNodes();
+    // load and parse endpoitn data from a_star.dart
+    loadEndpoints();
   }
 
   // Method to perform a star search and draw the route
   void drawRoute(int startID, int endID) {
+    // get the route with aStar
     var segmentedPaths = aStarSearch(startID, endID, isAdaFilterEnabled);
     if (segmentedPaths != null) {
       segmentedRouteCoordinates.clear();
+      // Get the segmented route coordinates
       segmentedPaths.forEach((floor, nodes) {
         segmentedRouteCoordinates[floor] =
             nodes.map((node) => node.coords).toList();
       });
     }
+    // changes the state to show route
     setState(() {});
   }
 
   void handleFilterChange(bool isAdaFilterEnabled) {
     setState(() {
       this.isAdaFilterEnabled = isAdaFilterEnabled;
-      currentLayerIndex = isAdaFilterEnabled ? 1 : 0; // Ada or non-Ada path
+      // Determine which layer based on ADA or non-ADA paths
+      currentLayerIndex = isAdaFilterEnabled ? 1 : 0;
     });
   }
 
-  // Method to reset the selection of start and end nodes
+  // Method to reset the selection of start and end nodes and route
   void resetSelections() {
     setState(() {
       startId = null;
@@ -83,10 +88,11 @@ class _MapPageState extends State<MapPage> {
     });
   }
 
+  // Function to show a dialog box
+  // Allows the user to pick a start and end location to route to
   Future<void> showSearchDialog(BuildContext context) async {
     String? selectedStartLocation;
     String? selectedEndLocation;
-
     await showDialog<void>(
       context: context,
       builder: (BuildContext dialogContext) {
@@ -137,6 +143,7 @@ class _MapPageState extends State<MapPage> {
     );
   }
 
+  // handles the options for the auto complete dialog box
   Iterable<String> _optionsBuilder(TextEditingValue textEditingValue) {
     if (textEditingValue.text.isEmpty) {
       return const Iterable<String>.empty();
@@ -149,6 +156,7 @@ class _MapPageState extends State<MapPage> {
     }
   }
 
+  // Function that handles the selections of the start and end nodes
   void _handleSelections(String? start, String? end) {
     if (start != null && start.isNotEmpty) {
       int startNodeId = endpointLocations[start] ?? 0;
@@ -170,10 +178,10 @@ class _MapPageState extends State<MapPage> {
     }
   }
 
+  // Gets the layers to display based on ADA preferences and indoor layer selection
   List<String> getBothLayers() {
     // Determine the outdoor layer based on ADA filter
     String outdoorLayer = outdoorLayers[currentLayerIndex];
-
     // Determine the indoor layer based on selected floor
     String indoorLayer = '';
     if (selectedLayer[1]) {
@@ -184,7 +192,6 @@ class _MapPageState extends State<MapPage> {
       indoorLayer = indoorLayers[1];
     }
     // For G, we only show the outdoor layer
-
     // Return the combined layers list based on the selected floor
     return indoorLayer.isEmpty ? [outdoorLayer] : [outdoorLayer, indoorLayer];
   }
@@ -198,11 +205,13 @@ class _MapPageState extends State<MapPage> {
         foregroundColor: Colors.black,
         title: const Text('Campus Compass'),
         actions: <Widget>[
+          // search icon
           IconButton(
               icon: const Icon(Icons.search),
               onPressed: () => showSearchDialog(
                     context,
                   )),
+          // refresh button that resets all route information
           IconButton(
             icon: const Icon(Icons.refresh, color: Colors.black),
             onPressed: resetSelections,
@@ -237,57 +246,66 @@ class _MapPageState extends State<MapPage> {
                 ),
                 maxNativeZoom: 22,
               ),
+              // poly lines for route generation
               PolylineLayer(
                 polylines: [
+                  // Outdoor line layers
+                  // line that creates a black 'border' around the route
                   if (selectedLayer[0] &&
-                      segmentedRouteCoordinates.containsKey(0)) // Outdoor Layer
+                      segmentedRouteCoordinates.containsKey(0))
                     Polyline(
                       points: segmentedRouteCoordinates[0]!,
-                      strokeWidth: 8.0, // Increase the width for the border
-                      color: Colors.black, // Use black color for the border
+                      // increased width for border
+                      strokeWidth: 8.0,
+                      color: Colors.black,
                     ),
+                  // orange route line
                   if (selectedLayer[0] &&
-                      segmentedRouteCoordinates.containsKey(0)) // Outdoor Layer
+                      segmentedRouteCoordinates.containsKey(0))
                     Polyline(
                       points: segmentedRouteCoordinates[0]!,
-                      strokeWidth:
-                          4.0, // Set the desired width for the main polyline
+                      strokeWidth: 4.0,
                       color: Colors.orange,
                     ),
+                  // Indoor floor 1 line layers
+                  // line that creates a black 'border' around the route
                   if (selectedLayer[1] &&
-                      segmentedRouteCoordinates.containsKey(1)) // Level 1
+                      segmentedRouteCoordinates.containsKey(1))
                     Polyline(
                       points: segmentedRouteCoordinates[1]!,
-                      strokeWidth: 8.0, // Increase the width for the border
-                      color: Colors.black, // Use black color for the border
+                      strokeWidth: 8.0,
+                      color: Colors.black,
                     ),
+                  // orange route line
                   if (selectedLayer[1] &&
-                      segmentedRouteCoordinates.containsKey(1)) // Level 1
+                      segmentedRouteCoordinates.containsKey(1))
                     Polyline(
                       points: segmentedRouteCoordinates[1]!,
-                      strokeWidth:
-                          4.0, // Set the desired width for the main polyline
+                      strokeWidth: 4.0,
                       color: Colors.orange,
                     ),
+                  // Indoor floor 2 line layers
+                  // line thta creates a black 'border' around the route
                   if (selectedLayer[2] &&
-                      segmentedRouteCoordinates.containsKey(2)) // Level 2
+                      segmentedRouteCoordinates.containsKey(2))
                     Polyline(
                       points: segmentedRouteCoordinates[2]!,
-                      strokeWidth: 8.0, // Increase the width for the border
-                      color: Colors.black, // Use black color for the border
+                      strokeWidth: 8.0,
+                      color: Colors.black,
                     ),
+                  // orange route line
                   if (selectedLayer[2] &&
-                      segmentedRouteCoordinates.containsKey(2)) // Level 2
+                      segmentedRouteCoordinates.containsKey(2))
                     Polyline(
                       points: segmentedRouteCoordinates[2]!,
-                      strokeWidth:
-                          4.0, // Set the desired width for the main polyline
+                      strokeWidth: 4.0,
                       color: Colors.orange,
                     ),
                 ],
               ),
             ],
           ),
+          // display for the start and end locations for routing
           Positioned(
             top: 10,
             left: 10,
@@ -310,28 +328,8 @@ class _MapPageState extends State<MapPage> {
               ),
             ),
           ),
-          Positioned(
-            top: 10,
-            left: 10,
-            right: 10,
-            child: Container(
-              padding: const EdgeInsets.all(8),
-              color: Colors.white.withOpacity(0.9),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Start: ${startLocationName ?? ""}',
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                  Text(
-                    'End: ${endLocationName ?? ""}',
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          // Buttons for the user to select the desired layer
+          // Updates the map display based on what the layer the user selects
           Positioned(
             bottom: 20,
             right: 16,
@@ -346,23 +344,18 @@ class _MapPageState extends State<MapPage> {
                   borderRadius: BorderRadius.circular(10.0),
                   fillColor: Colors.orangeAccent,
                   selectedColor: Colors.white,
-
                   direction: Axis.vertical,
                   isSelected: selectedLayer,
                   onPressed: (int index) {
+                    // Triggers a rebuild of FlutterMap with updated layers
                     setState(() {
                       for (int buttonIndex = 0;
                           buttonIndex < selectedLayer.length;
                           buttonIndex++) {
                         selectedLayer[buttonIndex] = buttonIndex == index;
                       }
-                      // Update map layers based on the new floor selection
-                      // This will trigger a rebuild of the FlutterMap with updated layers
                     });
                   },
-                  //constraints: const BoxConstraints(
-                  // minHeight: 40.0, // Adjust the height as needed
-                  //), // Adjust the width as needed)
                   children: floorLayers.map((floor) => Text(floor)).toList(),
                 ),
               ),
@@ -371,10 +364,5 @@ class _MapPageState extends State<MapPage> {
         ],
       ),
     );
-  }
-
-//Verifying output in Terminal: only purpose, Will be removed after all layers are added;
-  void printLayerName() {
-    print("Current Layer: ${outdoorLayers[currentLayerIndex]}");
   }
 }
