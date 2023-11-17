@@ -178,10 +178,10 @@ class _MapPageState extends State<MapPage> {
     String indoorLayer = '';
     if (selectedLayer[1]) {
       // If L1 is selected
-      indoorLayer = 'Campus_Maps:ab1_level1';
+      indoorLayer = indoorLayers[0];
     } else if (selectedLayer[2]) {
       // If L2 is selected
-      indoorLayer = 'Campus_Maps:ab1_level2';
+      indoorLayer = indoorLayers[1];
     }
     // For G, we only show the outdoor layer
 
