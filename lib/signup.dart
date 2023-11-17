@@ -105,6 +105,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       ],
                     ),
                   ),
+                  // Sign up button with functionality to register a new user
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 40),
                     child: Container(
@@ -116,17 +117,21 @@ class _SignUpPageState extends State<SignUpPage> {
                         minWidth: double.infinity,
                         height: 60,
                         onPressed: () async {
+                          // controllers for input fields
                           String email = emailController.text;
                           String password = newPWController.text;
                           String confirmPassword = confirmPWController.text;
                           String firstName = firstNameController.text;
                           String lastName = lastNameController.text;
+                          // verify email is valid (contains @)
                           if (!isEmailValid(email)) {
                             showErrorDialog(context, 'Invalid email address.');
                             return;
+                            // verify both password and confirm password match
                           } else if (password != confirmPassword) {
                             showErrorDialog(context, 'Passwords do not match.');
                             return;
+                            // verify the password follows password criteria
                           } else if (!sPValid(password)) {
                             showErrorDialog(context, 'Invalid password.');
                             return;
@@ -165,6 +170,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 context, 'Failed to sign up: ${e.toString()}');
                           }
                         },
+                        // sign up button styling
                         color: Colors.lightBlue[800],
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(40),
@@ -182,6 +188,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     height: 20,
                   ),
                   Row(
+                    // login link
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text("Already have an account?  "),
