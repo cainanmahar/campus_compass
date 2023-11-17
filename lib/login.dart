@@ -87,6 +87,7 @@ class _LoginPageState extends State<LoginPage> {
                       ],
                     ),
                   ),
+                  // login button with login functionality
                   Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 40,
@@ -236,6 +237,28 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  // Function to display various errors to user as a dialog box
+  // takes in the error message as a string
+  void showErrorDialog(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Error'),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   // function to display reset password dialog
   // sends user a reset password link to email address
   void showResetPasswordDialog(BuildContext context, AuthService authService) {
@@ -352,26 +375,6 @@ class _LoginPageState extends State<LoginPage> {
       return false;
     }
     return true;
-  }
-
-  void showErrorDialog(BuildContext context, String message) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Error'),
-          content: Text(message),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Close'),
-            ),
-          ],
-        );
-      },
-    );
   }
 
   // Widget to display password criteria
