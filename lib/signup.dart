@@ -1,3 +1,4 @@
+import 'package:campus_compass/form_validation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'auth_service.dart';
@@ -9,7 +10,7 @@ class SignUpPage extends StatefulWidget {
   State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
+class _SignUpPageState extends State<SignUpPage> with formValidation {
   final AuthService authService = AuthService();
   final DatabaseService dbService = DatabaseService();
   final TextEditingController firstNameController = TextEditingController();
@@ -215,48 +216,6 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
       ),
     );
-  }
-
-  // Createria that email must follow
-  bool isEmailValid(String email) {
-    String emailPattern = r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)*(\.[a-z]{2,})$';
-    RegExp regExp = RegExp(emailPattern);
-
-    return regExp.hasMatch(email);
-  }
-
-  //Method to check if password contains an uppercase letter
-  bool containsLowercase(String password) {
-    return RegExp(r'[a-z]').hasMatch(password);
-  }
-
-  //Method to check if password contains an uppercase letter
-  bool containsUppercase(String password) {
-    return RegExp(r'[A-Z]').hasMatch(password);
-  }
-
-  // Method to check if password contains a number
-  bool containsNumber(String password) {
-    return RegExp(r'[0-9]').hasMatch(password);
-  }
-
-  //Method to check if password contains a symbol
-  bool containsSymbol(String password) {
-    return RegExp(r'[!@#\$%^&*(),.?":{}|<>]').hasMatch(password);
-  }
-
-  bool sPValid(String password) {
-    // Check password length (at least 8 characters)
-    if (password.length < 8) {
-      return false;
-    }
-    if (!containsLowercase(password) ||
-        !containsUppercase(password) ||
-        !containsNumber(password) ||
-        !containsSymbol(password)) {
-      return false;
-    }
-    return true;
   }
 
   // Function to show error when user enters invalid info
