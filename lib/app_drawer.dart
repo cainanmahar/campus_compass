@@ -117,6 +117,7 @@ class Filters extends StatefulWidget {
   State<Filters> createState() => _FiltersState();
 }
 
+// method to create the ADA prefence filters
 class _FiltersState extends State<Filters> {
   late bool isChecked;
 

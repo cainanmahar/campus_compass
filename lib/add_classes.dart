@@ -81,9 +81,6 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
         _fetchedSections = fetchedSections;
       });
     }
-    // debugging
-    //print('Fetched Courses: $_fetchedCourses');
-    //print('Fetched Sections: $_fetchedSections');
   }
 
   void _saveCoursesToDatabase() async {
@@ -197,6 +194,7 @@ class _AddClassScheduleState extends State<AddClassSchedule> {
                     ),
                     trailing: IconButton(
                       icon: const Icon(Icons.delete, color: Colors.orange),
+                      // deletes a course from the user's selected courses
                       onPressed: () {
                         setState(() {
                           _selectedCourses.removeAt(index);
