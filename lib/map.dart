@@ -32,8 +32,8 @@ class _MapPageState extends State<MapPage> {
   ];
 
   List<String> indoorLayers = [
-    'Campus_Maps:ab1_level1',
-    'Campus_Maps:ab1_level2'
+    'level1',
+    'level2',
   ];
   // List that contains the floor levels, and the corresponding boolean list, Function bellow will iterate true them and change this based on index.
   List<String> floorLayers = ['G', 'L1', 'L2'];
@@ -178,10 +178,10 @@ class _MapPageState extends State<MapPage> {
     String indoorLayer = '';
     if (selectedLayer[1]) {
       // If L1 is selected
-      indoorLayer = 'Campus_Maps:ab1_level1';
+      indoorLayer = indoorLayers[0];
     } else if (selectedLayer[2]) {
       // If L2 is selected
-      indoorLayer = 'Campus_Maps:ab1_level2';
+      indoorLayer = indoorLayers[1];
     }
     // For G, we only show the outdoor layer
 
