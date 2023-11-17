@@ -24,10 +24,10 @@ void initializeNodes() async {
           double? latitude = node['latitude'];
           double? longitude = node['longitude'];
           bool indoors = node.containsKey('indoors') ? node['indoors'] : false;
-          int? level = indoors ? node['level'] : 0;
-
+          bool vertical = indoors ? node['vertical']! : false;
+          int level = indoors && !vertical ? node['level'] : 0;
           if (nodeId is int && latitude is double && longitude is double) {
-            nodes[nodeId] = Node(latitude, longitude, indoors, level);
+            nodes[nodeId] = Node(latitude, longitude, indoors, level, vertical);
           }
         }
       }
@@ -89,7 +89,8 @@ void loadEndpoints() async {
 class Node {
   LatLng coords;
   bool indoors;
-  int? level;
+  bool vertical;
+  int level;
   // Map of neighbors and their corresponding edge data
   Map<Node, Edge> connections;
 
@@ -102,7 +103,7 @@ class Node {
   Node? parent;
 
   // constructor to initialize the node
-  Node(double lat, double lng, this.indoors, this.level)
+  Node(double lat, double lng, this.indoors, this.level, this.vertical)
       : connections = {},
         gCost = double.infinity,
         hCost = double.infinity,
@@ -218,11 +219,14 @@ Map<int?, List<Node>> segmentPath(List<Node> path) {
 
   for (var node in path) {
     var nodeFloor = getFloorLevel(node);
-    if (nodeFloor != currentFloor) {
+    var isVertical = getVertical(node);
+    if (nodeFloor != currentFloor && !isVertical) {
+      var lastSegment = List.from(currentSegment);
       if (currentFloor != null) {
-        segmentedPaths[currentFloor] = List.from(currentSegment);
+        segmentedPaths[currentFloor] = List.from(lastSegment);
       }
       currentSegment.clear();
+      currentSegment.add(lastSegment.last);
       currentFloor = nodeFloor;
     }
     currentSegment.add(node);
@@ -237,4 +241,8 @@ Map<int?, List<Node>> segmentPath(List<Node> path) {
 
 int? getFloorLevel(Node node) {
   return node.level;
+}
+
+bool getVertical(Node node) {
+  return node.vertical;
 }
