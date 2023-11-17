@@ -65,12 +65,12 @@ void initializeNodes() async {
 // will need modifications once we get indoor nav graph
 void loadEndpoints() async {
   String endpointContents =
-      await rootBundle.loadString('assets/outdoor_endpoints.json');
+      await rootBundle.loadString('assets/endpoints.json');
   var endpointsJson = jsonDecode(endpointContents);
 
   if (endpointsJson is Map<String, dynamic>) {
-    if (endpointsJson['outdoor_endpoints'] is List) {
-      List<dynamic> endpointsList = endpointsJson['outdoor_endpoints'];
+    if (endpointsJson['endpoints'] is List) {
+      List<dynamic> endpointsList = endpointsJson['endpoints'];
       for (var endpoint in endpointsList) {
         if (endpoint is Map<String, dynamic>) {
           String? location = endpoint['location'];
