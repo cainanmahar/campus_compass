@@ -118,622 +118,568 @@
       ]
     },
     "courses": {
-      "COSC1436": {
-        "course_name": "Programming Fundamentals 1",
-        "course_subject": "COSC",
-        "sections": [
-          {
-            "building": "AB1",
-            "professor": "Dr. Pat Ko",
-            "room_number": "211",
-            "section_number": "1",
-            "endpoint_id": 25
-          },
-          {
-            "building": "AB1",
-            "professor": "Dr. Pat Ko",
-            "room_number": "215",
-            "section_number": "2",
-            "endpoint_id": 3
-          },
-          {
-            "building": "AB1",
-            "professor": "Dr. Haodi Jiang",
-            "room_number": "211",
-            "section_number": "3",
-            "endpoint_id": 25
-          },
-          {
-            "building": "AB1",
-            "professor": "Dr. Pat Ko",
-            "room_number": "211",
-            "section_number": "4",
-            "endpoint_id": 25
-          },
-          {
-            "building": "AB1",
-            "professor": "Dr. Xing Liu",
-            "room_number": "211",
-            "section_number": "5",
-            "endpoint_id": 25
-          },
-          {
-            "building": "AB1",
-            "professor": "Dr. Pat Ko",
-            "room_number": "211",
-            "section_number": "6",
-            "endpoint_id": 25
-          },
-          {
-            "building": "AB1",
-            "professor": "Dr. Pat Ko",
-            "room_number": "211",
-            "section_number": "7",
-            "endpoint_id": 25
-          },
-          {
-            "building": "AB1",
-            "professor": "Dr. Pat Ko",
-            "room_number": "211",
-            "section_number": "8",
-            "endpoint_id": 25
-          },
-          {
-            "building": "AB1",
-            "professor": "Dr. Pat Ko",
-            "room_number": "211",
-            "section_number": "9",
-            "endpoint_id": 25
-          },
-          {
-            "building": "AB1",
-            "professor": "Dr. Pat Ko",
-            "room_number": "211",
-            "section_number": "10",
-            "endpoint_id": 25
-          },
-          {
-            "building": "AB1",
-            "professor": "Dr. Haodi Jiang",
-            "room_number": "211",
-            "section_number": "11",
-            "endpoint_id": 25
-          },
-          {
-            "building": "AB1",
-            "professor": "Dr. Xing Liu",
-            "room_number": "211",
-            "section_number": "12",
-            "endpoint_id": 25
-          }
-        ]
-      },
-      "COSC1437": {
-        "course_name": "Programming Fundamentals 2",
-        "course_subject": "COSC",
-        "sections": [
-          {
-            "building": "AB1",
-            "professor": "Dr. Hyuk Cho",
-            "room_number": "211",
-            "section_number": "1",
-            "endpoint_id": 25
-          },
-          {
-            "building": "AB1",
-            "professor": "Dr. Fan Liang",
-            "room_number": "209",
-            "section_number": "2",
-            "endpoint_id": 97
-          },
-          {
-            "building": "AB1",
-            "professor": "Dr. Fan Liang",
-            "room_number": "215",
-            "section_number": "3",
-            "endpoint_id": 3
-          },
-          {
-            "building": "AB1",
-            "professor": "Dr. Fan Liang",
-            "room_number": "215",
-            "section_number": "4",
-            "endpoint_id": 3
-          },
-          {
-            "building": "AB1",
-            "professor": "Dr. Fan Liang",
-            "room_number": "209",
-            "section_number": "5",
-            "endpoint_id": 97
-          },
-          {
-            "building": "AB1",
-            "professor": "Dr. Hyuk Cho",
-            "room_number": "211",
-            "section_number": "6",
-            "endpoint_id": 25
-          }
-        ]
-      },
-      "COSC2327": {
-        "course_name": "Introduction to Computer Networks",
-        "course_subject": "COSC",
-        "sections": [
-          {
-            "building": "AB1",
-            "professor": "Jayanthi Ramamoorthy",
-            "room_number": "204",
-            "section_number:": "1",
-            "endpoint_id": 115
-          },
-          {
-            "building": "AB1",
-            "professor": "Jayanthi Ramamoorthy",
-            "room_number": "209",
-            "section_number": "2",
-            "endpoint_id": 97
-          }
-        ]
-      },
-      "COSC2329": {
-        "course_name": "Computer Organization",
-        "course_subject": "COSC",
-        "sections": [
-          {
-            "building": "AB1",
-            "professor": "Dr. Xing Liu",
-            "room_number": "206",
-            "section_number": "1",
-            "endpoint_id": 105
-          },
-          {
-            "building": "AB1",
-            "professor": "Dr. ABM Islam",
-            "room_number": "206",
-            "section_number": "2",
-            "endpoint_id": 105
-          }
-        ]
-      },
-      "COSC2347": {
-        "course_name": "Special Topics",
-        "course_subject": "COSC",
-        "sections": [
-          {
-            "building": "AB1",
-            "professor": "Dr. Van Vung Pham",
-            "room_number": "204",
-            "section_number": "1",
-            "endpoint_id": 115
-          }
-        ]
-      },
-      "COSC3312": {
-        "course_name": "Numerical Methods",
-        "course_subject": "COSC",
-        "sections": [
-          {
-            "building": "AB1",
-            "professor": "Dr. Amar Rasheed",
-            "room_number": "204",
-            "section_number": "1",
-            "endpoint_id": 115
-          }
-        ]
-      },
-      "COSC3318": {
-        "course_name": "Database Management Systems",
-        "course_subject": "COSC",
-        "sections": [
-          {
-            "building": "AB1",
-            "professor": "Dr. Van Vung Pham",
-            "room_number": "204",
-            "section_number": "1",
-            "endpoint_id": 115
-          },
-          {
-            "building": "AB1",
-            "professor": "Dr. Van Vung Pham",
-            "room_number": "204",
-            "section_number": "2",
-            "endpoint_id": 115
-          }
-        ]
-      },
-      "COSC3319": {
-        "course_name": "Data Structures and Algorithms",
-        "course_subject": "COSC",
-        "sections": [
-          {
-            "building": "AB1",
-            "professor": "Dr. David Burris",
-            "room_number": "204",
-            "section_number": "1",
-            "endpoint_id": 115
-          },
-          {
-            "building": "AB1",
-            "professor": "Dr. David Burris",
-            "room_number": "204",
-            "section_number": "2",
-            "endpoint_id": 115
-          }
-        ]
-      },
-      "COSC3327": {
-        "course_name": "Computer Architecture",
-        "course_subject": "COSC",
-        "sections": [
-          {
-            "building": "AB1",
-            "professor": "Dr. Amar Rasheed",
-            "room_number": "206",
-            "section_number": "1",
-            "endpoint_id": 105
-          }
-        ]
-      },
-      "COSC3337": {
-        "course_name": "Information System Design and Management",
-        "course_subject": "COSC",
-        "sections": [
-          {
-            "building": "AB1",
-            "professor": "Robert Greenberg",
-            "room_number": "204",
-            "section_number": "1",
-            "endpoint_id": 115
-          }
-        ]
-      },
-      "COSC4149": {
-        "course_name": "Seminar in Computer Science",
-        "course_subject": "COSC",
-        "sections": [
-          {
-            "building": "AB1",
-            "professor": "Dr. ABM Islam",
-            "room_number": "215",
-            "section_number": "1",
-            "endpoint_id": 3
-          }
-        ]
-      },
-      "COSC4314": {
-        "course_name": "Data Mining",
-        "course_subject": "COSC",
-        "sections": [
-          {
-            "building": "AB1",
-            "professor": "Dr. Hyuk Cho",
-            "room_number": "206",
-            "section_number": "1",
-            "endpoint_id": 105
-          }
-        ]
-      },
-      "COSC4318": {
-        "course_name": "Advanced Language Concepts",
-        "course_subject": "COSC",
-        "sections": [
-          {
-            "building": "AB1",
-            "professor": "Dr. Gary Smith",
-            "room_number": "204",
-            "section_number": "1",
-            "endpoint_id": 115
-          }
-        ]
-      },
-      "COSC4319": {
-        "course_name": "Software Engineering",
-        "course_subject": "COSC",
-        "sections": [
-          {
-            "building": "AB1",
-            "professor": "Dr. ABM Islam",
-            "room_number": "204",
-            "section_number": "1",
-            "endpoint_id": 115
-          }
-        ]
-      },
-      "COSC4340": {
-        "course_name": "Special Topics (Computer Science)",
-        "course_subject": "COSC",
-        "sections": [
-          {
-            "building": "AB1",
-            "professor": "Dr. Amar Rasheed",
-            "room_number": "204",
-            "section_number": "1",
-            "endpoint_id": 115
-          }
-        ]
-      },
-      "COSC4349": {
-        "course_name": "Professionalism and Ethics",
-        "course_subject": "COSC",
-        "sections": [
-          {
-            "building": "FAR",
-            "professor": "Dr. Pat Ko",
-            "room_number": "105",
-            "section_number": "1",
-            "endpoint_id": 3
-          }
-        ]
-      },
-      "COSC5318": {
-        "course_name": "Database Systems",
-        "course_subject": "COSC",
-        "sections": [
-          {
-            "building": "AB1",
-            "professor": "Dr. Min Kyung An",
-            "room_number": "215",
-            "section_number": "1",
-            "endpoint_id": 3
-          }
-        ]
-      },
-      "COSC5326": {
-        "course_name": "Networks and Data Communications",
-        "course_subject": "COSC",
-        "sections": [
-          {
-            "building": "AB1",
-            "professor": "Dr. Gary Smith",
-            "room_number": "206",
-            "section_number": "1",
-            "endpoint_id": 105
-          }
-        ]
-      },
-      "COSC6314": {
-        "course_name": "Data Mining and Knowledge Discovery",
-        "course_subject": "COSC",
-        "sections": [
-          {
-            "building": "AB1",
-            "professor": "Dr. Hyuk Cho",
-            "room_number": "215",
-            "section_number": "1",
-            "endpoint_id": 3
-          }
-        ]
-      },
-      "COSC6318": {
-        "course_name": "Language and Compiler Design",
-        "course_subject": "COSC",
-        "sections": [
-          {
-            "building": "AB1",
-            "professor": "Dr. Gary Smith",
-            "room_number": "206",
-            "section_number": "1",
-            "endpoint_id": 105
-          }
-        ]
-      },
-      "DFSC1316": {
-        "course_name": "Digital Forensics and Information Assurance Fundamentals 1",
-        "course_subject": "DFSC",
-        "sections": [
-          {
-            "building": "AB1",
-            "professor": "Dr. Bing Zhou",
-            "room_number": "206",
-            "section_number": "1",
-            "endpoint_id": 105
-          }
-        ]
-      },
-      "DFSC2316": {
-        "course_name": "Digital Forensics and Information Assurance Fundamentals 2",
-        "course_subject": "DFSC",
-        "sections": [
-          {
-            "building": "AB1",
-            "professor": "Dr. Xing Liu",
-            "room_number": "204",
-            "section_number": "1",
-            "endpoint_id": 115
-          }
-        ]
-      },
-      "DFSC3316": {
-        "course_name": "Crytography and Network Security",
-        "course_subject": "DFSC",
-        "sections": [
-          {
-            "building": "AB1",
-            "professor": "Dr. N. Karpoor Shashidhar",
-            "room_number": "215",
-            "section_number": "1",
-            "endpoint_id": 3
-          }
-        ]
-      },
-      "DFSC4318": {
-        "course_name": "Malware",
-        "course_subject": "DFSC",
-        "sections": [
-          {
-            "building": "AB1",
-            "professor": "Dr. Haodi Jiang",
-            "room_number": "215",
-            "section_number": "1",
-            "endpoint_id": 3
-          }
-        ]
-      },
-      "DFSC7106": {
-        "course_name": "Seminar in Digital Forensics",
-        "course_subject": "DFSC",
-        "sections": [
-          {
-            "building": "AB1",
-            "professor": "Dr. ABM Islam",
-            "room_number": "215",
-            "section_number": "1",
-            "endpoint_id": 3
-          }
-        ]
-      },
-      "DFSC7300": {
-        "course_name": "E-Discovery",
-        "course_subject": "DFSC",
-        "sections": [
-          {
-            "building": "AB1",
-            "professor": "Dr. N. Karpoor Shashidhar",
-            "room_number": "202",
-            "section_number": "1",
-            "endpoint_id": 127
-          }
-        ]
-      },
-      "DFSC7330": {
-        "course_name": "Digital Forensics Laboratory Management",
-        "course_subject": "DFSC",
-        "sections": [
-          {
-            "building": "AB1",
-            "professor": "Dr. Min Kyung An",
-            "room_number": "202",
-            "section_number": "1",
-            "endpoint_id": 127
-          }
-        ]
-      },
-      "DFSC7350": {
-        "course_name": "Operating System Forensics",
-        "course_subject": "DFSC",
-        "sections": [
-          {
-            "building": "AB1",
-            "professor": "Dr. Cihan Varol",
-            "room_number": "202",
-            "section_number": "1",
-            "endpoint_id": 127
-          }
-        ]
-      },
-      "DFSC7362": {
-        "course_name": "Computational Forensics",
-        "course_subject": "DFSC",
-        "sections": [
-          {
-            "building": "AB1",
-            "professor": "Dr. Qingzhong Liu",
-            "room_number": "202",
-            "section_number": "1",
-            "endpoint_id": 127
-          }
-        ]
-      }
+        "COSC1436": {
+            "course_name": "Programming Fundamentals 1",
+            "course_subject": "COSC",
+            "sections": {
+                "1": {
+                    "section_number": "1",
+                    "professor": "Dr. Pat Ko",
+                    "building": "AB1",
+                    "room_number": "211"
+                },
+                "2": {
+                    "section_number": "2",
+                    "professor": "Dr. Pat Ko",
+                    "building": "AB1",
+                    "room_number": "215"
+                },
+                "3": {
+                    "section_number": "3",
+                    "professor": "Dr. Haodi Jiang",
+                    "building": "AB1",
+                    "room_number": "211"
+                },
+                "4": {
+                    "section_number": "4",
+                    "professor": "Dr. Pat Ko",
+                    "building": "AB1",
+                    "room_number": "211"
+                },
+                "5": {
+                    "section_number": "5",
+                    "professor": "Dr. Xing Liu",
+                    "building": "AB1",
+                    "room_number": "211"
+                    
+                },
+                "6": {
+                    "section_number": "6",
+                    "professor": "Dr. Pat Ko",
+                    "building": "AB1",
+                    "room_number": "211"
+                },
+                "7": {
+                    "section_number": "7",
+                    "professor": "Dr. Pat Ko",
+                    "building": "AB1",
+                    "room_number": "211"
+                },
+                "8": {
+                    "section_number": "8",
+                    "professor": "Dr. Pat Ko",
+                    "building": "AB1",
+                    "room_number": "211"
+                },
+                "9": {
+                    "section_number": "9",
+                    "professor": "Dr. Pat Ko",
+                    "building": "AB1",
+                    "room_number": "211"
+                },
+                "10": {
+                    "section_number": "10",
+                    "professor": "Dr. Pat Ko",
+                    "building": "AB1",
+                    "room_number": "211"
+                },
+                "11": {
+                    "section_number": "11",
+                    "professor": "Dr. Haodi Jiang",
+                    "building": "AB1",
+                    "room_number": "211"
+                },
+                "12": {
+                    "section_number": "12",
+                    "professor": "Dr. Xing Liu",
+                    "building": "AB1",
+                    "room_number": "211"
+                }
+            }
+        },
+        "COSC1437": {
+            "course_name": "Programming Fundamentals 2",
+            "course_subject": "COSC",
+            "sections": {
+                "1": {
+                    "section_number": "1",
+                    "professor": "Dr. Hyuk Cho",
+                    "building": "AB1",
+                    "room_number": "211"
+                },
+                "2": {
+                    "section_number": "2",
+                    "professor": "Dr. Fan Liang",
+                    "building": "AB1",
+                    "room_number": "209"
+                },
+                "3": {
+                    "section_number": "3",
+                    "professor": "Dr. Fan Liang",
+                    "building": "AB1",
+                    "room_number": "215"
+                },
+                "4": {
+                    "section_number": "4",
+                    "professor": "Dr. Fan Liang",
+                    "building": "AB1",
+                    "room_number": "215"
+                },
+                "5": {
+                    "section_number": "5",
+                    "professor": "Dr. Fan Liang",
+                    "building": "AB1",
+                    "room_number": "209"
+                },
+                "6": {
+                    "section_number": "6",
+                    "professor": "Dr. Hyuk Cho",
+                    "building": "AB1",
+                    "room_number": "211"
+                }
+            }
+        },
+        "COSC2327": {
+            "course_name": "Introduction to Computer Networks",
+            "course_subject": "COSC",
+            "sections": {
+                "1": {
+                    "section_number:": "1",
+                    "professor": "Jayanthi Ramamoorthy",
+                    "building": "AB1",
+                    "room_number": "204"
+                },
+                "2": {
+                    "section_number": "2",
+                    "professor": "Jayanthi Ramamoorthy",
+                    "building": "AB1",
+                    "room_number": "209"
+                }
+            }
+        },
+        "COSC2329": {
+            "course_name": "Computer Organization",
+            "course_subject": "COSC",
+            "sections": {
+                "1": {
+                    "section_number": "1",
+                    "professor": "Dr. Xing Liu",
+                    "building": "AB1",
+                    "room_number": "206"
+                },
+                "2": {
+                    "section_number": "2",
+                    "professor": "Dr. ABM Islam",
+                    "building": "AB1",
+                    "room_number": "206"
+                }
+            }
+        },
+        "COSC2347": {
+            "course_name": "Special Topics",
+            "course_subject": "COSC",
+            "sections": {
+                "1": {
+                    "section_number": "1",
+                    "professor": "Dr. Van Vung Pham",
+                    "building": "AB1",
+                    "room_number": "204"
+                }
+            }
+        },
+    
+        "COSC3312": {
+            "course_name": "Numerical Methods",
+            "course_subject": "COSC",
+            "sections": {
+                "1": {
+                    "section_number": "1",
+                    "professor": "Dr. Amar Rasheed",
+                    "building": "AB1",
+                    "room_number": "204"
+                }
+            }
+        },
+        "COSC3318": {
+            "course_name": "Database Management Systems",
+            "course_subject": "COSC",
+            "sections": {
+                "1": {
+                    "section_number": "1",
+                    "professor": "Dr. Van Vung Pham",
+                    "building": "AB1",
+                    "room_number": "204"
+                },
+                "2": {
+                    "section_number": "2",
+                    "professor": "Dr. Van Vung Pham",
+                    "building": "AB1",
+                    "room_number": "204"
+                }
+            }
+        },
+        "COSC3319": {
+            "course_name": "Data Structures and Algorithms",
+            "course_subject": "COSC",
+            "sections": {
+                "1": {
+                    "section_number": "1",
+                    "professor": "Dr. David Burris",
+                    "building": "AB1",
+                    "room_number": "204"
+                },
+                "2": {
+                    "section_number": "2",
+                    "professor": "Dr. David Burris",
+                    "building": "AB1",
+                    "room_number": "204"
+                }
+            }
+        },
+        "COSC3327": {
+            "course_name": "Computer Architecture",
+            "course_subject": "COSC",
+            "sections": {
+                "1": {
+                    "section_number": "1",
+                    "professor": "Dr. Amar Rasheed",
+                    "building": "AB1",
+                    "room_number": "206"
+                }
+            }
+        },
+        "COSC3337": {
+            "course_name": "Information System Design and Management",
+            "course_subject": "COSC",
+            "sections": {
+                "1": {
+                    "section_number": "1",
+                    "professor": "Robert Greenberg",
+                    "building": "AB1",
+                    "room_number": "204"
+                }
+            }
+        },
+        "COSC4149": {
+            "course_name": "Seminar in Computer Science",
+            "course_subject": "COSC",
+            "sections": {
+                "1": {
+                    "section_number": "1",
+                    "professor": "Dr. ABM Islam",
+                    "building": "AB1",
+                    "room_number": "215"
+                }
+            }
+        },
+        "COSC4314": {
+            "course_name": "Data Mining",
+            "course_subject": "COSC",
+            "sections": {
+                "1": {
+                    "section_number": "1",
+                    "professor": "Dr. Hyuk Cho",
+                    "building": "AB1",
+                    "room_number": "206"
+                }
+            }
+        },
+        "COSC4318": {
+            "course_name": "Advanced Language Concepts",
+            "course_subject": "COSC",
+            "sections": {
+                "1": {
+                    "section_number": "1",
+                    "professor": "Dr. Gary Smith",
+                    "building": "AB1",
+                    "room_number": "204"
+                }
+            }
+        },
+        "COSC4319": {
+            "course_name": "Software Engineering",
+            "course_subject": "COSC",
+            "sections": {
+                "1": {
+                    "section_number": "1",
+                    "professor": "Dr. ABM Islam",
+                    "building": "AB1",
+                    "room_number": "204"
+                }
+            }
+        },
+        "COSC4340": {
+            "course_name": "Special Topics (Computer Science)",
+            "course_subject": "COSC",
+            "sections": {
+                "1": {
+                    "section_number": "1",
+                    "professor": "Dr. Amar Rasheed",
+                    "building": "AB1",
+                    "room_number": "204"
+                }
+            }
+        },
+        "COSC4349": {
+            "course_name": "Professionalism and Ethics",
+            "course_subject": "COSC",
+            "sections": {
+                "1": {
+                    "section_number": "1",
+                    "professor": "Dr. Pat Ko",
+                    "building": "FAR",
+                    "room_number": "105"
+                }
+            }
+        },
+        "COSC5318": {
+            "course_name": "Database Systems",
+            "course_subject": "COSC",
+            "sections": {
+                "1": {
+                    "section_number": "1",
+                    "professor": "Dr. Min Kyung An",
+                    "building": "AB1",
+                    "room_number": "215"
+                }
+            }
+        },
+        "COSC5326": {
+            "course_name": "Networks and Data Communications",
+            "course_subject": "COSC",
+            "sections": {
+                "1": {
+                    "section_number": "1",
+                    "professor": "Dr. Gary Smith",
+                    "building": "AB1",
+                    "room_number": "206"
+                }
+            }
+        },
+        "COSC6314": {
+            "course_name": "Data Mining and Knowledge Discovery",
+            "course_subject": "COSC",
+            "sections": {
+                "1": {
+                    "section_number": "1",
+                    "professor": "Dr. Hyuk Cho",
+                    "building": "AB1",
+                    "room_number": "215"
+                }
+            }
+        },
+        "COSC6318": {
+            "course_name": "Language and Compiler Design",
+            "course_subject": "COSC",
+            "sections": {
+                "1": {
+                    "section_number": "1",
+                    "professor": "Dr. Gary Smith",
+                    "building": "AB1",
+                    "room_number": "206"
+                }
+            }
+        },
+        "DFSC1316": {
+            "course_name": "Digital Forensics and Information Assurance Fundamentals 1",
+            "course_subject": "DFSC",
+            "sections": {
+                "1": {
+                    "section_number": "1",
+                    "professor": "Dr. Bing Zhou",
+                    "building": "AB1",
+                    "room_number": "206"
+                }
+            }
+        },
+        "DFSC2316": {
+            "course_name": "Digital Forensics and Information Assurance Fundamentals 2",
+            "course_subject": "DFSC",
+            "sections": {
+                "1": {
+                    "section_number": "1",
+                    "professor": "Dr. Xing Liu",
+                    "building": "AB1",
+                    "room_number": "204"
+                }
+            }
+        },
+        "DFSC3316": {
+            "course_name": "Crytography and Network Security",
+            "course_subject": "DFSC",
+            "sections": {
+                "1": {
+                    "section_number": "1",
+                    "professor": "Dr. N. Karpoor Shashidhar",
+                    "building": "AB1",
+                    "room_number": "215"
+                }
+            }
+        },
+        "DFSC4318": {
+            "course_name": "Malware",
+            "course_subject": "DFSC",
+            "sections": {
+                "1": {
+                    "section_number": "1",
+                    "professor": "Dr. Haodi Jiang",
+                    "building": "AB1",
+                    "room_number": "215"
+                }
+            }
+        },
+        "DFSC7106": {
+            "course_name": "Seminar in Digital Forensics",
+            "course_subject": "DFSC",
+            "sections": {
+                "1": {
+                    "section_number": "1",
+                    "professor": "Dr. ABM Islam",
+                    "building": "AB1",
+                    "room_number": "215"
+                }
+            }
+        },
+        "DFSC7300": {
+            "course_name": "E-Discovery",
+            "course_subject": "DFSC",
+            "sections": {
+                "1": {
+                    "section_number": "1",
+                    "professor": "Dr. N. Karpoor Shashidhar",
+                    "building": "AB1",
+                    "room_number": "202"
+                }
+            }
+        },
+        "DFSC7330": {
+            "course_name": "Digital Forensics Laboratory Management",
+            "course_subject": "DFSC",
+            "sections": {
+                "1": {
+                    "section_number": "1",
+                    "professor": "Dr. Min Kyung An",
+                    "building": "AB1",
+                    "room_number": "202"
+                }
+            }
+        },
+        "DFSC7350": {
+            "course_name": "Operating System Forensics",
+            "course_subject": "DFSC",
+            "sections": {
+                "1": {
+                    "section_number": "1",
+                    "professor": "Dr. Cihan Varol",
+                    "building": "AB1",
+                    "room_number": "202"
+                }
+            }
+        },
+        "DFSC7362": {
+            "course_name": "Computational Forensics",
+            "course_subject": "DFSC",
+            "sections": {
+                "1": {
+                    "section_number": "1",
+                    "professor": "Dr. Qingzhong Liu",
+                    "building": "AB1",
+                    "room_number": "202"
+                }
+            }
+        }
     },
+
     "users": {
-      "QeDFp6vHkGaMcPdTebl6RGW1HOW2": {
-        "courses": [
-          {
-            "building": "AB1",
-            "courseNumber": "COSC3319",
-            "professorName": "Dr. David Burris",
-            "roomNumber": "204",
-            "sectionNumber": 2
-          },
-          {
-            "building": "AB1",
-            "courseNumber": "COSC6314",
-            "professorName": "Dr. Hyuk Cho",
-            "roomNumber": "215",
-            "sectionNumber": 1
-          }
-        ],
-        "firstName": "monica ",
-        "lastName": "ortega"
-      },
-      "VfZjVkWr35OOFOVx1QFmVhR0UKP2": {
-        "courses": [
-          {
-            "building": "AB1",
-            "courseNumber": "DFSC7106",
-            "endpointId": 0,
-            "professorName": "Dr. ABM Islam",
-            "roomNumber": "215",
-            "sectionNumber": 1
-          },
-          {
-            "building": "AB1",
-            "courseNumber": "COSC3327",
-            "endpointId": 0,
-            "professorName": "Dr. Amar Rasheed",
-            "roomNumber": "206",
-            "sectionNumber": 1
-          }
-        ],
-        "firstName": "Peter",
-        "lastName": "Cerna"
-      },
-      "eQ987WSd19TVGpUV77VSxQyDhVk2": {
-        "courses": [
-          {
-            "building": "AB1",
-            "courseNumber": "COSC3327",
-            "endpoint_id": 105,
-            "professorName": "Dr. Amar Rasheed",
-            "roomNumber": "206",
-            "sectionNumber": 1
-          }
-        ],
-        "firstName": "Cainan",
-        "lastName": "Mahar"
-      },
-      "fGUeIQcpawN0itmqfMH5H6cn3MH3": {
-        "courses": [
-          {
-            "building": "AB1",
-            "courseNumber": "COSC4314",
-            "endpoint_id": 105,
-            "professorName": "Dr. Hyuk Cho",
-            "roomNumber": "206",
-            "sectionNumber": 1
-          },
-          {
-            "building": "AB1",
-            "courseNumber": "COSC4319",
-            "endpoint_id": 115,
-            "professorName": "Dr. ABM Islam",
-            "roomNumber": "204",
-            "sectionNumber": 1
-          },
-          {
-            "building": "AB1",
-            "courseNumber": "COSC4318",
-            "endpoint_id": 115,
-            "professorName": "Dr. Gary Smith",
-            "roomNumber": "204",
-            "sectionNumber": 1
-          },
-          {
-            "building": "AB1",
-            "courseNumber": "COSC3312",
-            "endpoint_id": 115,
-            "professorName": "Dr. Amar Rasheed",
-            "roomNumber": "204",
-            "sectionNumber": 1
-          }
-        ],
-        "firstName": "Audrey",
-        "lastName": "Gorter"
-      },
-      "ykaOCQV1S4Rk6x28e0nLDxQufBJ2": {
-        "firstName": "Sammy",
-        "lastName": "Bearkat"
+        "QeDFp6vHkGaMcPdTebl6RGW1HOW2": {
+          "courses": [
+            {
+              "building": "AB1",
+              "courseNumber": "DFSC2316",
+              "professorName": "Dr. Xing Liu",
+              "roomNumber": "204",
+              "sectionNumber": 1
+            }
+          ],
+          "firstName": "monica ",
+          "lastName": "ortega"
+        },
+        "VfZjVkWr35OOFOVx1QFmVhR0UKP2": {
+          "courses": [
+            {
+              "building": "AB1",
+              "courseNumber": "COSC2347",
+              "professorName": "Dr. Van Vung Pham",
+              "roomNumber": "204",
+              "sectionNumber": 1
+            },
+            {
+              "building": "AB1",
+              "courseNumber": "COSC4314",
+              "professorName": "Dr. Hyuk Cho",
+              "roomNumber": "206",
+              "sectionNumber": 1
+            }
+          ],
+          "firstName": "Peter",
+          "lastName": "Cerna"
+        },
+        "eQ987WSd19TVGpUV77VSxQyDhVk2": {
+          "courses": [
+            {
+              "building": "AB1",
+              "courseNumber": "COSC3327",
+              "professorName": "Dr. Amar Rasheed",
+              "roomNumber": "206",
+              "sectionNumber": 1
+            }
+          ],
+          "firstName": "Cainan",
+          "lastName": "Mahar"
+        },
+        "fGUeIQcpawN0itmqfMH5H6cn3MH3": {
+          "courses": [
+            {
+              "building": "AB1",
+              "courseNumber": "COSC4314",
+              "professorName": "Dr. Hyuk Cho",
+              "roomNumber": "206",
+              "sectionNumber": 1
+            },
+            {
+              "building": "AB1",
+              "courseNumber": "COSC4319",
+              "professorName": "Dr. ABM Islam",
+              "roomNumber": "204",
+              "sectionNumber": 1
+            },
+            {
+              "building": "AB1",
+              "courseNumber": "COSC4318",
+              "professorName": "Dr. Gary Smith",
+              "roomNumber": "204",
+              "sectionNumber": 1
+            },
+            {
+              "building": "AB1",
+              "courseNumber": "COSC3312",
+              "professorName": "Dr. Amar Rasheed",
+              "roomNumber": "204",
+              "sectionNumber": 1
+            }
+          ],
+          "firstName": "Audrey",
+          "lastName": "Gorter"
+        },
+        "ykaOCQV1S4Rk6x28e0nLDxQufBJ2": {
+          "firstName": "Sammy",
+          "lastName": "Bearkat"
+        }
       }
     }
-  }
+    
+
+      
+
+
+
