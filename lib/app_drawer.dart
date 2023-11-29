@@ -100,7 +100,6 @@ class AppDrawer extends StatelessWidget {
                   isChecked: isAdaFilterEnabled,
                   onFilterChanged: onFilterChanged),
               title: const Text("Ada paths only")),
-          //ElevatedButton(onPressed: (){Filters.resetFilter();}, style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),child: Text("Reset")),
         ],
       ),
     );
@@ -151,11 +150,5 @@ class _FiltersState extends State<Filters> {
         widget.onFilterChanged(isChecked);
       },
     );
-  }
-
-  void resetFilter() {
-    setState(() {
-      isChecked = false; //resets it back to false.
-    });
   }
 }

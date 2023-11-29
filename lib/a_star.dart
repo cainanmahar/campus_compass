@@ -61,8 +61,7 @@ void initializeNodes() async {
   }
 }
 
-// New function to load and parse endpoints
-// will need modifications once we get indoor nav graph
+// Function to load and parse endpoints
 void loadEndpoints() async {
   String endpointContents =
       await rootBundle.loadString('assets/endpoints.json');
