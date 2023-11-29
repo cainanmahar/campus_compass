@@ -329,7 +329,7 @@ class Courses {
     return Courses(
       courseNumber: key,
       // casts course_name
-      className: data['course_name'] as String,
+      className: data['courseName'] as String,
     );
   }
 }
@@ -354,7 +354,7 @@ class Sections {
   // factory constructor that creates a Sections object from data and a course
   factory Sections.fromData(Map<String, dynamic> data, String courseNumber) {
     int sectionNumber =
-        int.tryParse(data['section_number'] as String? ?? '0') ?? 0;
+        int.tryParse(data['sectionNumber'] as String? ?? '0') ?? 0;
     // returns a new Sections object
     return Sections(
       courseNumber: courseNumber,
@@ -362,7 +362,7 @@ class Sections {
       // gives default values if data not present
       professorName: data['professor'] as String? ?? 'Unknown',
       building: data['building'] as String? ?? 'Unknown',
-      roomNumber: data['room_number'] as String? ?? 'Unknown',
+      roomNumber: data['roomNumber'] as String? ?? 'Unknown',
     );
   }
 
