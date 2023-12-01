@@ -88,6 +88,6 @@ For logging into the application:
 * Either navigate to the sign up page and create a user account
 * Or use our demo account credentials
 
-username: `demouser1@gmail.com`
+username: `demoUser1@gmail.com`
 
 password: `DemoPass1!`
