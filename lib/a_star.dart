@@ -137,7 +137,7 @@ class Edge {
 
 // our heuristic to estimate the cost from a node to the goal
 double heuristic(Node node, Node goal) {
-  // currently manhattan distance
+  // currently vincenty distance
   const distCalc = DistanceVincenty(roundResult: false);
   return distCalc.as(LengthUnit.Meter, node.coords, goal.coords);
 }
