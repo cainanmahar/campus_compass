@@ -65,7 +65,7 @@ git clone https://github.com/cainanmahar/campus_compass
 * Open the cloned directory in VSCode.
 
 ## 8. Install Dependencies
-* In the terminal within VSCode, run the following command to fetch the project dependencies.
+* In the terminal within VSCode, run the following command to fetch the project dependencies:
   
 `
 flutter pub get
