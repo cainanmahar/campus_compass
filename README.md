@@ -4,7 +4,8 @@
 
 # Prerequisites
 
-List prereqs to required to run this application here
+* Have Git installed on your machine
+* Have VScode install on your machine
 
 # Installation
 
