@@ -4,16 +4,31 @@
 
 # Prerequisites
 
-* Have Git installed on your machine
-* Have VScode install on your machine
+Before you being make sure you have met the following requirements:
 
-# Installation
+* Git
+* VSCode
+* Flutter SDK
+* Dart SDK (Comes with Flutter)
+* An Android or iOS device or emulator/simulator for testing
 
-Explain the steps to insall any additional dependencies specific to the project here
+# Installation and Setup
+
+## 1. Install Flutter SDK
+
+* Visit the Visit the [Flutter installation page](https://flutter.dev/docs/get-started/install) and follow the instructions for your operating system.
+* Extract the downloaded zip file and place it in a desired location.
+
+## 2. Update Path
+* Add the Flutter tool to your path.
+
+## 3. Install Visual Studio Code
+* Download and install Visual Studio Code (VSCode) from the [offical website](https://code.visualstudio.com)
+* Open VSCode and install the Flutter and Dart extensions from the marketplace.
 
 # Configuration
 
-List any specific configuration steps here
+* Set up the Android Emulator or iOS Simulator (macOS only) from within VSCode.
 
 # Running the Application
 
