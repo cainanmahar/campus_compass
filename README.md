@@ -26,8 +26,7 @@ Before you being make sure you have met the following requirements:
 * Download and install Visual Studio Code (VSCode) from the [offical website](https://code.visualstudio.com)
 * Open VSCode and install the Flutter and Dart extensions from the marketplace.
 
-# Configuration
-
+4. Configure VSCode
 * Set up the Android Emulator or iOS Simulator (macOS only) from within VSCode.
 
 # Running the Application
