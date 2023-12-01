@@ -32,18 +32,18 @@ flutter doctor
 
 * Address any issues or missing dependencies indicated by 'flutter doctor.'
   
-## 3. Install Visual Studio Code
+## 4. Install Visual Studio Code
 * Download and install Visual Studio Code (VSCode) from the [offical website.](https://code.visualstudio.com)
 * Open VSCode and install the Flutter and Dart extensions from the marketplace.
 
-## 4. Install Android Studio and/or XCode
+## 5. Install Android Studio and/or XCode
 * For Android development, download and install Android Studio from the [official website.](https://developer.android.com/studio)
 * For iOS development (macOS only), download and install XCode from the Mac App Store.
 
-## 5. Configure VSCode, Android Studio, or XCode
+## 6. Configure VSCode, Android Studio, or XCode
 * Set up the Android Emulator or iOS Simulator (macOS only) from within their respective IDEs.
 
-## 6. Clone the Respository
+## 7. Clone the Respository
 * Clone the project repository using Git:
 
 `
@@ -52,7 +52,7 @@ git clone https://github.com/cainanmahar/campus_compass
 
 * Open the cloned directory in VSCode.
 
-## 7. Install Dependencies
+## 8. Install Dependencies
 * In the terminal within VSCode, run the following command to fetch the project dependencies.
   
 `
