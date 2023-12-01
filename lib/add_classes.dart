@@ -263,9 +263,6 @@ class CourseDialog extends StatelessWidget {
   // ui of the dialog
   @override
   Widget build(BuildContext context) {
-    //debug print statement
-    print(
-        'Options for autocomplete: ${generateCombinedOptions(fetchedSections, fetchedCourses)}');
     return Dialog(
       child: Container(
         padding: const EdgeInsets.all(20.0),
@@ -332,7 +329,7 @@ class Courses {
     return Courses(
       courseNumber: key,
       // casts course_name
-      className: data['course_name'] as String,
+      className: data['courseName'] as String,
     );
   }
 }
@@ -357,7 +354,7 @@ class Sections {
   // factory constructor that creates a Sections object from data and a course
   factory Sections.fromData(Map<String, dynamic> data, String courseNumber) {
     int sectionNumber =
-        int.tryParse(data['section_number'] as String? ?? '0') ?? 0;
+        int.tryParse(data['sectionNumber'] as String? ?? '0') ?? 0;
     // returns a new Sections object
     return Sections(
       courseNumber: courseNumber,
@@ -365,7 +362,7 @@ class Sections {
       // gives default values if data not present
       professorName: data['professor'] as String? ?? 'Unknown',
       building: data['building'] as String? ?? 'Unknown',
-      roomNumber: data['room_number'] as String? ?? 'Unknown',
+      roomNumber: data['roomNumber'] as String? ?? 'Unknown',
     );
   }
 
@@ -387,8 +384,6 @@ List<String> generateCombinedOptions(
   var combinedOptions = fetchedSections
       .map((section) => generateOptionString(section, fetchedCourses))
       .toList();
-
-  print('Combined Options: $combinedOptions'); // debugging
   return combinedOptions;
 }
 
@@ -398,8 +393,6 @@ String generateOptionString(Sections section, List<Courses> fetchedCourses) {
   Courses course = fetchedCourses.firstWhere(
     (c) => c.courseNumber == section.courseNumber,
     orElse: () {
-      print(
-          "Error: Course not found for course number: ${section.courseNumber}");
       return Courses(courseNumber: "Unkown", className: 'Unknown Course');
     },
   );
@@ -435,7 +428,6 @@ class AutoCompleteFormField extends StatelessWidget {
                   .toLowerCase()
                   .contains(textEditingValue.text.toLowerCase()))
               .toList();
-          print('Filtered options: $filteredOptions'); // debugging
           return filteredOptions;
         }
       },

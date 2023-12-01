@@ -42,6 +42,7 @@ mixin formValidation {
     return true;
   }
 
+  // creates a widget to display desired password criteria to the user
   Widget passwordCriteriaWidget(String password) {
     return Column(
       children: [
@@ -53,6 +54,8 @@ mixin formValidation {
     );
   }
 
+  // Widget to create criteria rows that displays green once criteria is met
+  // and red otherwise
   Widget criteriaRow(String criteria, bool isMet) {
     return Row(
       children: [

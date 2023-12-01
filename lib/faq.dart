@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-//import 'package:my_app/login_page.dart';
 import 'package:getwidget/getwidget.dart';
 
 class FaqPage extends StatelessWidget {

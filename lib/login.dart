@@ -242,7 +242,7 @@ class _LoginPageState extends State<LoginPage>
   }
 }
 
-// for input boxes
+// Widget to create input boxes
 Widget makeInput(
     {label, obscureText = false, required TextEditingController controller}) {
   return Column(

@@ -61,8 +61,7 @@ void initializeNodes() async {
   }
 }
 
-// New function to load and parse endpoints
-// will need modifications once we get indoor nav graph
+// Function to load and parse endpoints
 void loadEndpoints() async {
   String endpointContents =
       await rootBundle.loadString('assets/endpoints.json');
@@ -138,7 +137,7 @@ class Edge {
 
 // our heuristic to estimate the cost from a node to the goal
 double heuristic(Node node, Node goal) {
-  // currently manhattan distance
+  // currently vincenty distance
   const distCalc = DistanceVincenty(roundResult: false);
   return distCalc.as(LengthUnit.Meter, node.coords, goal.coords);
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 mixin DialogUtils {
   // Function to show error when user enters invalid info
+  // Takes in a string to display the desired error message to the user
   void showErrorDialog(BuildContext context, String message) {
     showDialog(
       context: context,
@@ -23,7 +24,7 @@ mixin DialogUtils {
     );
   }
 
-  // Shows a dialog with the confirmation message
+  // Shows a dialog with the confirmation message that an email was sent
   void showConfirmationDialog(BuildContext context, String message) {
     showDialog(
       context: context,
