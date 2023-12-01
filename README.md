@@ -41,7 +41,7 @@ This could include but is not limited to:
 * Chrome
 * Android Studio
 * VS Code
-* Cocoa Pods
+* Cocoa Pods (for iOS development)
 
   
 ## 4. Install Visual Studio Code
@@ -84,4 +84,10 @@ flutter pub get
 
 # Additional Notes
 
-List any necessary additional notes here
+For logging into the application:
+* Either navigate to the sign up page and create a user account
+* Or use our demo account credentials
+
+username: `demouser1@gmail.com`
+
+password: `DemoPass1!`
