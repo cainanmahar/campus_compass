@@ -8,6 +8,8 @@ Before you being make sure you have met the following requirements:
 
 * Git
 * VSCode
+* Android Studio
+* XCode (for macOS only)
 * Flutter SDK
 * Dart SDK (Comes with Flutter)
 * An Android or iOS device or emulator/simulator for testing
@@ -31,6 +33,9 @@ flutter doctor
 `
 
 * Address any issues or missing dependencies indicated by 'flutter doctor.'
+
+This could include but is not limited to:
+
   
 ## 4. Install Visual Studio Code
 * Download and install Visual Studio Code (VSCode) from the [offical website.](https://code.visualstudio.com)
