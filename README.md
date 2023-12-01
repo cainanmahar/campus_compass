@@ -32,9 +32,16 @@ Before you being make sure you have met the following requirements:
 flutter doctor
 `
 
-* Address any issues or missing dependencies indicated by 'flutter doctor.'
+* Address any issues or missing dependencies indicated by `flutter doctor`
 
 This could include but is not limited to:
+* Flutter
+* Android toolchain
+* XCode (macOS only)
+* Chrome
+* Android Studio
+* VS Code
+* Cocoa Pods
 
   
 ## 4. Install Visual Studio Code
@@ -66,7 +73,14 @@ flutter pub get
 
 # Running the Application
 
-Detail the steps to run the application here
+* Open the project in VSCode.
+* Start an Android or iOS emulator, or connect to a real device.
+* Select the target device in VSCode.
+* Run the application by pressing F5 or clicking the Run button.
+
+# Troubleshooting
+
+* If you encounter any issues run `flutter doctor` in the terminal and resolve and reported problems.
 
 # Additional Notes
 
